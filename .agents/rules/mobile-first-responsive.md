@@ -31,6 +31,7 @@ Do not design desktop first and shrink for mobile. Mobile must have its own inte
 - **Vertical scrolling flow**: Avoid forced horizontal sliders for essential content.
 - **Sticky / Accessible Enquiry CTA**: Always accessible without obstructing content.
 - **Lightweight Motion**: Shorter, simpler animations (`opacity`, `transform`, `scale`, `clip-path`), no heavy mobile parallax, respecting `prefers-reduced-motion`.
+- **Pure JavaScript (No TypeScript)**: Use JavaScript (.js, .jsx) throughout the project.
 
 ---
 

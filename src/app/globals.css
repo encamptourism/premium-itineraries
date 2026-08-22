@@ -1,26 +1,160 @@
 @import "tailwindcss";
 
 :root {
+  /* Default Neutral Base */
   --background: #ffffff;
-  --foreground: #171717;
+  --foreground: #000000;
+
+  /* Brand Colors (Used Intentionally on specific components/sections) */
+  --forest: #062212;
+  --forest-light: #0b3a24;
+  --forest-dark: #03150b;
+
+  --gold: #dfa62f;
+  --gold-light: #f0c85a;
+
+  --ivory: #f8f5ed;
+  --cream: #f1ebdd;
+
+  /* Supporting Neutrals */
+  --muted: #667067;
+  --border: #d9ccad;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+@theme {
+  --font-display-script: var(--font-display-script), cursive;
+  --font-display-serif: var(--font-display-serif), Georgia, serif;
+  --font-sans: var(--font-poppins), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-poppins: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
+
+  --color-forest: var(--forest);
+  --color-forest-light: var(--forest-light);
+  --color-forest-dark: var(--forest-dark);
+
+  --color-gold: var(--gold);
+  --color-gold-light: var(--gold-light);
+
+  --color-ivory: var(--ivory);
+  --color-cream: var(--cream);
+
+  --color-muted: var(--muted);
+  --color-border: var(--border);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+/* Global Default Theme: Strictly White Background, Black Text */
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #ffffff;
+  color: #000000;
+  font-family: var(--font-poppins), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Typography Token Utilities */
+.font-script {
+  font-family: var(--font-display-script), cursive;
+}
+
+.font-serif-display {
+  font-family: var(--font-display-serif), Georgia, serif;
+}
+
+.font-sans-ui {
+  font-family: var(--font-poppins), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.font-poppins {
+  font-family: var(--font-poppins), sans-serif;
+}
+
+/* Semantic Typography Classes */
+.display-script {
+  font-family: var(--font-display-script), cursive;
+}
+
+.display-hero {
+  font-family: var(--font-display-serif), Georgia, serif;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1.05;
+}
+
+.display-xl {
+  font-family: var(--font-display-serif), Georgia, serif;
+  font-size: clamp(2.5rem, 5vw, 4.5rem);
+  line-height: 1.1;
+}
+
+.display-lg {
+  font-family: var(--font-display-serif), Georgia, serif;
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  line-height: 1.15;
+}
+
+.display-md {
+  font-family: var(--font-display-serif), Georgia, serif;
+  font-size: clamp(1.75rem, 3vw, 2.75rem);
+  line-height: 1.2;
+}
+
+.heading-xl {
+  font-family: var(--font-display-serif), Georgia, serif;
+  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+  line-height: 1.2;
+}
+
+.heading-lg {
+  font-family: var(--font-display-serif), Georgia, serif;
+  font-size: clamp(1.5rem, 2vw, 2rem);
+  line-height: 1.25;
+}
+
+.heading-md {
+  font-family: var(--font-display-serif), Georgia, serif;
+  font-size: clamp(1.25rem, 1.75vw, 1.625rem);
+  line-height: 1.3;
+}
+
+.heading-sm {
+  font-family: var(--font-display-serif), Georgia, serif;
+  font-size: clamp(1.125rem, 1.5vw, 1.375rem);
+  line-height: 1.35;
+}
+
+.body-lg {
+  font-family: var(--font-poppins), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.65;
+}
+
+.body-md {
+  font-family: var(--font-poppins), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+}
+
+.body-sm {
+  font-family: var(--font-poppins), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.label {
+  font-family: var(--font-poppins), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.caption {
+  font-family: var(--font-poppins), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+.eyebrow {
+  font-family: var(--font-poppins), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 0.75rem;
+  font-weight: 600;
 }
