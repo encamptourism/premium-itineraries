@@ -1,6 +1,8 @@
 import { Alex_Brush, Cormorant_Garamond, Plus_Jakarta_Sans, Poppins } from "next/font/google";
+import { headers } from "next/headers";
 import Navbar from "@/components/itinerary/Navbar";
 import Footer from "@/components/itinerary/Footer";
+import AuthProvider from "@/context/AuthProvider";
 import "./globals.css";
 
 const alexBrush = Alex_Brush({
@@ -42,7 +44,15 @@ export const viewport = {
   maximumScale: 5,
 };
 
-export default function RootLayout({ children }) {
+// Auth pages render without the main Navbar/Footer
+const AUTH_PATHS = ["/login", "/register", "/verify-otp", "/forgot-password"];
+
+export default async function RootLayout({ children }) {
+  // x-pathname is set by middleware on every request
+  const headersList = await headers();
+  const pathname = headersList.get("x-pathname") || "";
+  const isAuthPage = AUTH_PATHS.some((p) => pathname.startsWith(p));
+
   return (
     <html
       lang="en"
@@ -53,9 +63,11 @@ export default function RootLayout({ children }) {
         suppressHydrationWarning
         className="min-h-full flex flex-col font-sans bg-white text-black"
       >
-        <Navbar />
-        <main className="flex-1">{children}</main>
-        <Footer />
+        <AuthProvider>
+          {!isAuthPage && <Navbar />}
+          <main className="flex-1">{children}</main>
+          {!isAuthPage && <Footer />}
+        </AuthProvider>
       </body>
     </html>
   );
