@@ -1,5 +1,6 @@
+import Image from "next/image";
 import Link from "next/link";
-import { Compass, Mail, Phone, MapPin } from "lucide-react";
+import { Mail, Phone, MapPin } from "lucide-react";
 
 export default function Footer() {
   return (
@@ -8,24 +9,19 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-white/10">
           {/* Brand Col */}
           <div className="space-y-4">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-full bg-forest flex items-center justify-center text-gold shadow-sm">
-                <Compass className="w-5 h-5" />
-              </div>
-              <div className="flex flex-col">
-                <span className="font-serif-display text-xl font-bold tracking-wider text-white uppercase">
-                  Encamp Privé
-                </span>
-                <span className="text-[9px] tracking-[0.25em] uppercase text-stone-400 font-medium -mt-1">
-                  Bespoke Expeditions
-                </span>
-              </div>
-            </div>
+            <Link href="/" className="inline-block relative w-36 sm:w-44 h-10 sm:h-12 shrink-0 rounded-lg overflow-hidden">
+              <Image
+                src="/images/logo.png"
+                alt="Encamp Privé Logo"
+                fill
+                className="object-contain object-left"
+              />
+            </Link>
             <p className="text-xs text-stone-400 leading-relaxed max-w-sm">
               Curated private journeys, luxury heritage retreats, and carbon-neutral expeditions across Northeast India and the Himalayas.
             </p>
             <div className="font-script text-2xl text-gold-light">
-              Let&apos;s create memories that last a lifetime!
+              Where Every Moment Becomes a Cherished Memory.
             </div>
           </div>
 
@@ -37,14 +33,14 @@ export default function Footer() {
             <ul className="space-y-2.5 text-xs text-stone-400">
               <li className="flex items-center gap-2">
                 <Phone className="w-4 h-4 text-gold" />
-                <a href="tel:+918794756611" className="hover:text-white transition-colors">
-                  +91 87947 56611
+                <a href="tel:+919643182259" className="hover:text-white transition-colors">
+                  +91 96431 82259
                 </a>
               </li>
               <li className="flex items-center gap-2">
                 <Mail className="w-4 h-4 text-gold" />
-                <a href="mailto:concierge@encampadventures.com" className="hover:text-white transition-colors">
-                  concierge@encampadventures.com
+                <a href="mailto:info@encampadventures.com" className="hover:text-white transition-colors">
+                  info@encampadventures.com
                 </a>
               </li>
               <li className="flex items-start gap-2">
@@ -83,7 +79,7 @@ export default function Footer() {
               Responsible Travel
             </h4>
             <p className="text-xs text-stone-400 leading-relaxed">
-              Every Encamp Privé guest journey automatically funds indigenous reforestation and offsets ~1,200 kg CO₂.
+              Every Encamp Privé guest journey automatically funds indigenous reforestation and offsets upto 1000+ KgCo2e.
             </p>
             <div className="text-[11px] text-gold-light border border-gold/30 bg-forest/80 rounded-lg p-2.5">
               100% Certified Carbon-Neutral Travel

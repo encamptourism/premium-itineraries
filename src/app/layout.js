@@ -13,7 +13,8 @@ const alexBrush = Alex_Brush({
 });
 
 const cormorantGaramond = Cormorant_Garamond({
-  weight: ["400", "500", "600", "700"],
+  weight: ["300", "400", "500", "600", "700"],
+  style: ["normal", "italic"],
   subsets: ["latin"],
   variable: "--font-display-serif",
   display: "swap",

@@ -144,10 +144,31 @@ export async function logoutUser(accessToken) {
 
 export async function updateProfileUser(formData, accessToken) {
   const url = `${BASE_URL}/customer/profile/update`;
+  const token = (accessToken && accessToken !== 'session_active')
+    ? accessToken
+    : (process.env.BASE_TOKEN || '');
+
   const headers = { accept: '*/*' };
-  if (accessToken) {
-    headers['Authorization'] = accessToken.startsWith('Bearer ') ? accessToken : `Bearer ${accessToken}`;
+  if (token) {
+    headers['Authorization'] = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
+    headers['token'] = token;
+    headers['base-token'] = token;
   }
+
+  const payloadEntries = Array.from(formData.entries()).map(([k, v]) => [
+    k,
+    typeof v === 'object' && v !== null
+      ? `{ File: name="${v.name || ''}", type="${v.type || ''}", size=${v.size || 0} }`
+      : v,
+  ]);
+
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  console.log('[API FETCH] Outgoing Profile Update Request:');
+  console.log('URL:', url);
+  console.log('Method: POST');
+  console.log('Headers:', headers);
+  console.log('Payload Form Fields:', Object.fromEntries(payloadEntries));
+  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
   try {
     const res = await fetch(url, {
@@ -158,17 +179,27 @@ export async function updateProfileUser(formData, accessToken) {
     });
 
     const data = await res.json().catch(() => null);
+
+    console.log('[API FETCH] Profile Update Backend Response:');
+    console.log('Status Code:', res.status);
+    console.log('Response Body:', data);
+    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+
     if (!res.ok) {
-      const msg = data?.message || data?.error || `Request failed with status ${res.status}`;
+      const msg = Array.isArray(data?.message)
+        ? data.message.join(', ')
+        : (data?.message || data?.error || (typeof data === 'string' ? data : `Request failed with status ${res.status}`));
       return { success: false, error: msg };
     }
 
+    const returnedUser = data?.user || data?.data?.user || data?.data || data || null;
     return {
       success: data?.success ?? true,
       message: data?.message || 'Profile updated successfully',
-      user: data?.user || data?.data?.user || data?.data || null,
+      user: returnedUser,
     };
   } catch (err) {
+    console.error('[API FETCH Error] Profile update failed:', err);
     return { success: false, error: err.message || 'Unable to update profile.' };
   }
 }

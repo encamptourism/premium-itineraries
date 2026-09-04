@@ -4,20 +4,25 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Phone, User, LogOut, ChevronDown, Settings } from 'lucide-react';
+import { Phone, Mail, User, LogOut, ChevronDown, Settings } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 
 export default function Navbar() {
   const { user, ctCoins, isAuthenticated, isLoading, logout } = useAuth();
   const router = useRouter();
   const [open, setOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const contactRef = useRef(null);
 
-  // Close dropdown on outside click
+  // Close dropdowns on outside click
   useEffect(() => {
     const handler = (e) => {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target)) {
         setOpen(false);
+      }
+      if (contactRef.current && !contactRef.current.contains(e.target)) {
+        setContactOpen(false);
       }
     };
     document.addEventListener('mousedown', handler);
@@ -28,6 +33,12 @@ export default function Navbar() {
     ? user.name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
     : 'EP';
 
+  const firstName = user?.name
+    ? user.name.trim().split(' ')[0]
+    : user?.email
+    ? user.email.split('@')[0]
+    : '';
+
   const tier = ctCoins?.tierInfo;
 
   const handleLogout = async () => {
@@ -37,13 +48,13 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-[#020d07]/95 backdrop-blur-md border-b border-[#082213] shadow-sm transition-all">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-12 sm:h-14 flex items-center justify-between">
+      <div className="w-full px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
 
         {/* Brand */}
         <Link href="/" className="flex items-center gap-2 sm:gap-2.5 group">
-          <div className="relative w-28 sm:w-32 h-7 sm:h-9 shrink-0 rounded-lg overflow-hidden">
+          <div className="relative w-36 sm:w-44 h-10 sm:h-12 shrink-0 rounded-lg overflow-hidden">
             <Image
-              src="/images/logo.jpeg"
+              src="/images/logo.png"
               alt="Encamp Privé Logo"
               fill
               className="object-contain"
@@ -54,14 +65,68 @@ export default function Navbar() {
 
         {/* Right actions */}
         <div className="flex items-center gap-3 sm:gap-4">
-          {/* Phone (desktop) */}
-          <a
-            href="tel:+918794756611"
-            className="hidden md:flex items-center gap-2 text-xs font-semibold tracking-wider text-stone-200 hover:text-[#dfa62f] transition-all py-1.5 px-3 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10"
-          >
-            <Phone className="w-3.5 h-3.5 text-[#dfa62f]" />
-            <span className="tracking-widest text-[11px] font-medium">+91 87947 56611</span>
-          </a>
+          {/* Contact popover */}
+          <div className="relative" ref={contactRef}>
+            <button
+              id="navbar-contact-btn"
+              type="button"
+              onClick={() => {
+                setContactOpen((v) => !v);
+                setOpen(false);
+              }}
+              className="flex items-center gap-2 text-xs font-semibold tracking-wider text-stone-200 hover:text-[#dfa62f] transition-all py-1.5 px-3 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10 cursor-pointer select-none"
+              aria-label="Contact options"
+              aria-expanded={contactOpen}
+            >
+              <Phone className="w-3.5 h-3.5 text-[#dfa62f]" />
+              <span className="tracking-wider text-xs font-semibold">Contact Us</span>
+              <ChevronDown className={`w-3 h-3 text-stone-400 transition-transform duration-200 ${contactOpen ? 'rotate-180' : ''}`} />
+            </button>
+
+            {contactOpen && (
+              <div className="absolute right-0 top-full mt-2.5 w-64 bg-[#062212] border border-[#dfa62f]/30 rounded-2xl shadow-2xl p-3 z-50 animate-fade-in text-stone-100">
+                <div className="px-2 pt-1 pb-2 border-b border-white/10 mb-2">
+                  <p className="text-[10px] uppercase font-bold tracking-widest text-[#dfa62f]">
+                    Contact Concierge
+                  </p>
+                </div>
+
+                {/* Call option */}
+                <a
+                  href="tel:+919643182259"
+                  onClick={() => setContactOpen(false)}
+                  className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/10 transition-all group border border-transparent hover:border-[#dfa62f]/20 mb-1.5"
+                >
+                  <div className="w-8.5 h-8.5 rounded-full bg-[#dfa62f]/15 border border-[#dfa62f]/40 flex items-center justify-center shrink-0 group-hover:bg-[#dfa62f] transition-all">
+                    <Phone className="w-4 h-4 text-[#dfa62f] group-hover:text-[#020d07]" />
+                  </div>
+                  <div className="overflow-hidden">
+                    <p className="text-[10px] uppercase tracking-wider text-stone-400 font-semibold">Call Us</p>
+                    <p className="text-xs font-bold text-stone-100 tracking-wider group-hover:text-[#dfa62f] transition-colors mt-0.5">
+                      +91 96431 82259
+                    </p>
+                  </div>
+                </a>
+
+                {/* Email option */}
+                <a
+                  href="mailto:info@encampadventures.com"
+                  onClick={() => setContactOpen(false)}
+                  className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/10 transition-all group border border-transparent hover:border-[#dfa62f]/20"
+                >
+                  <div className="w-8.5 h-8.5 rounded-full bg-[#dfa62f]/15 border border-[#dfa62f]/40 flex items-center justify-center shrink-0 group-hover:bg-[#dfa62f] transition-all">
+                    <Mail className="w-4 h-4 text-[#dfa62f] group-hover:text-[#020d07]" />
+                  </div>
+                  <div className="overflow-hidden">
+                    <p className="text-[10px] uppercase tracking-wider text-stone-400 font-semibold">Email Us</p>
+                    <p className="text-xs font-bold text-stone-100 group-hover:text-[#dfa62f] transition-colors mt-0.5 truncate">
+                      info@encampadventures.com
+                    </p>
+                  </div>
+                </a>
+              </div>
+            )}
+          </div>
 
           {/* Auth state */}
           {!isLoading && (
@@ -71,7 +136,7 @@ export default function Navbar() {
                 <button
                   id="navbar-user-menu-btn"
                   onClick={() => setOpen((v) => !v)}
-                  className="flex items-center gap-2 px-2.5 py-1 rounded-full bg-white text-stone-900 border border-stone-200 hover:border-[#dfa62f] hover:bg-stone-50 transition-all shadow-sm"
+                  className="flex items-center gap-2 px-2.5 py-1 sm:px-3 sm:py-1 rounded-full bg-white text-stone-900 border border-stone-200 hover:border-[#dfa62f] hover:bg-stone-50 transition-all shadow-sm cursor-pointer select-none"
                   aria-label="User menu"
                   aria-expanded={open}
                 >
@@ -81,6 +146,12 @@ export default function Navbar() {
                   >
                     {initials}
                   </div>
+
+                  {firstName && (
+                    <span className="text-xs font-bold text-stone-900 tracking-wide max-w-[100px] truncate">
+                      {firstName}
+                    </span>
+                  )}
 
                   <ChevronDown
                     className={`w-3.5 h-3.5 text-stone-600 transition-transform duration-200 ${open ? 'rotate-180' : ''}`}

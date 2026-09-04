@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Image from "next/image";
 import { X, Send, CheckCircle2, ShieldCheck } from "lucide-react";
 
 export default function EnquiryModal({ isOpen, onClose, itineraryTitle }) {
@@ -56,9 +57,14 @@ export default function EnquiryModal({ isOpen, onClose, itineraryTitle }) {
         ) : (
           <div>
             <div className="mb-6">
-              <span className="eyebrow text-gold font-semibold tracking-widest text-xs">
-                Encamp Privé Concierge
-              </span>
+              <div className="relative w-36 sm:w-40 h-9 mb-2 shrink-0 rounded-lg overflow-hidden">
+                <Image
+                  src="/images/logo.png"
+                  alt="Encamp Privé Logo"
+                  fill
+                  className="object-contain object-left"
+                />
+              </div>
               <h3 className="font-serif-display text-2xl sm:text-3xl font-bold text-forest uppercase tracking-wide mt-1">
                 Plan Your Journey
               </h3>

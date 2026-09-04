@@ -1,3 +1,6 @@
+"use client";
+
+import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import {
   Check,
@@ -18,14 +21,21 @@ import {
   UserCheck,
   ClipboardCheck,
   Tag,
+  ChevronDown,
 } from "lucide-react";
 
 export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
+  const [showAllInclusions, setShowAllInclusions] = useState(false);
+  const [showAllExclusions, setShowAllExclusions] = useState(false);
+
   const days = itinerary?.duration?.days || 7;
   const nights = itinerary?.duration?.nights || 6;
   const dayWise = Array.isArray(itinerary?.dayWiseItinerary) ? itinerary.dayWiseItinerary : [];
   const inclusions = Array.isArray(itinerary?.inclusions) ? itinerary.inclusions : [];
   const exclusions = Array.isArray(itinerary?.exclusions) ? itinerary.exclusions : [];
+
+  const visibleInclusions = showAllInclusions ? inclusions : inclusions.slice(0, 5);
+  const visibleExclusions = showAllExclusions ? exclusions : exclusions.slice(0, 4);
   const locations = Array.isArray(itinerary?.locations) ? itinerary.locations : ["Shillong", "Cherrapunji", "Dawki"];
   const bestTime =
     itinerary?.bestTime?.fromMonth && itinerary?.bestTime?.toMonth
@@ -37,6 +47,79 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
     itinerary?.gallery?.find((g) => g.tag === "overview")?.url ||
     itinerary?.gallery?.[1]?.url ||
     "https://encamp-s3b.s3.ap-south-1.amazonaws.com/1787245472531_Encamp%20terra%20meghalaya.png.jpg";
+
+  // Safely extract YouTube video ID
+  const ytUrl = itinerary?.premiumMedia?.youtubeVideo?.url || "";
+  const getYouTubeId = (url) => {
+    if (!url) return null;
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+    const match = url.match(regExp);
+    return match && match[2].length === 11 ? match[2] : null;
+  };
+  const ytVideoId = getYouTubeId(ytUrl);
+  const ytThumbnail = ytVideoId
+    ? `https://img.youtube.com/vi/${ytVideoId}/hqdefault.jpg`
+    : overviewImage;
+
+  // Auto-play YouTube video when scrolled into view
+  const [isYtInView, setIsYtInView] = useState(false);
+  const ytContainerRef = useRef(null);
+
+  useEffect(() => {
+    const node = ytContainerRef.current;
+    if (!node) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsYtInView(true);
+        }
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(node);
+    return () => {
+      observer.unobserve(node);
+    };
+  }, []);
+
+  // Short videos data parsing
+  const rawShortData =
+    itinerary?.premiumMedia?.shortVideo ||
+    itinerary?.premiumMedia?.shortVideos ||
+    itinerary?.shortVideos ||
+    itinerary?.shorts;
+
+  const shortVideoItems = Array.isArray(rawShortData)
+    ? rawShortData
+    : rawShortData && typeof rawShortData === "object"
+    ? [rawShortData]
+    : [];
+
+  const galleryImages = Array.isArray(itinerary?.gallery) ? itinerary.gallery.map((g) => g.url) : [];
+  const dayImages = dayWise.map((d) => d.image || (Array.isArray(d.gallery) && d.gallery[0]?.url)).filter(Boolean);
+  const uniqueImagesPool = [...new Set([...galleryImages, ...dayImages, overviewImage])];
+
+  const shortsToRender = (locations.length > 0 ? locations.slice(0, 4) : ["Shillong", "Cherrapunji", "Dawki", "Meghalaya"]).map((loc, idx) => {
+    const apiShort = shortVideoItems[idx] || shortVideoItems[0];
+    const thumb =
+      apiShort?.thumbnail ||
+      apiShort?.coverImage ||
+      apiShort?.image ||
+      uniqueImagesPool[idx % uniqueImagesPool.length] ||
+      overviewImage;
+
+    const title = apiShort?.title || loc;
+    const link = apiShort?.url || apiShort?.link || (ytUrl || "https://www.youtube.com");
+
+    return {
+      title,
+      thumbnail: thumb,
+      url: link,
+      platform: apiShort?.platform || (link.includes("instagram") ? "instagram" : "youtube"),
+    };
+  });
 
   const totalActivities = dayWise.reduce(
     (acc, d) => acc + (Array.isArray(d?.activities) ? d.activities.length : 0),
@@ -359,62 +442,93 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
             </div>
 
             {/* Watch The Experience (Video & Shorts Block) */}
-            <div className="rounded-2xl p-4 sm:p-5 border border-[#e2d8c3] space-y-3">
+            <div className="rounded-2xl p-4 sm:p-5 border border-[#e2d8c3] space-y-3 font-poppins">
               <div className="text-center pb-1">
-                <h2 className="font-serif-display text-sm sm:text-base font-black uppercase tracking-[0.2em] text-forest">
+                <h2 className="font-serif-display text-sm sm:text-base font-black uppercase tracking-[0.2em] text-[#062314]">
                   Watch The {itinerary?.state || "Meghalaya"} Experience
                 </h2>
               </div>
 
-              {/* Full Video Main Player Thumbnail */}
-              <div className="relative w-full h-44 sm:h-52 rounded-xl overflow-hidden group cursor-pointer border border-stone-200">
-                <Image
-                  src={overviewImage}
-                  alt="Watch Full Video"
-                  fill
-                  sizes="600px"
-                  className="object-cover group-hover:scale-105 transition-transform duration-500"
-                />
-                <div className="absolute inset-0 bg-black/30 flex items-center justify-center">
-                  <div className="w-12 h-12 rounded-full bg-[#f8f5ed]/95 text-forest flex items-center justify-center pl-1 group-hover:scale-110 transition-transform">
-                    <Play className="w-5 h-5 fill-current" />
-                  </div>
-                </div>
-                <div className="absolute top-2.5 left-2.5 bg-gold text-forest-dark text-xs font-bold uppercase tracking-wider px-2 py-0.5 rounded">
-                  Full Video
-                </div>
-                <div className="absolute bottom-2.5 right-2.5 bg-black/70 text-white text-xs font-medium px-2 py-0.5 rounded">
-                  04:35
-                </div>
+              {/* Full Video Main Player (Plays YouTube video automatically when scrolled into view) */}
+              <div
+                ref={ytContainerRef}
+                className="relative w-full h-48 sm:h-56 rounded-xl overflow-hidden border border-stone-200 shadow-sm bg-black"
+              >
+                {ytVideoId && isYtInView ? (
+                  <iframe
+                    src={`https://www.youtube.com/embed/${ytVideoId}?autoplay=1&mute=1&playsinline=1&rel=0`}
+                    title={itinerary?.premiumMedia?.youtubeVideo?.title || "Watch Experience"}
+                    className="w-full h-full rounded-xl border-0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                    allowFullScreen
+                  />
+                ) : (
+                  <a
+                    href={ytUrl || "#"}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={(e) => {
+                      if (ytVideoId) {
+                        e.preventDefault();
+                        setIsYtInView(true);
+                      }
+                    }}
+                    className="block relative w-full h-full group cursor-pointer"
+                  >
+                    <Image
+                      src={ytThumbnail}
+                      alt={itinerary?.premiumMedia?.youtubeVideo?.title || "Watch Full Video"}
+                      fill
+                      sizes="600px"
+                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                    />
+                    <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
+                      <div className="w-12 h-12 rounded-full bg-[#f8f5ed]/95 text-[#062314] flex items-center justify-center pl-1 group-hover:scale-110 transition-transform shadow-lg">
+                        <Play className="w-5 h-5 fill-current" />
+                      </div>
+                    </div>
+                    <div className="absolute top-2.5 left-2.5 bg-[#dfa62f] text-[#020d07] text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md truncate max-w-[85%] shadow-md">
+                      {itinerary?.premiumMedia?.youtubeVideo?.title || "Full Video"}
+                    </div>
+                  </a>
+                )}
               </div>
 
               {/* Shorts Row */}
-              <div className="pt-1">
-                <div className="text-xs font-bold uppercase tracking-wider text-stone-500 mb-1.5 font-poppins">
-                  Shorts
+              <div className="pt-2">
+                <div className="text-xs font-bold uppercase tracking-wider text-stone-600 mb-2 font-poppins flex items-center justify-between">
+                  <span>Shorts</span>
+                  {shortVideoItems[0]?.platform && (
+                    <span className="text-[10px] text-[#dfa62f] font-semibold lowercase font-sans">
+                      @{shortVideoItems[0]?.platform}
+                    </span>
+                  )}
                 </div>
-                <div className="grid grid-cols-5 gap-1.5">
-                  {locations.slice(0, 5).map((loc, i) => (
-                    <div
+                <div className="grid grid-cols-4 gap-2">
+                  {shortsToRender.map((short, i) => (
+                    <a
                       key={i}
-                      className="relative h-16 sm:h-20 rounded-lg overflow-hidden border border-stone-200 group cursor-pointer"
+                      href={short.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="relative h-20 sm:h-24 rounded-xl overflow-hidden border border-stone-200 group cursor-pointer block shadow-xs"
                     >
                       <Image
-                        src={overviewImage}
-                        alt={loc}
+                        src={short.thumbnail}
+                        alt={short.title}
                         fill
-                        sizes="100px"
-                        className="object-cover group-hover:scale-110 transition-transform"
+                        sizes="120px"
+                        className="object-cover group-hover:scale-110 transition-transform duration-300"
                       />
-                      <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center p-1 text-center">
-                        <div className="w-5 h-5 rounded-full bg-[#f8f5ed]/90 text-forest flex items-center justify-center pl-0.5">
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col items-center justify-between p-1.5 text-center">
+                        <div className="w-5 h-5 rounded-full bg-white/90 text-[#062314] flex items-center justify-center pl-0.5 mt-1 shadow-sm group-hover:bg-[#dfa62f] transition-colors">
                           <Play className="w-2.5 h-2.5 fill-current" />
                         </div>
-                        <span className="text-xs text-white font-bold line-clamp-1 mt-1 font-poppins">
-                          {loc}
+                        <span className="text-[11px] text-white font-bold tracking-tight line-clamp-1 font-poppins">
+                          {short.title}
                         </span>
                       </div>
-                    </div>
+                    </a>
                   ))}
                 </div>
               </div>
@@ -424,7 +538,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
           {/* ========================================================================= */}
           {/* COLUMN 3 (RIGHT): INCLUSIONS, EXCLUSIONS, FLIGHT/VISA, WHY TRAVEL */}
           {/* ========================================================================= */}
-          <div className="lg:col-span-3 space-y-4 pt-8 sm:pt-14 lg:pt-32 w-full max-w-2xl lg:max-w-[300px] mx-auto lg:ml-auto transform lg:translate-x-6">
+          <div className="lg:col-span-3 space-y-4 mt-[10px] pt-8 sm:pt-14 lg:pt-32 w-full max-w-2xl lg:max-w-[300px] mx-auto lg:ml-auto transform lg:translate-x-6">
             {/* Unified Inclusions & Exclusions Card */}
             <div className="rounded-2xl overflow-hidden border border-[#e2d8c3] font-poppins">
               {/* Dark Forest Green Header Bar for Inclusions */}
@@ -437,7 +551,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
               {/* Inclusions Content */}
               <div className="py-3.5 px-2.5 sm:px-3.5 space-y-3">
                 <ul className="space-y-2 text-xs sm:text-[13px] text-stone-700 font-normal">
-                  {inclusions.slice(0, 8).map((inc, i) => (
+                  {visibleInclusions.map((inc, i) => (
                     <li key={inc._id || i} className="flex items-start gap-2">
                       <span className="w-4 h-4 rounded-full bg-[#fcf8ee] text-[#b38320] flex items-center justify-center shrink-0 mt-0.5 border border-[#dfa62f]">
                         <Check className="w-2.5 h-2.5 stroke-[3]" />
@@ -446,6 +560,23 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                     </li>
                   ))}
                 </ul>
+
+                {inclusions.length > 5 && (
+                  <div className="flex justify-center pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setShowAllInclusions(!showAllInclusions)}
+                      className="text-xs font-semibold text-[#062314] hover:text-[#b38320] transition-colors flex items-center gap-1 focus:outline-none bg-transparent border-0 py-0.5 px-2 cursor-pointer select-none"
+                    >
+                      <span>{showAllInclusions ? "Show Less" : `View More (${inclusions.length - 5} more)`}</span>
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 text-[#b38320] transition-transform duration-300 ${
+                          showAllInclusions ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                  </div>
+                )}
 
                 {/* Divider Line */}
                 <div className="pt-2 pb-1">
@@ -461,13 +592,30 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
                 {/* Exclusions Content */}
                 <ul className="space-y-2 text-xs sm:text-[13px] text-stone-700 font-normal">
-                  {exclusions.slice(0, 6).map((exc, i) => (
+                  {visibleExclusions.map((exc, i) => (
                     <li key={exc._id || i} className="flex items-start gap-2">
                       <X className="w-3.5 h-3.5 text-red-600 shrink-0 mt-0.5 stroke-[3]" />
                       <span className="leading-snug">{exc.name}</span>
                     </li>
                   ))}
                 </ul>
+
+                {exclusions.length > 4 && (
+                  <div className="flex justify-center pt-1">
+                    <button
+                      type="button"
+                      onClick={() => setShowAllExclusions(!showAllExclusions)}
+                      className="text-xs font-semibold text-[#062314] hover:text-red-700 transition-colors flex items-center gap-1 focus:outline-none bg-transparent border-0 py-0.5 px-2 cursor-pointer select-none"
+                    >
+                      <span>{showAllExclusions ? "Show Less" : `View More (${exclusions.length - 4} more)`}</span>
+                      <ChevronDown
+                        className={`w-3.5 h-3.5 text-[#062314] transition-transform duration-300 ${
+                          showAllExclusions ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -515,7 +663,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
             <div className="rounded-2xl border border-[#e2d8c3] bg-[#fbf9f4] overflow-hidden text-center font-poppins shadow-xs">
               <div className="bg-[#062314] py-2 px-3 text-center">
                 <h2 className="font-serif-display text-xs sm:text-sm font-black uppercase tracking-[0.14em] text-white">
-                  Why Travel With Us?
+                  {itinerary?.whyWithEncamp?.title || "Why Travel With Us?"}
                 </h2>
               </div>
               <div className="grid grid-cols-3 divide-x divide-[#e2d8c3] py-3.5 px-1.5 text-center items-start">
@@ -540,6 +688,12 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                   </span>
                 </div>
               </div>
+
+              {itinerary?.whyWithEncamp?.content && (
+                <div className="p-3 bg-[#f3eddf] text-[10.5px] sm:text-xs text-stone-700 leading-relaxed border-t border-[#e2d8c3]">
+                  {itinerary.whyWithEncamp.content}
+                </div>
+              )}
             </div>
 
           </div>

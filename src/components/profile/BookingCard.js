@@ -109,7 +109,7 @@ export default function BookingCard({ booking }) {
         <div className="flex items-center justify-between pt-3 border-t border-stone-100 flex-wrap gap-3">
           <div>
             <span className="text-[10px] uppercase font-semibold text-stone-400 tracking-wider">Amount Paid</span>
-            <div className="text-base font-bold text-[#062212]">
+            <div className="font-poppins text-lg sm:text-xl font-bold text-[#062212]">
               ₹{amountPaid?.toLocaleString('en-IN')}
             </div>
           </div>

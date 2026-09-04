@@ -24,8 +24,8 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
   const nights = itinerary?.duration?.nights || 6;
   const durationText = `${days} DAYS | ${nights} NIGHTS`;
 
-  const startingPrice = itinerary?.startingFrom?.[0]?.pricePerPerson || 42999;
-  const luxuryPrice = Math.round(startingPrice * 1.37);
+  const startingPrice = itinerary?.packagePricing?.premiumPackagePrice || itinerary?.startingFrom?.[0]?.totalPricePerPerson || itinerary?.startingFrom?.[0]?.pricePerPerson || 42999;
+  const luxuryPrice = itinerary?.packagePricing?.luxuryPackagePrice || Math.round(startingPrice * 1.37);
 
   const formattedStartingPrice = new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -43,7 +43,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
     <div className="w-full bg-[#fbf9f4] font-poppins pb-2 sm:pb-8 lg:pb-10">
 
       {/* 100% Full Screen Width Hero Section */}
-      <section className="relative w-full bg-[#062314] overflow-visible pt-4 sm:pt-8 pb-12 sm:pb-20 h-[80vh] min-h-[80vh] lg:min-h-[85vh] lg:h-[85vh] flex flex-col justify-between shadow-none sm:shadow-2xl">
+      <section className="relative w-full bg-[#062314] overflow-visible pt-3 sm:pt-6 pb-8 sm:pb-14 h-[60vh] min-h-[480px] lg:min-h-[560px] lg:h-[65vh] flex flex-col justify-between shadow-none sm:shadow-2xl">
 
         {/* Full Viewport Screen Width API Hero Background Image */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -61,7 +61,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
         </div>
 
         {/* Top Left: Encamp Tag Logo anchored directly to Hero Section */}
-        <div className="absolute left-3 sm:left-6 lg:left-8 top-3 sm:top-6 z-30 w-44 sm:w-56 lg:w-72 h-18 sm:h-22 lg:h-28 shrink-0 rounded-xl overflow-hidden">
+        <div className="absolute left-3 sm:left-6 lg:left-8 top-3 sm:top-5 z-30 w-36 sm:w-48 lg:w-56 h-12 sm:h-16 lg:h-20 shrink-0 rounded-xl overflow-hidden">
           <Image
             src="/images/tag_logo.png"
             alt="Encamp Privé Logo"
@@ -81,7 +81,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
               {/* Top Center: Editorial Title Section (Visually Balanced Vertical & Horizontal Center) */}
               <div className="w-full max-w-xs sm:max-w-2xl md:max-w-3xl lg:max-w-3xl xl:max-w-4xl mx-auto flex flex-col items-center justify-center text-center px-2 sm:px-4 lg:pl-32 xl:pl-40 lg:pr-8 text-white my-auto lg:mt-8 z-10">
-                <span className="font-script text-xl sm:text-2xl md:text-3xl lg:text-4xl text-[#f0c85a] drop-shadow-md leading-tight">
+                <span className="font-script text-base sm:text-lg md:text-xl lg:text-2xl text-[#f0c85a] drop-shadow-md leading-tight">
                   {itinerary?.subtitle}
                 </span>
 
@@ -129,7 +129,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
                   <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
                     <div className="flex flex-col items-center">
                       <BedDouble className="w-4 h-4 text-[#dfa62f] mb-1" />
-                      <span>3★ Hotels</span>
+                      <span>4★ Hotels</span>
                     </div>
                     <div className="flex flex-col items-center">
                       <Utensils className="w-4 h-4 text-[#dfa62f] mb-1" />
@@ -146,10 +146,10 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
                   </div>
 
                   <div className="text-center pt-1.5">
-                    <div className="font-serif-display text-2xl font-black text-white leading-none">
+                    <div className="font-poppins text-2xl font-black text-white leading-none">
                       {formattedStartingPrice}/-
                     </div>
-                    <div className="text-[9px] text-stone-300 font-medium">per person</div>
+                    <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">per person</div>
                   </div>
 
                   <button
@@ -170,7 +170,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
                   <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
                     <div className="flex flex-col items-center">
                       <BedDouble className="w-4 h-4 text-[#dfa62f] mb-1" />
-                      <span>4★ Hotels</span>
+                      <span>5★ Hotels</span>
                     </div>
                     <div className="flex flex-col items-center">
                       <Utensils className="w-4 h-4 text-[#dfa62f] mb-1" />
@@ -187,10 +187,10 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
                   </div>
 
                   <div className="text-center pt-1.5">
-                    <div className="font-serif-display text-2xl font-black text-white leading-none">
+                    <div className="font-poppins text-2xl font-black text-white leading-none">
                       {formattedLuxuryPrice}/-
                     </div>
-                    <div className="text-[9px] text-stone-300 font-medium">per person</div>
+                    <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">per person</div>
                   </div>
 
                   <button
@@ -243,40 +243,40 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
         </div>
 
         {/* 5-Pillars Horizontal Strip EXACTLY ANCHORED AT BOTTOM EDGE (50% INSIDE / 50% OUTSIDE) */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 lg:left-4 xl:left-8 lg:translate-x-0 transform translate-y-1/2 max-w-xl lg:max-w-2xl w-[94%] sm:w-auto bg-[#062314] text-ivory rounded-xl sm:rounded-2xl py-1 sm:py-1.5 px-1 sm:px-3 border border-[#d4a853]/70 z-30">
-          <div className="grid grid-cols-5 gap-0.5 sm:gap-1 divide-x divide-white/20">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 lg:left-4 xl:left-8 lg:translate-x-0 transform translate-y-1/2 max-w-xl lg:max-w-2xl w-[94%] sm:w-auto bg-white text-[#062314] rounded-full py-1.5 sm:py-2.5 px-3 sm:px-6 border border-[#dfa62f]/40 shadow-xl z-30">
+          <div className="grid grid-cols-5 gap-0.5 sm:gap-1 divide-x divide-stone-200">
 
-            <div className="flex flex-col items-center justify-center text-center px-0.5 py-0.5">
-              <Compass className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#d4a853] mb-0.5 stroke-[1.5]" />
-              <span className="text-[6.5px] sm:text-[9px] font-semibold uppercase tracking-tighter sm:tracking-wider text-stone-100 leading-tight">
+            <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
+              <Compass className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#dfa62f] mb-0.5 stroke-[1.5]" />
+              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
                 Handpicked Experiences
               </span>
             </div>
 
-            <div className="flex flex-col items-center justify-center text-center px-0.5 py-0.5">
-              <Home className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#d4a853] mb-0.5 stroke-[1.5]" />
-              <span className="text-[6.5px] sm:text-[9px] font-semibold uppercase tracking-tighter sm:tracking-wider text-stone-100 leading-tight">
-                Comfortable Stays
+            <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
+              <Home className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#dfa62f] mb-0.5 stroke-[1.5]" />
+              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
+                Exclusive Stays
               </span>
             </div>
 
-            <div className="flex flex-col items-center justify-center text-center px-0.5 py-0.5">
-              <UserCheck className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#d4a853] mb-0.5 stroke-[1.5]" />
-              <span className="text-[6.5px] sm:text-[9px] font-semibold uppercase tracking-tighter sm:tracking-wider text-stone-100 leading-tight">
+            <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
+              <UserCheck className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#dfa62f] mb-0.5 stroke-[1.5]" />
+              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
                 Local Experts
               </span>
             </div>
 
-            <div className="flex flex-col items-center justify-center text-center px-0.5 py-0.5">
-              <Headset className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#d4a853] mb-0.5 stroke-[1.5]" />
-              <span className="text-[6.5px] sm:text-[9px] font-semibold uppercase tracking-tighter sm:tracking-wider text-stone-100 leading-tight">
+            <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
+              <Headset className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#dfa62f] mb-0.5 stroke-[1.5]" />
+              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
                 24x7 Support
               </span>
             </div>
 
-            <div className="flex flex-col items-center justify-center text-center px-0.5 py-0.5">
-              <Leaf className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#d4a853] mb-0.5 stroke-[1.5]" />
-              <span className="text-[6.5px] sm:text-[9px] font-semibold uppercase tracking-tighter sm:tracking-wider text-stone-100 leading-tight">
+            <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
+              <Leaf className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#dfa62f] mb-0.5 stroke-[1.5]" />
+              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
                 Sustainable Travel
               </span>
             </div>
@@ -309,7 +309,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
               <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
                 <div className="flex flex-col items-center">
                   <BedDouble className="w-4 h-4 text-[#dfa62f] mb-1" />
-                  <span>3★ Hotels</span>
+                  <span>4★ Hotels</span>
                 </div>
                 <div className="flex flex-col items-center">
                   <Utensils className="w-4 h-4 text-[#dfa62f] mb-1" />
@@ -326,10 +326,10 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
               </div>
 
               <div className="text-center pt-1.5">
-                <div className="font-serif-display text-2xl font-black text-white leading-none">
+                <div className="font-poppins text-2xl font-black text-white leading-none">
                   {formattedStartingPrice}/-
                 </div>
-                <div className="text-[9px] text-stone-300 font-medium">per person</div>
+                <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">per person</div>
               </div>
 
               <button
@@ -350,7 +350,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
               <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
                 <div className="flex flex-col items-center">
                   <BedDouble className="w-4 h-4 text-[#dfa62f] mb-1" />
-                  <span>4★ Hotels</span>
+                  <span>5★ Hotels</span>
                 </div>
                 <div className="flex flex-col items-center">
                   <Utensils className="w-4 h-4 text-[#dfa62f] mb-1" />
@@ -367,10 +367,10 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
               </div>
 
               <div className="text-center pt-1.5">
-                <div className="font-serif-display text-2xl font-black text-white leading-none">
+                <div className="font-poppins text-2xl font-black text-white leading-none">
                   {formattedLuxuryPrice}/-
                 </div>
-                <div className="text-[9px] text-stone-300 font-medium">per person</div>
+                <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">per person</div>
               </div>
 
               <button

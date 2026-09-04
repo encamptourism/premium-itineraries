@@ -78,14 +78,14 @@ export default function PricingSection({ itinerary }) {
               {/* Price Row */}
               {formattedPrice && (
                 <div className="flex flex-wrap items-baseline gap-3 py-4 border-y border-forest-light">
-                  <span className="font-serif-display text-4xl sm:text-5xl font-bold text-gold">
+                  <span className="font-poppins text-4xl sm:text-5xl font-bold text-gold">
                     {formattedPrice}
                   </span>
-                  <span className="text-sm text-stone-300 uppercase tracking-wider font-medium">
+                  <span className="font-poppins text-sm text-stone-300 uppercase tracking-wider font-medium">
                     / per guest
                   </span>
                   {priceItem?.people && (
-                    <span className="text-xs text-stone-400">
+                    <span className="font-poppins text-xs text-stone-400">
                       ({priceItem.people})
                     </span>
                   )}
@@ -102,7 +102,7 @@ export default function PricingSection({ itinerary }) {
                         Lock Dates with Advance Token
                       </div>
                       <div className="text-xs text-stone-300">
-                        Reserve now with {advanceVal} per guest. Balance closer to departure.
+                        Reserve now with <span className="font-poppins text-xs sm:text-sm font-bold text-gold">{advanceVal}</span> per guest. Balance closer to departure.
                       </div>
                     </div>
                   </div>
@@ -136,7 +136,7 @@ export default function PricingSection({ itinerary }) {
               </button>
 
               <a
-                href={`https://wa.me/918794756611?text=Hi%20Encamp%20Priv%C3%A9%2C%20I%20am%20interested%20in%20the%20${encodedTitle}%20Expedition.`}
+                href={`https://wa.me/919643182259?text=Hi%20Encamp%20Priv%C3%A9%2C%20I%20am%20interested%20in%20the%20${encodedTitle}%20Expedition.`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center justify-center gap-2 px-6 py-4 rounded-full bg-white/10 hover:bg-white/20 border border-white/20 text-white text-sm font-medium transition-all"
@@ -193,11 +193,11 @@ export default function PricingSection({ itinerary }) {
               </button>
 
               <a
-                href="tel:+918794756611"
+                href="tel:+919643182259"
                 className="w-full flex items-center justify-center gap-2 py-3 text-xs font-semibold text-stone-600 hover:text-forest transition-colors uppercase tracking-wider"
               >
                 <Phone className="w-3.5 h-3.5 text-gold" />
-                <span>Call +91 87947 56611</span>
+                <span>Call +91 96431 82259</span>
               </a>
             </div>
           </div>

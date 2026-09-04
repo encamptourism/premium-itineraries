@@ -46,7 +46,7 @@ export default function ForgotPasswordPage() {
       </div>
 
       <div className="relative w-36 h-11 rounded-xl overflow-hidden mb-8">
-        <Image src="/images/logo.jpeg" alt="Encamp Privé" fill className="object-contain" priority />
+        <Image src="/images/logo.png" alt="Encamp Privé" fill className="object-contain" priority />
       </div>
 
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl shadow-stone-200/60 p-8 sm:p-10 space-y-8">

@@ -271,7 +271,7 @@ export default function LoginPage() {
 
         <div className="relative z-10 flex flex-col justify-between h-full p-12 xl:p-16 text-white">
           <div className="relative w-36 h-11 rounded-xl overflow-hidden">
-            <Image src="/images/logo.jpeg" alt="Encamp Privé" fill className="object-contain" priority />
+            <Image src="/images/logo.png" alt="Encamp Privé" fill className="object-contain" priority />
           </div>
 
           <div className="space-y-6 max-w-md">

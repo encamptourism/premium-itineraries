@@ -1,7 +1,12 @@
 import { HelpCircle } from "lucide-react";
 
-export default function FaqSection({ faqs = [] }) {
-  if (!faqs || faqs.length === 0) return null;
+export default function FaqSection({ faqs = [], customFaqs = [] }) {
+  const allFaqs = [
+    ...(Array.isArray(customFaqs) ? customFaqs : []),
+    ...(Array.isArray(faqs) ? faqs : []),
+  ];
+
+  if (!allFaqs || allFaqs.length === 0) return null;
 
   return (
     <section className="w-full bg-stone-50 py-12 sm:py-16 border-t border-stone-200">
@@ -19,7 +24,7 @@ export default function FaqSection({ faqs = [] }) {
         </div>
 
         <div className="max-w-4xl mx-auto space-y-4">
-          {faqs.map((faq, index) => (
+          {allFaqs.map((faq, index) => (
             <div
               key={index}
               className="bg-white rounded-2xl p-5 sm:p-6 border border-stone-200/80 shadow-xs"

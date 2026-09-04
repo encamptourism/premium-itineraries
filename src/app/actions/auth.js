@@ -135,22 +135,55 @@ export async function updateNameAction(name) {
 
 export async function updateProfileAction(formDataInput) {
   const { accessToken, refreshToken, user: currentUser } = await getAuthCookies();
-  if (!accessToken) {
+  if (!accessToken && !currentUser) {
     return { success: false, error: 'Session expired. Please log in again.' };
   }
 
-  let formData;
+  const formData = new FormData();
+
   if (formDataInput instanceof FormData) {
-    formData = formDataInput;
+    const nameVal = formDataInput.get('name');
+    const emailVal = formDataInput.get('email');
+    const mobileVal = formDataInput.get('mobile');
+    const bioVal = formDataInput.get('profileBio');
+    const avatarVal = formDataInput.get('avatar');
+
+    formData.append('name', nameVal !== null ? String(nameVal).trim() : '');
+    formData.append('email', emailVal !== null ? String(emailVal).trim() : '');
+    formData.append('mobile', mobileVal !== null ? String(mobileVal).trim() : '');
+    formData.append('profileBio', bioVal !== null ? String(bioVal) : '');
+
+    if (avatarVal && typeof avatarVal === 'object' && typeof avatarVal.arrayBuffer === 'function' && avatarVal.size > 0) {
+      const filename = avatarVal.name || 'avatar.jpg';
+      const type = avatarVal.type || 'image/jpeg';
+      const arrayBuffer = await avatarVal.arrayBuffer();
+      const fileObj = new File([arrayBuffer], filename, { type });
+      formData.append('avatar', fileObj);
+    } else {
+      formData.append('avatar', '');
+    }
   } else if (typeof formDataInput === 'object' && formDataInput !== null) {
-    formData = new FormData();
-    if (formDataInput.name !== undefined) formData.append('name', formDataInput.name);
-    if (formDataInput.email !== undefined) formData.append('email', formDataInput.email);
-    if (formDataInput.mobile !== undefined) formData.append('mobile', formDataInput.mobile);
-    if (formDataInput.profileBio !== undefined) formData.append('profileBio', formDataInput.profileBio);
-    if (formDataInput.avatar) formData.append('avatar', formDataInput.avatar);
+    formData.append('name', formDataInput.name !== undefined ? String(formDataInput.name) : '');
+    formData.append('email', formDataInput.email !== undefined ? String(formDataInput.email) : '');
+    formData.append('mobile', formDataInput.mobile !== undefined ? String(formDataInput.mobile) : '');
+    formData.append('profileBio', formDataInput.profileBio !== undefined ? String(formDataInput.profileBio) : '');
+
+    if (formDataInput.avatar && typeof formDataInput.avatar === 'object' && typeof formDataInput.avatar.arrayBuffer === 'function' && formDataInput.avatar.size > 0) {
+      const filename = formDataInput.avatar.name || 'avatar.jpg';
+      const type = formDataInput.avatar.type || 'image/jpeg';
+      const arrayBuffer = await formDataInput.avatar.arrayBuffer();
+      const fileObj = new File([arrayBuffer], filename, { type });
+      formData.append('avatar', fileObj);
+    } else {
+      formData.append('avatar', '');
+    }
   } else {
     return { success: false, error: 'Invalid form data.' };
+  }
+
+  console.log('[SERVER ACTION] Profile Update FormData fields:');
+  for (const [key, val] of formData.entries()) {
+    console.log(`  ${key}:`, typeof val === 'object' && val !== null ? `{ File: name="${val.name}", type="${val.type}", size=${val.size} }` : val);
   }
 
   const result = await updateProfileUser(formData, accessToken);
@@ -158,13 +191,26 @@ export async function updateProfileAction(formDataInput) {
     return { success: false, error: result.error };
   }
 
+  const backendUser = result.user || {};
+  const newAvatar =
+    backendUser.avatar ||
+    backendUser.photo ||
+    backendUser.photoUrl ||
+    backendUser.avatarUrl ||
+    backendUser.profileImage ||
+    backendUser.profile_image ||
+    backendUser.image ||
+    currentUser?.avatar ||
+    currentUser?.photo;
+
   const updatedUser = {
     ...(currentUser || {}),
-    ...(result.user || {}),
-    name: formData.get('name') !== null ? String(formData.get('name')) : currentUser?.name,
-    email: formData.get('email') !== null ? String(formData.get('email')) : currentUser?.email,
-    mobile: formData.get('mobile') !== null ? String(formData.get('mobile')) : currentUser?.mobile,
-    profileBio: formData.get('profileBio') !== null ? String(formData.get('profileBio')) : currentUser?.profileBio,
+    ...backendUser,
+    name: formData.get('name') !== null && String(formData.get('name')).trim() !== '' ? String(formData.get('name')) : (backendUser.name || currentUser?.name),
+    email: formData.get('email') !== null && String(formData.get('email')).trim() !== '' ? String(formData.get('email')) : (backendUser.email || currentUser?.email),
+    mobile: formData.get('mobile') !== null && String(formData.get('mobile')).trim() !== '' ? String(formData.get('mobile')) : (backendUser.mobile || currentUser?.mobile),
+    profileBio: formData.get('profileBio') !== null ? String(formData.get('profileBio')) : (backendUser.profileBio || currentUser?.profileBio),
+    avatar: newAvatar,
   };
 
   await setAuthCookies({

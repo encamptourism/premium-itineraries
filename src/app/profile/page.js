@@ -11,7 +11,7 @@ import CTCoinsCard from '@/components/profile/CTCoinsCard';
 import {
   TrendingUp, Plane, Coins, MapPin, Calendar, FileText,
   Camera, Save, Lock, Trash2, AlertTriangle, Sparkles,
-  CreditCard, Compass
+  CreditCard, Compass, CheckCircle2, Loader2
 } from 'lucide-react';
 
 // ─── Tab: Overview ─────────────────────────────────────────────────────────────
@@ -286,7 +286,16 @@ function DocumentsTab() {
 function SettingsTab({ user, logout, refreshUser }) {
   const [name, setName] = useState(user?.name || '');
   const [email, setEmail] = useState(user?.email || '');
-  const [mobile, setMobile] = useState(user?.mobile || user?.phone || '');
+  const format10DigitMobile = (val) => {
+    if (!val) return '';
+    const digits = String(val).replace(/\D/g, '');
+    if (digits.length === 12 && digits.startsWith('91')) {
+      return digits.slice(2);
+    }
+    return digits.slice(0, 10);
+  };
+
+  const [mobile, setMobile] = useState(() => format10DigitMobile(user?.mobile || user?.phone || ''));
   const [profileBio, setProfileBio] = useState(user?.profileBio || '');
   const [avatarFile, setAvatarFile] = useState(null);
   const [avatarPreview, setAvatarPreview] = useState(user?.avatar || user?.photo || user?.photoUrl || null);
@@ -307,6 +316,12 @@ function SettingsTab({ user, logout, refreshUser }) {
     }
   };
 
+  const handleMobileChange = (e) => {
+    const val = e.target.value.replace(/\D/g, '').slice(0, 10);
+    setMobile(val);
+    setProfileSaved(false);
+  };
+
   const saveProfile = (e) => {
     e?.preventDefault();
     setErrorMsg('');
@@ -314,7 +329,6 @@ function SettingsTab({ user, logout, refreshUser }) {
 
     const cleanName = name.trim();
     const cleanEmail = email.trim();
-    const cleanMobile = mobile.trim();
 
     if (!cleanName || cleanName.length < 2) {
       setErrorMsg('Full name must be at least 2 characters long.');
@@ -327,18 +341,17 @@ function SettingsTab({ user, logout, refreshUser }) {
       return;
     }
 
-    const digitsOnly = cleanMobile.replace(/\D/g, '');
-    if (digitsOnly.length !== 10 && digitsOnly.length !== 12) {
+    const digitsOnly = mobile.replace(/\D/g, '');
+    if (digitsOnly.length !== 10) {
       setErrorMsg('Mobile number must be exactly 10 digits.');
       return;
     }
-    const check10Digits = digitsOnly.length === 12 && digitsOnly.startsWith('91') ? digitsOnly.slice(2) : digitsOnly;
-    if (!/^[6-9]/.test(check10Digits)) {
+    if (!/^[6-9]/.test(digitsOnly)) {
       setErrorMsg('Mobile number must start with 6, 7, 8, or 9.');
       return;
     }
 
-    const apiMobile = digitsOnly.length === 10 ? `91${digitsOnly}` : digitsOnly;
+    const apiMobile = `91${digitsOnly}`;
 
     startTransition(async () => {
       const formData = new FormData();
@@ -350,6 +363,14 @@ function SettingsTab({ user, logout, refreshUser }) {
         formData.append('avatar', avatarFile);
       }
 
+      console.log('[CLIENT] Submitting Profile Update Form:', {
+        name: cleanName,
+        email: cleanEmail,
+        mobile: apiMobile,
+        profileBio,
+        avatarFile: avatarFile ? { name: avatarFile.name, type: avatarFile.type, size: avatarFile.size } : null,
+      });
+
       const res = await updateProfileAction(formData);
 
       if (!res.success) {
@@ -358,6 +379,10 @@ function SettingsTab({ user, logout, refreshUser }) {
       }
 
       setProfileSaved(true);
+      if (res.user?.avatar || res.user?.photo || res.user?.photoUrl) {
+        setAvatarPreview(res.user.avatar || res.user.photo || res.user.photoUrl);
+      }
+      setAvatarFile(null);
       if (refreshUser) await refreshUser();
     });
   };
@@ -376,14 +401,11 @@ function SettingsTab({ user, logout, refreshUser }) {
       <form onSubmit={saveProfile} className="bg-white border border-stone-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
         <div className="flex items-center justify-between">
           <h3 className="text-xl font-bold text-[#062212]">Edit Profile</h3>
-          <span className="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-stone-100 text-stone-600 border border-stone-200">
-            multipart/form-data
-          </span>
         </div>
 
         {/* Avatar Upload Field */}
         <div className="space-y-2">
-          <label className="text-xs font-bold text-stone-600 uppercase tracking-widest block">Avatar Image (avatar)</label>
+          <label className="text-xs font-bold text-stone-600 uppercase tracking-widest block">Profile Avatar</label>
           <div className="flex items-center gap-5">
             <div className="relative w-20 h-20 rounded-2xl bg-[#062212] border-2 border-[#dfa62f] overflow-hidden flex items-center justify-center text-2xl font-bold text-[#dfa62f] shadow-sm flex-shrink-0">
               {avatarPreview ? (
@@ -411,7 +433,7 @@ function SettingsTab({ user, logout, refreshUser }) {
 
         {/* Name Field */}
         <div className="space-y-1.5">
-          <label htmlFor="profile-name" className="text-xs font-bold text-stone-600 uppercase tracking-widest">Full Name (name)</label>
+          <label htmlFor="profile-name" className="text-xs font-bold text-stone-600 uppercase tracking-widest">Full Name</label>
           <input
             id="profile-name"
             type="text"
@@ -425,7 +447,7 @@ function SettingsTab({ user, logout, refreshUser }) {
 
         {/* Email Field */}
         <div className="space-y-1.5">
-          <label htmlFor="profile-email" className="text-xs font-bold text-stone-600 uppercase tracking-widest">Email Address (email)</label>
+          <label htmlFor="profile-email" className="text-xs font-bold text-stone-600 uppercase tracking-widest">Email Address</label>
           <input
             id="profile-email"
             type="email"
@@ -439,21 +461,25 @@ function SettingsTab({ user, logout, refreshUser }) {
 
         {/* Mobile Field */}
         <div className="space-y-1.5">
-          <label htmlFor="profile-mobile" className="text-xs font-bold text-stone-600 uppercase tracking-widest">Mobile Number (mobile)</label>
-          <input
-            id="profile-mobile"
-            type="tel"
-            value={mobile}
-            onChange={(e) => { setMobile(e.target.value); setProfileSaved(false); }}
-            placeholder="Enter mobile number"
-            required
-            className="w-full px-4 py-3.5 bg-stone-50 border border-stone-200 rounded-2xl text-sm text-stone-900 focus:outline-none focus:border-[#dfa62f] focus:bg-white transition-all"
-          />
+          <label htmlFor="profile-mobile" className="text-xs font-bold text-stone-600 uppercase tracking-widest">Mobile Number</label>
+          <div className="relative flex items-center">
+            <span className="absolute left-4 text-xs font-bold text-stone-500 pointer-events-none">+91</span>
+            <input
+              id="profile-mobile"
+              type="tel"
+              value={mobile}
+              maxLength={10}
+              onChange={handleMobileChange}
+              placeholder="9876543210"
+              required
+              className="w-full pl-12 pr-4 py-3.5 bg-stone-50 border border-stone-200 rounded-2xl text-sm text-stone-900 focus:outline-none focus:border-[#dfa62f] focus:bg-white transition-all font-mono"
+            />
+          </div>
         </div>
 
         {/* Profile Bio Field */}
         <div className="space-y-1.5">
-          <label htmlFor="profile-bio" className="text-xs font-bold text-stone-600 uppercase tracking-widest">Profile Bio (profileBio)</label>
+          <label htmlFor="profile-bio" className="text-xs font-bold text-stone-600 uppercase tracking-widest">Profile Bio</label>
           <textarea
             id="profile-bio"
             rows={3}
@@ -464,6 +490,14 @@ function SettingsTab({ user, logout, refreshUser }) {
           />
         </div>
 
+        {/* Loading Banner */}
+        {isPending && (
+          <div className="bg-amber-50 border border-amber-200/80 text-amber-900 text-xs font-semibold rounded-2xl px-5 py-3.5 flex items-center gap-3 animate-pulse">
+            <Loader2 className="w-4 h-4 text-amber-600 animate-spin shrink-0" />
+            <span>Updating profile details & uploading avatar image to server…</span>
+          </div>
+        )}
+
         {errorMsg && (
           <div className="bg-red-50 border border-red-200 text-red-700 text-xs rounded-2xl px-4 py-3">
             {errorMsg}
@@ -471,8 +505,9 @@ function SettingsTab({ user, logout, refreshUser }) {
         )}
 
         {profileSaved && (
-          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-2xl px-4 py-3">
-            ✓ Profile updated successfully!
+          <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 text-xs font-semibold rounded-2xl px-5 py-3.5 flex items-center gap-2.5 animate-in fade-in duration-300">
+            <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
+            <span>✓ Profile & avatar updated successfully!</span>
           </div>
         )}
 
@@ -483,8 +518,8 @@ function SettingsTab({ user, logout, refreshUser }) {
         >
           {isPending ? (
             <>
-              <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-              Updating Profile…
+              <Loader2 className="w-4 h-4 text-[#dfa62f] animate-spin" />
+              Updating Profile & Avatar…
             </>
           ) : (
             <>

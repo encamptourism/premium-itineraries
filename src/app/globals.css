@@ -52,7 +52,8 @@ body {
 
 /* Typography Token Utilities */
 .font-script {
-  font-family: var(--font-display-script), cursive;
+  font-family: var(--font-display-serif), Georgia, serif;
+  font-style: italic;
 }
 
 .font-serif-display {
@@ -69,7 +70,8 @@ body {
 
 /* Semantic Typography Classes */
 .display-script {
-  font-family: var(--font-display-script), cursive;
+  font-family: var(--font-display-serif), Georgia, serif;
+  font-style: italic;
 }
 
 .display-hero {

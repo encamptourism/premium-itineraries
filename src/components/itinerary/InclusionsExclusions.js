@@ -1,6 +1,15 @@
-import { Check, X, Gift, ShieldCheck } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { Check, X, Gift, ShieldCheck, ChevronDown } from "lucide-react";
 
 export default function InclusionsExclusions({ inclusions = [], exclusions = [] }) {
+  const [showAllInclusions, setShowAllInclusions] = useState(false);
+  const [showAllExclusions, setShowAllExclusions] = useState(false);
+
+  const visibleInclusions = showAllInclusions ? inclusions : inclusions.slice(0, 6);
+  const visibleExclusions = showAllExclusions ? exclusions : exclusions.slice(0, 6);
+
   return (
     <section className="w-full bg-stone-50 py-12 sm:py-16 border-t border-b border-stone-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -41,7 +50,7 @@ export default function InclusionsExclusions({ inclusions = [], exclusions = [] 
             </div>
 
             <ul className="divide-y divide-stone-100 mt-4 space-y-0">
-              {inclusions.map((item, idx) => (
+              {visibleInclusions.map((item, idx) => (
                 <li key={item._id || idx} className="py-3.5 flex items-start gap-3 text-sm text-stone-700 leading-relaxed">
                   <div className="w-5 h-5 rounded-full bg-forest/10 text-forest flex items-center justify-center shrink-0 mt-0.5">
                     <Check className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -50,6 +59,23 @@ export default function InclusionsExclusions({ inclusions = [], exclusions = [] 
                 </li>
               ))}
             </ul>
+
+            {inclusions.length > 6 && (
+              <div className="flex justify-center pt-4 border-t border-stone-100 mt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAllInclusions(!showAllInclusions)}
+                  className="text-xs font-semibold text-[#062314] hover:text-[#b38320] transition-colors flex items-center gap-1.5 focus:outline-none bg-transparent border-0 cursor-pointer select-none"
+                >
+                  <span>{showAllInclusions ? "Show Less" : `View More Inclusions (${inclusions.length - 6} more)`}</span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-[#b38320] transition-transform duration-300 ${
+                      showAllInclusions ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+              </div>
+            )}
           </div>
 
           {/* Exclusions Card */}
@@ -75,7 +101,7 @@ export default function InclusionsExclusions({ inclusions = [], exclusions = [] 
             </div>
 
             <ul className="divide-y divide-stone-100 mt-4 space-y-0">
-              {exclusions.map((item, idx) => (
+              {visibleExclusions.map((item, idx) => (
                 <li key={item._id || idx} className="py-3.5 flex items-start gap-3 text-sm text-stone-600 leading-relaxed">
                   <div className="w-5 h-5 rounded-full bg-stone-100 text-stone-500 flex items-center justify-center shrink-0 mt-0.5">
                     <X className="w-3.5 h-3.5 stroke-[2.5]" />
@@ -84,6 +110,23 @@ export default function InclusionsExclusions({ inclusions = [], exclusions = [] 
                 </li>
               ))}
             </ul>
+
+            {exclusions.length > 6 && (
+              <div className="flex justify-center pt-4 border-t border-stone-100 mt-2">
+                <button
+                  type="button"
+                  onClick={() => setShowAllExclusions(!showAllExclusions)}
+                  className="text-xs font-semibold text-[#062314] hover:text-red-700 transition-colors flex items-center gap-1.5 focus:outline-none bg-transparent border-0 cursor-pointer select-none"
+                >
+                  <span>{showAllExclusions ? "Show Less" : `View More Exclusions (${exclusions.length - 6} more)`}</span>
+                  <ChevronDown
+                    className={`w-4 h-4 text-[#062314] transition-transform duration-300 ${
+                      showAllExclusions ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+              </div>
+            )}
           </div>
         </div>
       </div>
