@@ -1,7 +1,7 @@
 import { Alex_Brush, Cormorant_Garamond, Plus_Jakarta_Sans, Poppins } from "next/font/google";
 import { headers } from "next/headers";
 import Navbar from "@/components/itinerary/Navbar";
-import Footer from "@/components/itinerary/Footer";
+import Footer from "@/components/common/Footer";
 import AuthProvider from "@/context/AuthProvider";
 import "./globals.css";
 

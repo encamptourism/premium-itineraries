@@ -199,7 +199,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                             d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
                             fill="#0c2b1a"
                           />
-                          <circle cx="12" cy="9" r="2.5" fill="#d4a853" />
+                          <circle cx="12" cy="9" r="2.5" fill="#f0c85a" />
                         </svg>
                         <h3 className="font-poppins text-xs sm:text-sm font-semibold uppercase tracking-wide text-stone-900 leading-snug">
                           {day.title}
@@ -212,7 +212,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                         {idx < dayWise.length - 1 && (
                           <div className="absolute left-[7px] sm:left-[9px] top-[2px] bottom-[-24px] w-[1.5px] bg-[#d9caad]">
                             {/* Gold Node Dot on line between days */}
-                            <div className="absolute top-[75%] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#d4a853]" />
+                            <div className="absolute top-[75%] left-1/2 -translate-x-1/2 w-1.5 h-1.5 rounded-full bg-[#f0c85a]" />
                           </div>
                         )}
 
@@ -487,7 +487,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                         <Play className="w-5 h-5 fill-current" />
                       </div>
                     </div>
-                    <div className="absolute top-2.5 left-2.5 bg-[#dfa62f] text-[#020d07] text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md truncate max-w-[85%] shadow-md">
+                    <div className="absolute top-2.5 left-2.5 bg-[#f0c85a] text-[#020d07] text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md truncate max-w-[85%] shadow-md">
                       {itinerary?.premiumMedia?.youtubeVideo?.title || "Full Video"}
                     </div>
                   </a>
@@ -499,7 +499,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                 <div className="text-xs font-bold uppercase tracking-wider text-stone-600 mb-2 font-poppins flex items-center justify-between">
                   <span>Shorts</span>
                   {shortVideoItems[0]?.platform && (
-                    <span className="text-[10px] text-[#dfa62f] font-semibold lowercase font-sans">
+                    <span className="text-[10px] text-[#f0c85a] font-semibold lowercase font-sans">
                       @{shortVideoItems[0]?.platform}
                     </span>
                   )}
@@ -521,7 +521,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                         className="object-cover group-hover:scale-110 transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col items-center justify-between p-1.5 text-center">
-                        <div className="w-5 h-5 rounded-full bg-white/90 text-[#062314] flex items-center justify-center pl-0.5 mt-1 shadow-sm group-hover:bg-[#dfa62f] transition-colors">
+                        <div className="w-5 h-5 rounded-full bg-white/90 text-[#062314] flex items-center justify-center pl-0.5 mt-1 shadow-sm group-hover:bg-[#f0c85a] transition-colors">
                           <Play className="w-2.5 h-2.5 fill-current" />
                         </div>
                         <span className="text-[11px] text-white font-bold tracking-tight line-clamp-1 font-poppins">
@@ -542,7 +542,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
             {/* Unified Inclusions & Exclusions Card */}
             <div className="rounded-2xl overflow-hidden border border-[#e2d8c3] font-poppins">
               {/* Dark Forest Green Header Bar for Inclusions */}
-              <div className="bg-[#062314] text-white py-2.5 px-4 text-center border-b border-[#dfa62f]/40">
+              <div className="bg-[#062314] text-white py-2.5 px-4 text-center border-b border-[#f0c85a]/40">
                 <h2 className="font-serif-display text-sm sm:text-base font-black uppercase tracking-[0.2em] text-white">
                   Inclusions
                 </h2>
@@ -553,7 +553,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                 <ul className="space-y-2 text-xs sm:text-[13px] text-stone-700 font-normal">
                   {visibleInclusions.map((inc, i) => (
                     <li key={inc._id || i} className="flex items-start gap-2">
-                      <span className="w-4 h-4 rounded-full bg-[#fcf8ee] text-[#b38320] flex items-center justify-center shrink-0 mt-0.5 border border-[#dfa62f]">
+                      <span className="w-4 h-4 rounded-full bg-[#fcf8ee] text-[#b38320] flex items-center justify-center shrink-0 mt-0.5 border border-[#f0c85a]">
                         <Check className="w-2.5 h-2.5 stroke-[3]" />
                       </span>
                       <span className="leading-snug">{inc.name}</span>
@@ -668,21 +668,21 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
               </div>
               <div className="grid grid-cols-3 divide-x divide-[#e2d8c3] py-3.5 px-1.5 text-center items-start">
                 <div className="flex flex-col items-center px-1">
-                  <Tag className="w-8 h-8 sm:w-9 sm:h-9 text-[#d4a853] mb-1.5 stroke-[1.4]" />
+                  <Tag className="w-8 h-8 sm:w-9 sm:h-9 text-[#f0c85a] mb-1.5 stroke-[1.4]" />
                   <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-[#062314] leading-tight">
                     Best Price Guarantee
                   </span>
                 </div>
 
                 <div className="flex flex-col items-center px-1">
-                  <ClipboardCheck className="w-8 h-8 sm:w-9 sm:h-9 text-[#d4a853] mb-1.5 stroke-[1.4]" />
+                  <ClipboardCheck className="w-8 h-8 sm:w-9 sm:h-9 text-[#f0c85a] mb-1.5 stroke-[1.4]" />
                   <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-[#062314] leading-tight">
                     Easy &amp; Secure Booking
                   </span>
                 </div>
 
                 <div className="flex flex-col items-center px-1">
-                  <Compass className="w-8 h-8 sm:w-9 sm:h-9 text-[#d4a853] mb-1.5 stroke-[1.4]" />
+                  <Compass className="w-8 h-8 sm:w-9 sm:h-9 text-[#f0c85a] mb-1.5 stroke-[1.4]" />
                   <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-[#062314] leading-tight">
                     24x7 Customer Support
                   </span>

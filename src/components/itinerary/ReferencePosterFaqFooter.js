@@ -84,24 +84,24 @@ export default function ReferencePosterFaqFooter({ itinerary }) {
         <div className="w-[94%] sm:w-[92%] lg:w-[90%] xl:w-[92%] max-w-[2200px] mx-auto px-2 sm:px-4 lg:px-6 flex flex-col md:flex-row items-center justify-between gap-4 text-center md:text-left">
           {/* Left: Contact Info */}
           <div className="space-y-1">
-            <div className="font-poppins text-xs sm:text-sm font-extrabold uppercase tracking-[0.16em] text-gold">
+            <div className="font-poppins text-xs sm:text-sm font-extrabold uppercase tracking-[0.16em] text-gold-light">
               Book Your Adventure
             </div>
             <div className="flex flex-wrap items-center justify-center md:justify-start gap-4 text-xs text-stone-200">
               <a
                 href="tel:+919643182259"
-                className="flex items-center gap-1.5 hover:text-gold transition-colors"
+                className="flex items-center gap-1.5 hover:text-gold-light transition-colors"
               >
-                <Phone className="w-3.5 h-3.5 text-gold" />
+                <Phone className="w-3.5 h-3.5 text-gold-light" />
                 <span>+91 96431 82259</span>
               </a>
               <a
                 href="https://www.encampadventures.com"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex items-center gap-1.5 hover:text-gold transition-colors"
+                className="flex items-center gap-1.5 hover:text-gold-light transition-colors"
               >
-                <Globe className="w-3.5 h-3.5 text-gold" />
+                <Globe className="w-3.5 h-3.5 text-gold-light" />
                 <span>www.encampadventures.com</span>
               </a>
             </div>

@@ -107,7 +107,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
             </div>
 
             {/* Desktop-only Right 3 Columns: "OUR PACKAGES" Card POPPING OUT from Bottom */}
-            <div className="hidden lg:flex lg:col-span-3 w-full max-w-[290px] sm:max-w-[300px] mx-auto lg:ml-auto bg-[#062314] text-white rounded-2xl p-3 sm:p-4 flex-col justify-between border-2 border-[#dfa62f] transform translate-y-6 sm:translate-y-12 lg:translate-y-24 lg:translate-x-6 z-30">
+            <div className="hidden lg:flex lg:col-span-3 w-full max-w-[290px] sm:max-w-[300px] mx-auto lg:ml-auto bg-[#062314] text-white rounded-2xl p-3 sm:p-4 flex-col justify-between border-2 border-[#f0c85a] transform translate-y-6 sm:translate-y-12 lg:translate-y-24 lg:translate-x-6 z-30">
 
               {/* Packages Title */}
               <div className="text-center pb-3 border-b border-white/20">
@@ -121,26 +121,26 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
                 {/* 1. Premium Package */}
                 <div className="space-y-2 pb-3 border-b border-white/20">
-                  <div className="text-xs font-bold uppercase tracking-widest text-[#dfa62f] text-center">
+                  <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
                     Premium Package
                   </div>
 
                   {/* 4 Mini Gold Icons */}
                   <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
                     <div className="flex flex-col items-center">
-                      <BedDouble className="w-4 h-4 text-[#dfa62f] mb-1" />
+                      <BedDouble className="w-4 h-4 text-[#f0c85a] mb-1" />
                       <span>4★ Hotels</span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <Utensils className="w-4 h-4 text-[#dfa62f] mb-1" />
+                      <Utensils className="w-4 h-4 text-[#f0c85a] mb-1" />
                       <span>Breakfast</span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <Car className="w-4 h-4 text-[#dfa62f] mb-1" />
+                      <Car className="w-4 h-4 text-[#f0c85a] mb-1" />
                       <span>Private Cab</span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <Camera className="w-4 h-4 text-[#dfa62f] mb-1" />
+                      <Camera className="w-4 h-4 text-[#f0c85a] mb-1" />
                       <span>All Sightseeing</span>
                     </div>
                   </div>
@@ -149,7 +149,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
                     <div className="font-poppins text-2xl font-black text-white leading-none">
                       {formattedStartingPrice}/-
                     </div>
-                    <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">per person</div>
+                    <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">1-2 guest</div>
                   </div>
 
                   <button
@@ -162,26 +162,26 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
                 {/* 2. Luxury Package */}
                 <div className="space-y-2 pb-3 border-b border-white/20">
-                  <div className="text-xs font-bold uppercase tracking-widest text-[#dfa62f] text-center">
+                  <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
                     Luxury Package
                   </div>
 
                   {/* 4 Mini Gold Icons */}
                   <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
                     <div className="flex flex-col items-center">
-                      <BedDouble className="w-4 h-4 text-[#dfa62f] mb-1" />
+                      <BedDouble className="w-4 h-4 text-[#f0c85a] mb-1" />
                       <span>5★ Hotels</span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <Utensils className="w-4 h-4 text-[#dfa62f] mb-1" />
+                      <Utensils className="w-4 h-4 text-[#f0c85a] mb-1" />
                       <span>All Meals</span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <Car className="w-4 h-4 text-[#dfa62f] mb-1" />
+                      <Car className="w-4 h-4 text-[#f0c85a] mb-1" />
                       <span>Private Cab</span>
                     </div>
                     <div className="flex flex-col items-center">
-                      <Camera className="w-4 h-4 text-[#dfa62f] mb-1" />
+                      <Camera className="w-4 h-4 text-[#f0c85a] mb-1" />
                       <span>All Sightseeing</span>
                     </div>
                   </div>
@@ -190,7 +190,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
                     <div className="font-poppins text-2xl font-black text-white leading-none">
                       {formattedLuxuryPrice}/-
                     </div>
-                    <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">per person</div>
+                    <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">1-2 guest</div>
                   </div>
 
                   <button
@@ -203,32 +203,32 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
                 {/* 3. Custom Package */}
                 <div className="space-y-2">
-                  <div className="text-xs font-bold uppercase tracking-widest text-[#dfa62f] text-center">
+                  <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
                     Custom Package
                   </div>
 
                   <ul className="space-y-1.5 text-[11px] text-stone-200">
                     <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#dfa62f] shrink-0" />
+                      <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
                       <span>Tailor Made Itinerary</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#dfa62f] shrink-0" />
+                      <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
                       <span>Personalized Experiences</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#dfa62f] shrink-0" />
+                      <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
                       <span>Flexible Plans</span>
                     </li>
                     <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#dfa62f] shrink-0" />
+                      <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
                       <span>24x7 Support</span>
                     </li>
                   </ul>
 
                   <button
                     onClick={onOpenEnquiry}
-                    className="w-full border-2 border-[#dfa62f] text-[#dfa62f] hover:bg-[#dfa62f] hover:text-[#062314] font-black text-xs uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-2"
+                    className="w-full border-2 border-[#f0c85a] text-[#f0c85a] hover:bg-[#f0c85a] hover:text-[#062314] font-black text-xs uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-2"
                   >
                     Enquire Now
                   </button>
@@ -243,39 +243,39 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
         </div>
 
         {/* 5-Pillars Horizontal Strip EXACTLY ANCHORED AT BOTTOM EDGE (50% INSIDE / 50% OUTSIDE) */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 lg:left-4 xl:left-8 lg:translate-x-0 transform translate-y-1/2 max-w-xl lg:max-w-2xl w-[94%] sm:w-auto bg-white text-[#062314] rounded-full py-1.5 sm:py-2.5 px-3 sm:px-6 border border-[#dfa62f]/40 shadow-xl z-30">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 lg:left-4 xl:left-8 lg:translate-x-0 transform translate-y-1/2 max-w-xl lg:max-w-2xl w-[94%] sm:w-auto bg-white text-[#062314] rounded-full py-1.5 sm:py-2.5 px-3 sm:px-6 border border-[#f0c85a]/40 shadow-xl z-30">
           <div className="grid grid-cols-5 gap-0.5 sm:gap-1 divide-x divide-stone-200">
 
             <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
-              <Compass className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#dfa62f] mb-0.5 stroke-[1.5]" />
+              <Compass className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#f0c85a] mb-0.5 stroke-[1.5]" />
               <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
                 Handpicked Experiences
               </span>
             </div>
 
             <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
-              <Home className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#dfa62f] mb-0.5 stroke-[1.5]" />
+              <Home className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#f0c85a] mb-0.5 stroke-[1.5]" />
               <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
                 Exclusive Stays
               </span>
             </div>
 
             <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
-              <UserCheck className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#dfa62f] mb-0.5 stroke-[1.5]" />
+              <UserCheck className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#f0c85a] mb-0.5 stroke-[1.5]" />
               <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
                 Local Experts
               </span>
             </div>
 
             <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
-              <Headset className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#dfa62f] mb-0.5 stroke-[1.5]" />
+              <Headset className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#f0c85a] mb-0.5 stroke-[1.5]" />
               <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
                 24x7 Support
               </span>
             </div>
 
             <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
-              <Leaf className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#dfa62f] mb-0.5 stroke-[1.5]" />
+              <Leaf className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#f0c85a] mb-0.5 stroke-[1.5]" />
               <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
                 Sustainable Travel
               </span>
@@ -288,7 +288,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
       {/* Mobile-only "OUR PACKAGES" Card rendered below 80vh hero section */}
       <div className="block lg:hidden pt-10 sm:pt-14 px-2 sm:px-4 w-full max-w-2xl mx-auto">
-        <div className="bg-[#062314] text-white rounded-2xl p-4 sm:p-5 border-2 border-[#dfa62f] shadow-none sm:shadow-xl w-full">
+        <div className="bg-[#062314] text-white rounded-2xl p-4 sm:p-5 border-2 border-[#f0c85a] shadow-none sm:shadow-xl w-full">
           {/* Packages Title */}
           <div className="text-center pb-3 border-b border-white/20">
             <h2 className="font-serif-display text-base sm:text-lg font-bold uppercase tracking-[0.2em] text-white">
@@ -301,26 +301,26 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
             {/* 1. Premium Package */}
             <div className="space-y-2 pb-3 border-b border-white/20">
-              <div className="text-xs font-bold uppercase tracking-widest text-[#dfa62f] text-center">
+              <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
                 Premium Package
               </div>
 
               {/* 4 Mini Gold Icons */}
               <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
                 <div className="flex flex-col items-center">
-                  <BedDouble className="w-4 h-4 text-[#dfa62f] mb-1" />
+                  <BedDouble className="w-4 h-4 text-[#f0c85a] mb-1" />
                   <span>4★ Hotels</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Utensils className="w-4 h-4 text-[#dfa62f] mb-1" />
+                  <Utensils className="w-4 h-4 text-[#f0c85a] mb-1" />
                   <span>Breakfast</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Car className="w-4 h-4 text-[#dfa62f] mb-1" />
+                  <Car className="w-4 h-4 text-[#f0c85a] mb-1" />
                   <span>Private Cab</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Camera className="w-4 h-4 text-[#dfa62f] mb-1" />
+                  <Camera className="w-4 h-4 text-[#f0c85a] mb-1" />
                   <span>All Sightseeing</span>
                 </div>
               </div>
@@ -329,7 +329,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
                 <div className="font-poppins text-2xl font-black text-white leading-none">
                   {formattedStartingPrice}/-
                 </div>
-                <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">per person</div>
+                <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">1-2 guest</div>
               </div>
 
               <button
@@ -342,26 +342,26 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
             {/* 2. Luxury Package */}
             <div className="space-y-2 pb-3 border-b border-white/20">
-              <div className="text-xs font-bold uppercase tracking-widest text-[#dfa62f] text-center">
+              <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
                 Luxury Package
               </div>
 
               {/* 4 Mini Gold Icons */}
               <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
                 <div className="flex flex-col items-center">
-                  <BedDouble className="w-4 h-4 text-[#dfa62f] mb-1" />
+                  <BedDouble className="w-4 h-4 text-[#f0c85a] mb-1" />
                   <span>5★ Hotels</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Utensils className="w-4 h-4 text-[#dfa62f] mb-1" />
+                  <Utensils className="w-4 h-4 text-[#f0c85a] mb-1" />
                   <span>All Meals</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Car className="w-4 h-4 text-[#dfa62f] mb-1" />
+                  <Car className="w-4 h-4 text-[#f0c85a] mb-1" />
                   <span>Private Cab</span>
                 </div>
                 <div className="flex flex-col items-center">
-                  <Camera className="w-4 h-4 text-[#dfa62f] mb-1" />
+                  <Camera className="w-4 h-4 text-[#f0c85a] mb-1" />
                   <span>All Sightseeing</span>
                 </div>
               </div>
@@ -370,7 +370,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
                 <div className="font-poppins text-2xl font-black text-white leading-none">
                   {formattedLuxuryPrice}/-
                 </div>
-                <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">per person</div>
+                <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">1-2 guest</div>
               </div>
 
               <button
@@ -383,32 +383,32 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
             {/* 3. Custom Package */}
             <div className="space-y-2">
-              <div className="text-xs font-bold uppercase tracking-widest text-[#dfa62f] text-center">
+              <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
                 Custom Package
               </div>
 
               <ul className="space-y-1.5 text-[11px] text-stone-200">
                 <li className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-[#dfa62f] shrink-0" />
+                  <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
                   <span>Tailor Made Itinerary</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-[#dfa62f] shrink-0" />
+                  <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
                   <span>Personalized Experiences</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-[#dfa62f] shrink-0" />
+                  <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
                   <span>Flexible Plans</span>
                 </li>
                 <li className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-[#dfa62f] shrink-0" />
+                  <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
                   <span>24x7 Support</span>
                 </li>
               </ul>
 
               <button
                 onClick={onOpenEnquiry}
-                className="w-full border-2 border-[#dfa62f] text-[#dfa62f] hover:bg-[#dfa62f] hover:text-[#062314] font-black text-xs uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-2"
+                className="w-full border-2 border-[#f0c85a] text-[#f0c85a] hover:bg-[#f0c85a] hover:text-[#062314] font-black text-xs uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-2"
               >
                 Enquire Now
               </button>

@@ -76,7 +76,7 @@ export default async function Home() {
       </section>
 
       {/* Featured Expeditions Grid */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
+      <section id="itineraries" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
         <div className="text-center max-w-2xl mx-auto mb-12 sm:mb-16">
           <span className="eyebrow text-gold font-semibold tracking-widest text-xs">
             Signature Portfolios
@@ -152,7 +152,7 @@ export default async function Home() {
                       <span className="text-[10px] uppercase font-semibold text-stone-500">Starting From</span>
                       <div className="font-poppins text-lg font-bold text-forest">
                         {formattedPrice ? (
-                          <>{formattedPrice} <span className="text-xs font-poppins text-stone-500">/ guest</span></>
+                          <>{formattedPrice} <span className="text-xs font-poppins text-stone-500">1-2 guest</span></>
                         ) : (
                           <span className="text-xs font-semibold text-stone-700">Contact for Pricing</span>
                         )}

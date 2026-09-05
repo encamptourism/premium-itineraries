@@ -82,7 +82,7 @@ export default function PricingSection({ itinerary }) {
                     {formattedPrice}
                   </span>
                   <span className="font-poppins text-sm text-stone-300 uppercase tracking-wider font-medium">
-                    / per guest
+                    1-2 guest
                   </span>
                   {priceItem?.people && (
                     <span className="font-poppins text-xs text-stone-400">
