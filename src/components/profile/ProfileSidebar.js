@@ -34,8 +34,8 @@ export default function ProfileSidebar({ activeTab, onTab, onLogout }) {
                 onClick={() => onTab(tab.id)}
                 className={`w-full flex items-center justify-between gap-3 px-4 py-3 rounded-2xl text-sm font-semibold transition-all duration-200 group ${
                   isActive
-                    ? 'bg-[#062212] text-white font-bold shadow-md shadow-[#062212]/10'
-                    : 'text-stone-600 hover:bg-stone-50 hover:text-[#062212]'
+                    ? 'bg-primary-green text-white font-bold shadow-md shadow-primary-green/10'
+                    : 'text-stone-600 hover:bg-stone-50 hover:text-primary-green'
                 }`}
               >
                 <span className="flex items-center gap-3">

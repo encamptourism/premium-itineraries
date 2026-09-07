@@ -47,7 +47,7 @@ export default function Navbar() {
   };
 
   return (
-    <header className="sticky top-0 z-50 bg-[#020d07]/95 backdrop-blur-md border-b border-[#082213] shadow-sm transition-all">
+    <header className="sticky top-0 z-50 bg-primary-green/95 backdrop-blur-md border-b border-primary-green shadow-sm transition-all">
       <div className="w-full px-4 sm:px-6 lg:px-8 h-14 sm:h-16 flex items-center justify-between">
 
         {/* Brand */}
@@ -84,7 +84,7 @@ export default function Navbar() {
             </button>
 
             {contactOpen && (
-              <div className="absolute right-0 top-full mt-2.5 w-64 bg-[#062212] border border-[#dfa62f]/30 rounded-2xl shadow-2xl p-3 z-50 animate-fade-in text-stone-100">
+              <div className="absolute right-0 top-full mt-2.5 w-64 bg-primary-green border border-[#dfa62f]/30 rounded-2xl shadow-2xl p-3 z-50 animate-fade-in text-stone-100">
                 <div className="px-2 pt-1 pb-2 border-b border-white/10 mb-2">
                   <p className="text-[10px] uppercase font-bold tracking-widest text-[#dfa62f]">
                     Contact Concierge
@@ -98,7 +98,7 @@ export default function Navbar() {
                   className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/10 transition-all group border border-transparent hover:border-[#dfa62f]/20 mb-1.5"
                 >
                   <div className="w-8.5 h-8.5 rounded-full bg-[#dfa62f]/15 border border-[#dfa62f]/40 flex items-center justify-center shrink-0 group-hover:bg-[#dfa62f] transition-all">
-                    <Phone className="w-4 h-4 text-[#dfa62f] group-hover:text-[#020d07]" />
+                    <Phone className="w-4 h-4 text-[#dfa62f] group-hover:text-primary-green" />
                   </div>
                   <div className="overflow-hidden">
                     <p className="text-[10px] uppercase tracking-wider text-stone-400 font-semibold">Call Us</p>
@@ -115,7 +115,7 @@ export default function Navbar() {
                   className="flex items-center gap-3 p-2.5 rounded-xl hover:bg-white/10 transition-all group border border-transparent hover:border-[#dfa62f]/20"
                 >
                   <div className="w-8.5 h-8.5 rounded-full bg-[#dfa62f]/15 border border-[#dfa62f]/40 flex items-center justify-center shrink-0 group-hover:bg-[#dfa62f] transition-all">
-                    <Mail className="w-4 h-4 text-[#dfa62f] group-hover:text-[#020d07]" />
+                    <Mail className="w-4 h-4 text-[#dfa62f] group-hover:text-primary-green" />
                   </div>
                   <div className="overflow-hidden">
                     <p className="text-[10px] uppercase tracking-wider text-stone-400 font-semibold">Email Us</p>
@@ -142,7 +142,7 @@ export default function Navbar() {
                 >
                   {/* Avatar */}
                   <div
-                    className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-[#062212] text-[#dfa62f] flex items-center justify-center text-[11px] font-bold flex-shrink-0 border border-[#dfa62f]/30"
+                    className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-primary-green text-[#dfa62f] flex items-center justify-center text-[11px] font-bold flex-shrink-0 border border-[#dfa62f]/30"
                   >
                     {initials}
                   </div>
@@ -163,10 +163,10 @@ export default function Navbar() {
                   <div className="absolute right-0 top-full mt-3.5 w-60 bg-white border border-stone-200 rounded-2xl shadow-xl shadow-stone-300/50 overflow-hidden z-50 animate-fade-in text-stone-900">
                     {/* User info */}
                     <div className="px-4 py-3.5 border-b border-stone-100 bg-stone-50/70">
-                      <p className="text-[#062212] text-sm font-bold truncate">{user?.name}</p>
+                      <p className="text-primary-green text-sm font-bold truncate">{user?.name}</p>
                       <p className="text-stone-500 text-xs truncate mt-0.5">{user?.email}</p>
                       {tier && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold mt-1.5 px-2.5 py-0.5 rounded-full bg-[#062212]/5 text-[#062212] border border-[#062212]/15">
+                        <span className="inline-flex items-center gap-1 text-[10px] font-bold mt-1.5 px-2.5 py-0.5 rounded-full bg-primary-green/5 text-primary-green border border-primary-green/15">
                           {tier.name} Member
                         </span>
                       )}
@@ -178,7 +178,7 @@ export default function Navbar() {
                         href="/profile"
                         id="navbar-profile-link"
                         onClick={() => setOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-stone-700 hover:text-[#062212] hover:bg-stone-50 font-semibold transition-colors"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-stone-700 hover:text-primary-green hover:bg-stone-50 font-semibold transition-colors"
                       >
                         <User className="w-4 h-4 text-[#dfa62f]" />
                         My Profile
@@ -186,7 +186,7 @@ export default function Navbar() {
                       <Link
                         href="/profile?tab=settings"
                         onClick={() => setOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-stone-700 hover:text-[#062212] hover:bg-stone-50 font-semibold transition-colors"
+                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-stone-700 hover:text-primary-green hover:bg-stone-50 font-semibold transition-colors"
                       >
                         <Settings className="w-4 h-4 text-stone-400" />
                         Account Settings
@@ -212,7 +212,7 @@ export default function Navbar() {
               <Link
                 id="navbar-signin-btn"
                 href="/login"
-                className="inline-flex items-center justify-center px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-gradient-to-r from-[#dfa62f] via-[#f0c85a] to-[#dfa62f] text-[#020d07] text-xs font-bold tracking-widest uppercase hover:brightness-110 hover:shadow-[0_0_15px_rgba(223,166,47,0.35)] transition-all active:scale-95 border border-[#f0c85a]/40"
+                className="inline-flex items-center justify-center px-4 py-1.5 sm:px-5 sm:py-2 rounded-full bg-gradient-to-r from-[#dfa62f] via-[#f0c85a] to-[#dfa62f] text-primary-green text-xs font-bold tracking-widest uppercase hover:brightness-110 hover:shadow-[0_0_15px_rgba(223,166,47,0.35)] transition-all active:scale-95 border border-[#f0c85a]/40"
               >
                 Sign In
               </Link>

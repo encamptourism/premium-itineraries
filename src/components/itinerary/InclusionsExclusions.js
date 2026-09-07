@@ -65,7 +65,7 @@ export default function InclusionsExclusions({ inclusions = [], exclusions = [] 
                 <button
                   type="button"
                   onClick={() => setShowAllInclusions(!showAllInclusions)}
-                  className="text-xs font-semibold text-[#062314] hover:text-[#b38320] transition-colors flex items-center gap-1.5 focus:outline-none bg-transparent border-0 cursor-pointer select-none"
+                  className="text-xs font-semibold text-primary-green hover:text-[#b38320] transition-colors flex items-center gap-1.5 focus:outline-none bg-transparent border-0 cursor-pointer select-none"
                 >
                   <span>{showAllInclusions ? "Show Less" : `View More Inclusions (${inclusions.length - 6} more)`}</span>
                   <ChevronDown
@@ -116,11 +116,11 @@ export default function InclusionsExclusions({ inclusions = [], exclusions = [] 
                 <button
                   type="button"
                   onClick={() => setShowAllExclusions(!showAllExclusions)}
-                  className="text-xs font-semibold text-[#062314] hover:text-red-700 transition-colors flex items-center gap-1.5 focus:outline-none bg-transparent border-0 cursor-pointer select-none"
+                  className="text-xs font-semibold text-primary-green hover:text-red-700 transition-colors flex items-center gap-1.5 focus:outline-none bg-transparent border-0 cursor-pointer select-none"
                 >
                   <span>{showAllExclusions ? "Show Less" : `View More Exclusions (${exclusions.length - 6} more)`}</span>
                   <ChevronDown
-                    className={`w-4 h-4 text-[#062314] transition-transform duration-300 ${
+                    className={`w-4 h-4 text-primary-green transition-transform duration-300 ${
                       showAllExclusions ? "rotate-180" : ""
                     }`}
                   />

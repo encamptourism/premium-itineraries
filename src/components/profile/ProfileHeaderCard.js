@@ -33,7 +33,7 @@ export default function ProfileHeaderCard({ user, ctCoins }) {
         {/* Left Side: Compact Avatar & User Details */}
         <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4 w-full md:w-auto">
           {/* Avatar Box */}
-          <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-[#062212] border border-[#dfa62f]/40 overflow-hidden flex items-center justify-center text-xl sm:text-2xl font-bold text-[#dfa62f] shadow-sm flex-shrink-0">
+          <div className="relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-primary-green border border-[#dfa62f]/40 overflow-hidden flex items-center justify-center text-xl sm:text-2xl font-bold text-[#dfa62f] shadow-sm flex-shrink-0">
             {avatarUrl ? (
               <img
                 src={avatarUrl}
@@ -48,11 +48,11 @@ export default function ProfileHeaderCard({ user, ctCoins }) {
           {/* User Details */}
           <div className="space-y-1 max-w-lg">
             <div className="flex items-center justify-center sm:justify-start gap-2.5 flex-wrap">
-              <h2 className="text-xl sm:text-2xl font-bold text-[#062212] leading-tight">
+              <h2 className="text-xl sm:text-2xl font-bold text-primary-green leading-tight">
                 {user?.name || 'Member'}
               </h2>
               {tier && (
-                <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold bg-[#062212]/5 text-[#062212] border border-[#062212]/15">
+                <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full text-xs font-bold bg-primary-green/5 text-primary-green border border-primary-green/15">
                   <TierIcon className="w-3.5 h-3.5 text-[#dfa62f]" />
                   {tier.name} Member
                 </span>
@@ -106,7 +106,7 @@ export default function ProfileHeaderCard({ user, ctCoins }) {
             <div className="flex items-center justify-center gap-1 text-stone-400 mb-0.5">
               <Calendar className="w-4 h-4" />
             </div>
-            <div className="text-lg sm:text-xl font-bold text-[#062212]">
+            <div className="text-lg sm:text-xl font-bold text-primary-green">
               {joinedYear}
             </div>
             <div className="text-[9px] text-stone-400 uppercase tracking-widest font-semibold">MEMBER SINCE</div>

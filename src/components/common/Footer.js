@@ -104,7 +104,7 @@ function ShieldCheckIcon() {
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#04160C] text-[#E2DDD3] relative overflow-hidden font-poppins pt-6 pb-3 border-t border-[#f0c85a]/30 selection:bg-[#f0c85a]/30 selection:text-white">
+    <footer className="w-full bg-primary-green text-[#E2DDD3] relative overflow-hidden font-poppins pt-6 pb-3 border-t border-[#f0c85a]/30 selection:bg-[#f0c85a]/30 selection:text-white">
 
       {/* Background Topographic Watermark Lines (Top Left & Top Right) */}
       <div className="absolute top-0 left-0 w-80 h-80 opacity-10 pointer-events-none -translate-x-1/4 -translate-y-1/4">
@@ -289,7 +289,7 @@ export default function Footer() {
             <div className="pt-2">
               <Link
                 href="/#itineraries"
-                className="border border-[#f0c85a]/60 rounded-md px-3 py-1.5 flex items-center justify-between text-[10px] sm:text-[11px] font-bold text-[#f0c85a] uppercase tracking-[0.16em] hover:bg-[#f0c85a] hover:text-[#04160C] transition-all duration-300 w-full max-w-[210px]"
+                className="border border-[#f0c85a]/60 rounded-md px-3 py-1.5 flex items-center justify-between text-[10px] sm:text-[11px] font-bold text-[#f0c85a] uppercase tracking-[0.16em] hover:bg-[#f0c85a] hover:text-primary-green transition-all duration-300 w-full max-w-[210px]"
               >
                 <span>EXPLORE ALL JOURNEYS</span>
                 <span className="text-sm leading-none ml-1">›</span>
@@ -338,8 +338,8 @@ export default function Footer() {
                 className="object-cover object-bottom"
               />
               {/* All-Sides Vignette Dark Gradient Overlays */}
-              <div className="absolute inset-0 bg-gradient-to-t from-[#04160C] via-transparent to-[#04160C]/70 z-10 pointer-events-none" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#04160C] via-transparent to-[#04160C] z-10 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-t from-primary-green via-transparent to-primary-green/70 z-10 pointer-events-none" />
+              <div className="absolute inset-0 bg-gradient-to-r from-primary-green via-transparent to-primary-green z-10 pointer-events-none" />
             </div>
           </div>
         </div>
@@ -399,7 +399,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Instagram"
-                  className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center text-[#f0c85a] hover:bg-[#f0c85a] hover:text-[#04160C] transition-all duration-300"
+                  className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green transition-all duration-300"
                 >
                   <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.8">
                     <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
@@ -414,7 +414,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Facebook"
-                  className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center text-[#f0c85a] hover:bg-[#f0c85a] hover:text-[#04160C] transition-all duration-300"
+                  className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green transition-all duration-300"
                 >
                   <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
                     <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
@@ -427,7 +427,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="YouTube"
-                  className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center text-[#f0c85a] hover:bg-[#f0c85a] hover:text-[#04160C] transition-all duration-300"
+                  className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green transition-all duration-300"
                 >
                   <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
                     <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33zM9.75 15.02V8.48l5.75 3.27-5.75 3.27z" />
@@ -440,7 +440,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="LinkedIn"
-                  className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center text-[#f0c85a] hover:bg-[#f0c85a] hover:text-[#04160C] transition-all duration-300"
+                  className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green transition-all duration-300"
                 >
                   <svg viewBox="0 0 24 24" className="w-4 h-4" fill="currentColor">
                     <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.28 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.75M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z" />
@@ -453,7 +453,7 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="WhatsApp"
-                  className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center text-[#f0c85a] hover:bg-[#f0c85a] hover:text-[#04160C] transition-all duration-300"
+                  className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green transition-all duration-300"
                 >
                   <svg viewBox="0 0 24 24" className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="1.8">
                     <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />

@@ -267,7 +267,7 @@ export default function LoginPage() {
           sizes="52vw"
           className="object-cover object-center scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-br from-[#020d07]/95 via-[#062212]/80 to-[#020d07]/85" />
+        <div className="absolute inset-0 bg-gradient-to-br from-primary-green/95 via-primary-green/80 to-primary-green/85" />
 
         <div className="relative z-10 flex flex-col justify-between h-full p-12 xl:p-16 text-white">
           <div className="relative w-36 h-11 rounded-xl overflow-hidden">
@@ -303,7 +303,7 @@ export default function LoginPage() {
       <div className="w-full lg:w-[48%] flex items-center justify-center px-6 py-12 bg-[#f8f5ed] min-h-screen">
         <div className="w-full max-w-md space-y-6">
           <div>
-            <h1 className="text-3xl sm:text-4xl font-bold text-[#062212] tracking-tight">
+            <h1 className="text-3xl sm:text-4xl font-bold text-primary-green tracking-tight">
               {otpSent ? 'Verify OTP' : 'Sign In or Register'}
             </h1>
             <p className="text-stone-500 mt-2 text-sm">
@@ -320,7 +320,7 @@ export default function LoginPage() {
                 onClick={() => handleSwitchTab('otp')}
                 className={`w-1/2 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
                   authMethod === 'otp'
-                    ? 'bg-[#062212] text-white shadow-xs'
+                    ? 'bg-primary-green text-white shadow-xs'
                     : 'text-stone-600 hover:text-stone-900 font-semibold'
                 }`}
               >
@@ -333,7 +333,7 @@ export default function LoginPage() {
                 onClick={() => handleSwitchTab('password')}
                 className={`w-1/2 flex items-center justify-center gap-1.5 py-2.5 rounded-xl text-xs font-bold transition-all ${
                   authMethod === 'password'
-                    ? 'bg-[#062212] text-white shadow-xs'
+                    ? 'bg-primary-green text-white shadow-xs'
                     : 'text-stone-600 hover:text-stone-900 font-semibold'
                 }`}
               >
@@ -432,7 +432,7 @@ export default function LoginPage() {
                     Code sent to <span className="font-bold text-stone-800 uppercase">{sentChannel}</span>
                   </p>
                   <div className="flex items-center justify-center gap-2">
-                    <span className="font-mono text-sm font-bold text-[#062212]">
+                    <span className="font-mono text-sm font-bold text-primary-green">
                       {formattedDisplayIdentifier}
                     </span>
                     <button
@@ -475,7 +475,7 @@ export default function LoginPage() {
                   ) : (
                     <span>
                       Resend code in{' '}
-                      <span className="font-bold text-[#062212] tabular-nums">
+                      <span className="font-bold text-primary-green tabular-nums">
                         {mm}:{ss}
                       </span>
                     </span>
@@ -495,7 +495,7 @@ export default function LoginPage() {
                 id="login-submit-btn"
                 type="submit"
                 disabled={isPending || (otpSent && digits.some((d) => !d))}
-                className="w-full flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl bg-[#062212] hover:bg-[#0b3a24] text-white font-bold text-xs uppercase tracking-wider hover:shadow-lg transition-all duration-200 active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed mt-2"
+                className="w-full flex items-center justify-center gap-2.5 px-6 py-4 rounded-2xl bg-primary-green hover:bg-primary-green text-white font-bold text-xs uppercase tracking-wider hover:shadow-lg transition-all duration-200 active:scale-[0.99] disabled:opacity-60 disabled:cursor-not-allowed mt-2"
               >
                 {isPending ? (
                   <>
@@ -533,7 +533,7 @@ export default function LoginPage() {
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-[#062212]">
+              <h2 className="text-2xl font-bold text-primary-green">
                 Welcome to Encamp Privé
               </h2>
               <p className="text-stone-500 text-xs sm:text-sm">
@@ -570,7 +570,7 @@ export default function LoginPage() {
               <button
                 type="submit"
                 disabled={isSavingName}
-                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-[#062212] hover:bg-[#0b3a24] text-white font-bold text-xs uppercase tracking-wider transition-all active:scale-[0.99] disabled:opacity-60"
+                className="w-full flex items-center justify-center gap-2 py-4 rounded-2xl bg-primary-green hover:bg-primary-green text-white font-bold text-xs uppercase tracking-wider transition-all active:scale-[0.99] disabled:opacity-60"
               >
                 {isSavingName ? (
                   <>

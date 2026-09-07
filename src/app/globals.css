@@ -6,9 +6,11 @@
   --foreground: #000000;
 
   /* Brand Colors (Used Intentionally on specific components/sections) */
-  --forest: #062212;
-  --forest-light: #0b3a24;
-  --forest-dark: #03150b;
+  --primary: #123B2A;
+  --primary-green: #123B2A;
+  --forest: #123B2A;
+  --forest-light: #123B2A;
+  --forest-dark: #123B2A;
 
   --gold: #f0c85a;
   --gold-light: #f0c85a;
@@ -27,6 +29,8 @@
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-poppins: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 
+  --color-primary: var(--primary);
+  --color-primary-green: var(--primary-green);
   --color-forest: var(--forest);
   --color-forest-light: var(--forest-light);
   --color-forest-dark: var(--forest-dark);

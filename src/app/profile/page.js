@@ -39,14 +39,14 @@ function OverviewTab({ user, ctCoins, bookings }) {
           {
             label: 'Trips Taken',
             value: completed.length,
-            icon: <Plane className="w-5 h-5 text-[#062212]" />,
-            valColor: 'text-[#062212]',
+            icon: <Plane className="w-5 h-5 text-primary-green" />,
+            valColor: 'text-primary-green',
           },
           {
             label: 'Upcoming',
             value: upcoming.length,
             icon: <Calendar className="w-5 h-5 text-amber-600" />,
-            valColor: 'text-[#062212]',
+            valColor: 'text-primary-green',
           },
         ].map((stat) => (
           <div key={stat.label} className="bg-white border border-stone-200 rounded-3xl p-5 flex flex-col gap-3 shadow-sm">
@@ -63,7 +63,7 @@ function OverviewTab({ user, ctCoins, bookings }) {
 
       {/* Next trip countdown */}
       {nextTrip && daysUntil !== null && (
-        <div className="bg-gradient-to-r from-[#020d07] via-[#062212] to-[#0b3a24] border border-[#dfa62f]/40 rounded-3xl p-6 shadow-xl text-white">
+        <div className="bg-gradient-to-r from-primary-green via-primary-green to-primary-green border border-[#dfa62f]/40 rounded-3xl p-6 shadow-xl text-white">
           <div className="flex items-center justify-between flex-wrap gap-4">
             <div>
               <p className="text-xs font-bold text-[#dfa62f] uppercase tracking-widest">Next Expedition</p>
@@ -73,7 +73,7 @@ function OverviewTab({ user, ctCoins, bookings }) {
                 {nextTrip.destination}
               </div>
             </div>
-            <div className="text-center px-4 py-2 bg-[#020d07] border border-[#dfa62f]/30 rounded-2xl">
+            <div className="text-center px-4 py-2 bg-primary-green border border-[#dfa62f]/30 rounded-2xl">
               <div className="font-serif-display text-4xl sm:text-5xl font-bold text-[#dfa62f]">{daysUntil}</div>
               <div className="text-[10px] text-stone-300 font-semibold uppercase tracking-wider">Days Away</div>
             </div>
@@ -86,7 +86,7 @@ function OverviewTab({ user, ctCoins, bookings }) {
         <div className="bg-white border border-stone-200 rounded-3xl overflow-hidden shadow-sm">
           <div className="px-6 py-4 border-b border-stone-100 bg-stone-50/50 flex items-center gap-2">
             <TrendingUp className="w-4 h-4 text-[#dfa62f]" />
-            <h3 className="font-semibold text-[#062212] text-sm">Recent CT Coin Activity</h3>
+            <h3 className="font-semibold text-primary-green text-sm">Recent CT Coin Activity</h3>
           </div>
           <div className="divide-y divide-stone-100">
             {ctCoins.transactions.slice(0, 3).map((txn) => (
@@ -114,7 +114,7 @@ function JourneysTab({ bookings }) {
     return (
       <div className="bg-white border border-stone-200 rounded-3xl text-center py-20 px-4 shadow-sm">
         <Plane className="w-12 h-12 text-[#dfa62f]/60 mx-auto mb-4" />
-        <h3 className="text-xl font-bold text-[#062212]">No Journeys Booked</h3>
+        <h3 className="text-xl font-bold text-primary-green">No Journeys Booked</h3>
         <p className="text-stone-500 text-sm mt-2 max-w-sm mx-auto">Your booked itineraries will appear here with live flight & countdown details.</p>
       </div>
     );
@@ -124,7 +124,7 @@ function JourneysTab({ bookings }) {
     <div className="space-y-8">
       {upcoming.length > 0 && (
         <div className="space-y-4">
-          <h3 className="font-semibold text-[#062212] text-xs uppercase tracking-widest flex items-center gap-2">
+          <h3 className="font-semibold text-primary-green text-xs uppercase tracking-widest flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#dfa62f] inline-block shadow-[0_0_8px_#dfa62f]" />
             Upcoming Expeditions ({upcoming.length})
           </h3>
@@ -174,8 +174,8 @@ function PreferencesTab({ preferences }) {
   const chipClass = (active) =>
     `px-4 py-2.5 rounded-2xl text-xs font-semibold border transition-all cursor-pointer ${
       active
-        ? 'bg-[#062212] text-white border-[#062212] font-bold shadow-sm'
-        : 'bg-stone-50 text-stone-700 border-stone-200 hover:border-[#dfa62f] hover:text-[#062212]'
+        ? 'bg-primary-green text-white border-primary-green font-bold shadow-sm'
+        : 'bg-stone-50 text-stone-700 border-stone-200 hover:border-[#dfa62f] hover:text-primary-green'
     }`;
 
   return (
@@ -227,7 +227,7 @@ function PreferencesTab({ preferences }) {
       <button
         onClick={handleSave}
         disabled={isPending}
-        className="flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-[#062212] text-white text-sm font-bold uppercase tracking-wider hover:bg-[#0b3a24] shadow-md transition-all disabled:opacity-60"
+        className="flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-primary-green text-white text-sm font-bold uppercase tracking-wider hover:bg-primary-green shadow-md transition-all disabled:opacity-60"
       >
         {isPending ? <span className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" /> : <Save className="w-4 h-4 text-[#dfa62f]" />}
         {saved ? '✓ Preferences Saved' : 'Save Preferences'}
@@ -247,7 +247,7 @@ function DocumentsTab() {
 
       <div className="border-2 border-dashed border-stone-200 bg-stone-50/50 rounded-3xl p-10 text-center hover:border-[#dfa62f] hover:bg-stone-50 transition-all cursor-pointer group">
         <Camera className="w-10 h-10 text-stone-400 group-hover:text-[#dfa62f] mx-auto mb-3 transition-colors" />
-        <p className="text-sm font-semibold text-stone-700 group-hover:text-[#062212]">
+        <p className="text-sm font-semibold text-stone-700 group-hover:text-primary-green">
           Drop files here or <span className="text-[#dfa62f]">browse</span>
         </p>
         <p className="text-xs text-stone-400 mt-1">Passport, Visa, National ID — PDF, JPG, PNG (max 10MB)</p>
@@ -264,7 +264,7 @@ function DocumentsTab() {
               <Icon className="w-5 h-5 text-[#dfa62f]" />
             </div>
             <div>
-              <p className="text-sm font-semibold text-[#062212]">{label}</p>
+              <p className="text-sm font-semibold text-primary-green">{label}</p>
               <p className="text-xs text-stone-500">{note}</p>
             </div>
           </div>
@@ -400,14 +400,14 @@ function SettingsTab({ user, logout, refreshUser }) {
       {/* Edit Customer Profile */}
       <form onSubmit={saveProfile} className="bg-white border border-stone-200 rounded-3xl p-6 sm:p-8 space-y-6 shadow-sm">
         <div className="flex items-center justify-between">
-          <h3 className="text-xl font-bold text-[#062212]">Edit Profile</h3>
+          <h3 className="text-xl font-bold text-primary-green">Edit Profile</h3>
         </div>
 
         {/* Avatar Upload Field */}
         <div className="space-y-2">
           <label className="text-xs font-bold text-stone-600 uppercase tracking-widest block">Profile Avatar</label>
           <div className="flex items-center gap-5">
-            <div className="relative w-20 h-20 rounded-2xl bg-[#062212] border-2 border-[#dfa62f] overflow-hidden flex items-center justify-center text-2xl font-bold text-[#dfa62f] shadow-sm flex-shrink-0">
+            <div className="relative w-20 h-20 rounded-2xl bg-primary-green border-2 border-[#dfa62f] overflow-hidden flex items-center justify-center text-2xl font-bold text-[#dfa62f] shadow-sm flex-shrink-0">
               {avatarPreview ? (
                 <img src={avatarPreview} alt="Avatar Preview" className="w-full h-full object-cover" />
               ) : (
@@ -514,7 +514,7 @@ function SettingsTab({ user, logout, refreshUser }) {
         <button
           type="submit"
           disabled={isPending}
-          className="flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-[#062212] hover:bg-[#0b3a24] text-white text-xs font-bold uppercase tracking-wider shadow-md transition-all disabled:opacity-60 cursor-pointer"
+          className="flex items-center gap-2 px-7 py-3.5 rounded-2xl bg-primary-green hover:bg-primary-green text-white text-xs font-bold uppercase tracking-wider shadow-md transition-all disabled:opacity-60 cursor-pointer"
         >
           {isPending ? (
             <>
@@ -532,7 +532,7 @@ function SettingsTab({ user, logout, refreshUser }) {
 
       {/* Change password */}
       <div className="bg-white border border-stone-200 rounded-3xl p-6 sm:p-8 space-y-5 shadow-sm">
-        <h3 className="text-xl font-bold text-[#062212]">Change Password</h3>
+        <h3 className="text-xl font-bold text-primary-green">Change Password</h3>
         {[
           { label: 'Current Password', key: 'current' },
           { label: 'New Password', key: 'next' },
@@ -554,7 +554,7 @@ function SettingsTab({ user, logout, refreshUser }) {
         <button
           onClick={savePassword}
           disabled={isPending}
-          className="flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-[#062212] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#0b3a24] shadow-md transition-all disabled:opacity-60"
+          className="flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-primary-green text-white text-xs font-bold uppercase tracking-wider hover:bg-primary-green shadow-md transition-all disabled:opacity-60"
         >
           <Lock className="w-4 h-4 text-[#dfa62f]" />
           {pwSaved ? '✓ Password Updated' : 'Update Password'}
@@ -587,7 +587,7 @@ function SettingsTab({ user, logout, refreshUser }) {
               <AlertTriangle className="w-7 h-7 text-red-600" />
             </div>
             <div className="text-center">
-              <h3 className="text-xl font-bold text-[#062212]">Delete Account?</h3>
+              <h3 className="text-xl font-bold text-primary-green">Delete Account?</h3>
               <p className="text-stone-500 text-xs mt-2">
                 This action is permanent and cannot be undone.
               </p>
@@ -675,7 +675,7 @@ function ProfilePageContent() {
                 onClick={() => handleTabChange(id)}
                 className={`flex-shrink-0 px-4 py-2.5 rounded-full text-xs font-bold transition-all ${
                   activeTab === id
-                    ? 'bg-[#062212] text-white shadow-md'
+                    ? 'bg-primary-green text-white shadow-md'
                     : 'bg-white text-stone-600 border border-stone-200 hover:border-[#dfa62f]'
                 }`}
               >
@@ -699,7 +699,7 @@ function ProfilePageContent() {
           <div>
             {/* Heading */}
             <div className="mb-7">
-              <h1 className="text-2xl sm:text-4xl font-bold text-[#062212]">
+              <h1 className="text-2xl sm:text-4xl font-bold text-primary-green">
                 {TAB_LABELS[activeTab]}
               </h1>
               <div className="w-16 h-1 bg-[#dfa62f] mt-2 rounded-full shadow-[0_0_10px_#dfa62f]" />

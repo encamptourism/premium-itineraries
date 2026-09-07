@@ -43,7 +43,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
     <div className="w-full bg-[#fbf9f4] font-poppins pb-2 sm:pb-8 lg:pb-10">
 
       {/* 100% Full Screen Width Hero Section */}
-      <section className="relative w-full bg-[#062314] overflow-visible pt-3 sm:pt-6 pb-8 sm:pb-14 h-[60vh] min-h-[480px] lg:min-h-[560px] lg:h-[65vh] flex flex-col justify-between shadow-none sm:shadow-2xl">
+      <section className="relative w-full bg-primary-green overflow-visible pt-3 sm:pt-6 pb-8 sm:pb-14 h-[60vh] min-h-[480px] lg:min-h-[560px] lg:h-[65vh] flex flex-col justify-between shadow-none sm:shadow-2xl">
 
         {/* Full Viewport Screen Width API Hero Background Image */}
         <div className="absolute inset-0 w-full h-full overflow-hidden">
@@ -56,8 +56,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
             className="object-cover object-center transform scale-102 transition-transform duration-1000"
           />
           {/* Rich Scrim Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/65 via-black/30 to-black/80" />
-          <div className="absolute inset-0 bg-black/20 mix-blend-multiply" />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-black/60" />
         </div>
 
         {/* Top Left: Encamp Tag Logo anchored directly to Hero Section */}
@@ -107,7 +106,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
             </div>
 
             {/* Desktop-only Right 3 Columns: "OUR PACKAGES" Card POPPING OUT from Bottom */}
-            <div className="hidden lg:flex lg:col-span-3 w-full max-w-[290px] sm:max-w-[300px] mx-auto lg:ml-auto bg-[#062314] text-white rounded-2xl p-3 sm:p-4 flex-col justify-between border-2 border-[#f0c85a] transform translate-y-6 sm:translate-y-12 lg:translate-y-24 lg:translate-x-6 z-30">
+            <div className="hidden lg:flex lg:col-span-3 w-full max-w-[290px] sm:max-w-[300px] mx-auto lg:ml-auto bg-primary-green text-white rounded-2xl p-3 sm:p-4 flex-col justify-between border-2 border-[#f0c85a] transform translate-y-6 sm:translate-y-12 lg:translate-y-24 lg:translate-x-6 z-30">
 
               {/* Packages Title */}
               <div className="text-center pb-3 border-b border-white/20">
@@ -154,7 +153,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
                   <button
                     onClick={onOpenEnquiry}
-                    className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-[#062314] font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
+                    className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
                   >
                     Book Now
                   </button>
@@ -195,7 +194,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
                   <button
                     onClick={onOpenEnquiry}
-                    className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-[#062314] font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
+                    className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
                   >
                     Book Now
                   </button>
@@ -228,7 +227,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
                   <button
                     onClick={onOpenEnquiry}
-                    className="w-full border-2 border-[#f0c85a] text-[#f0c85a] hover:bg-[#f0c85a] hover:text-[#062314] font-black text-xs uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-2"
+                    className="w-full border-2 border-[#f0c85a] text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-2"
                   >
                     Enquire Now
                   </button>
@@ -243,40 +242,40 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
         </div>
 
         {/* 5-Pillars Horizontal Strip EXACTLY ANCHORED AT BOTTOM EDGE (50% INSIDE / 50% OUTSIDE) */}
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 lg:left-4 xl:left-8 lg:translate-x-0 transform translate-y-1/2 max-w-xl lg:max-w-2xl w-[94%] sm:w-auto bg-white text-[#062314] rounded-full py-1.5 sm:py-2.5 px-3 sm:px-6 border border-[#f0c85a]/40 shadow-xl z-30">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 lg:left-4 xl:left-8 lg:translate-x-0 transform translate-y-1/2 max-w-xl lg:max-w-2xl w-[94%] sm:w-auto bg-white text-primary-green rounded-full py-1.5 sm:py-2.5 px-3 sm:px-6 border border-[#f0c85a]/40 shadow-xl z-30">
           <div className="grid grid-cols-5 gap-0.5 sm:gap-1 divide-x divide-stone-200">
 
             <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
               <Compass className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#f0c85a] mb-0.5 stroke-[1.5]" />
-              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
+              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-primary-green leading-tight">
                 Handpicked Experiences
               </span>
             </div>
 
             <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
               <Home className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#f0c85a] mb-0.5 stroke-[1.5]" />
-              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
+              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-primary-green leading-tight">
                 Exclusive Stays
               </span>
             </div>
 
             <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
               <UserCheck className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#f0c85a] mb-0.5 stroke-[1.5]" />
-              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
+              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-primary-green leading-tight">
                 Local Experts
               </span>
             </div>
 
             <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
               <Headset className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#f0c85a] mb-0.5 stroke-[1.5]" />
-              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
+              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-primary-green leading-tight">
                 24x7 Support
               </span>
             </div>
 
             <div className="flex flex-col items-center justify-center text-center px-1 sm:px-2 py-0.5">
               <Leaf className="w-3.5 h-3.5 sm:w-6 sm:h-6 text-[#f0c85a] mb-0.5 stroke-[1.5]" />
-              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-[#062314] leading-tight">
+              <span className="text-[6.5px] sm:text-[9px] font-bold uppercase tracking-tighter sm:tracking-wider text-primary-green leading-tight">
                 Sustainable Travel
               </span>
             </div>
@@ -288,7 +287,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
       {/* Mobile-only "OUR PACKAGES" Card rendered below 80vh hero section */}
       <div className="block lg:hidden pt-10 sm:pt-14 px-2 sm:px-4 w-full max-w-2xl mx-auto">
-        <div className="bg-[#062314] text-white rounded-2xl p-4 sm:p-5 border-2 border-[#f0c85a] shadow-none sm:shadow-xl w-full">
+        <div className="bg-primary-green text-white rounded-2xl p-4 sm:p-5 border-2 border-[#f0c85a] shadow-none sm:shadow-xl w-full">
           {/* Packages Title */}
           <div className="text-center pb-3 border-b border-white/20">
             <h2 className="font-serif-display text-base sm:text-lg font-bold uppercase tracking-[0.2em] text-white">
@@ -334,7 +333,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
               <button
                 onClick={onOpenEnquiry}
-                className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-[#062314] font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
+                className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
               >
                 Book Now
               </button>
@@ -375,7 +374,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
               <button
                 onClick={onOpenEnquiry}
-                className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-[#062314] font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
+                className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
               >
                 Book Now
               </button>
@@ -408,7 +407,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
               <button
                 onClick={onOpenEnquiry}
-                className="w-full border-2 border-[#f0c85a] text-[#f0c85a] hover:bg-[#f0c85a] hover:text-[#062314] font-black text-xs uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-2"
+                className="w-full border-2 border-[#f0c85a] text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-2"
               >
                 Enquire Now
               </button>

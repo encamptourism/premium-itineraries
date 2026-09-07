@@ -55,14 +55,14 @@ export default function BookingCard({ booking }) {
             className="object-cover group-hover:scale-105 transition-transform duration-500"
           />
         ) : (
-          <div className="w-full h-full bg-[#062212] flex items-center justify-center">
+          <div className="w-full h-full bg-primary-green flex items-center justify-center">
             <MapPin className="w-8 h-8 text-[#dfa62f]" />
           </div>
         )}
         <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent sm:bg-gradient-to-r" />
 
         {daysUntil !== null && daysUntil >= 0 && (
-          <div className="absolute top-3 left-3 bg-[#dfa62f] text-[#020d07] text-[10px] font-bold px-2.5 py-1 rounded-full shadow-md">
+          <div className="absolute top-3 left-3 bg-[#dfa62f] text-primary-green text-[10px] font-bold px-2.5 py-1 rounded-full shadow-md">
             {daysUntil === 0 ? 'Today!' : `${daysUntil}d away`}
           </div>
         )}
@@ -74,7 +74,7 @@ export default function BookingCard({ booking }) {
           {/* Status + name */}
           <div className="flex items-start justify-between gap-3 flex-wrap">
             <div>
-              <h3 className="text-lg sm:text-xl font-bold text-[#062212] leading-tight group-hover:text-[#dfa62f] transition-colors">
+              <h3 className="text-lg sm:text-xl font-bold text-primary-green leading-tight group-hover:text-[#dfa62f] transition-colors">
                 {name}
               </h3>
               <div className="flex items-center gap-1.5 text-stone-500 text-xs mt-1">
@@ -109,13 +109,13 @@ export default function BookingCard({ booking }) {
         <div className="flex items-center justify-between pt-3 border-t border-stone-100 flex-wrap gap-3">
           <div>
             <span className="text-[10px] uppercase font-semibold text-stone-400 tracking-wider">Amount Paid</span>
-            <div className="font-poppins text-lg sm:text-xl font-bold text-[#062212]">
+            <div className="font-poppins text-lg sm:text-xl font-bold text-primary-green">
               ₹{amountPaid?.toLocaleString('en-IN')}
             </div>
           </div>
           <Link
             href={`/itinerary/${itinerarySlug}`}
-            className="inline-flex items-center gap-2 text-xs font-bold text-[#062212] hover:text-[#dfa62f] transition-colors group/link"
+            className="inline-flex items-center gap-2 text-xs font-bold text-primary-green hover:text-[#dfa62f] transition-colors group/link"
           >
             View Itinerary
             <ArrowRight className="w-3.5 h-3.5 text-[#dfa62f] group-hover/link:translate-x-1 transition-transform" />

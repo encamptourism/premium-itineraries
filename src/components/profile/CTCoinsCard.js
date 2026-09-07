@@ -63,7 +63,7 @@ export default function CTCoinsCard({ ctCoins }) {
 
           {tierInfo?.name && (
             <div className="flex flex-col items-end gap-2">
-              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-[#062212]/5 text-[#062212] border border-[#062212]/15 shadow-2xs">
+              <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-primary-green/5 text-primary-green border border-primary-green/15 shadow-2xs">
                 <TierIcon className="w-4 h-4 text-[#dfa62f]" />
                 {tierInfo.name} Tier Member
               </span>
@@ -74,11 +74,11 @@ export default function CTCoinsCard({ ctCoins }) {
         {tierInfo && nextTier ? (
           <div className="space-y-2 pt-1">
             <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-1.5 font-bold text-[#062212]">
+              <div className="flex items-center gap-1.5 font-bold text-primary-green">
                 <TierIcon className="w-3.5 h-3.5 text-[#dfa62f]" />
                 {tierInfo?.name || ''} <span className="text-stone-400 font-normal">Current</span>
               </div>
-              <div className="flex items-center gap-1.5 font-bold text-[#062212]">
+              <div className="flex items-center gap-1.5 font-bold text-primary-green">
                 <NextTierIcon className="w-3.5 h-3.5 text-stone-400" />
                 {nextTier?.name || ''} <span className="text-stone-400 font-normal">Next</span>
               </div>
@@ -89,7 +89,7 @@ export default function CTCoinsCard({ ctCoins }) {
                 className="h-full rounded-full transition-all duration-1000 ease-out"
                 style={{
                   width: `${progress}%`,
-                  background: `linear-gradient(90deg, ${tierInfo?.color || '#062212'}, ${nextTier?.color || '#dfa62f'})`,
+                  background: `linear-gradient(90deg, ${tierInfo?.color || 'var(--primary-green)'}, ${nextTier?.color || '#dfa62f'})`,
                 }}
               />
             </div>
@@ -97,7 +97,7 @@ export default function CTCoinsCard({ ctCoins }) {
             <div className="flex items-center justify-between text-[11px] text-stone-500">
               <span>{balance.toLocaleString()} coins</span>
               {nextTier?.min && (
-                <span className="font-semibold text-[#062212]">
+                <span className="font-semibold text-primary-green">
                   {(nextTier.min - balance).toLocaleString()} coins to {nextTier.name}
                 </span>
               )}
@@ -109,10 +109,10 @@ export default function CTCoinsCard({ ctCoins }) {
       <div className="bg-amber-50/60 border border-amber-200/80 rounded-3xl p-5">
         <div className="flex items-center gap-2 mb-1.5">
           <TrendingUp className="w-4 h-4 text-[#dfa62f]" />
-          <h4 className="text-xs font-bold text-[#062212] uppercase tracking-wider">How to Earn CT Coins</h4>
+          <h4 className="text-xs font-bold text-primary-green uppercase tracking-wider">How to Earn CT Coins</h4>
         </div>
         <p className="text-xs text-stone-600 leading-relaxed">
-          CT Coins are awarded by <span className="font-semibold text-[#062212]">Carbon Trace</span> each time you complete an itinerary booking.
+          CT Coins are awarded by <span className="font-semibold text-primary-green">Carbon Trace</span> each time you complete an itinerary booking.
           Your coins represent your commitment to carbon-offset luxury travel.
         </p>
       </div>
@@ -120,7 +120,7 @@ export default function CTCoinsCard({ ctCoins }) {
       {transactions?.length > 0 && (
         <div className="bg-white border border-stone-200 rounded-3xl overflow-hidden shadow-sm">
           <div className="px-5 py-3.5 border-b border-stone-100 bg-stone-50/50">
-            <h4 className="font-semibold text-[#062212] text-xs uppercase tracking-wider">Transaction History</h4>
+            <h4 className="font-semibold text-primary-green text-xs uppercase tracking-wider">Transaction History</h4>
           </div>
           <div className="divide-y divide-stone-100">
             {transactions.map((txn) => (

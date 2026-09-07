@@ -17,7 +17,7 @@ export default function GlobalError({ error, reset }) {
         </div>
 
         <div className="space-y-2">
-          <h1 className="text-2xl sm:text-3xl font-bold text-[#062212]">
+          <h1 className="text-2xl sm:text-3xl font-bold text-primary-green">
             Unexpected Error
           </h1>
           <p className="text-stone-500 text-sm leading-relaxed">
@@ -28,7 +28,7 @@ export default function GlobalError({ error, reset }) {
         <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
           <button
             onClick={() => reset()}
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-gradient-to-r from-[#062212] to-[#0b3a24] text-white font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all shadow-md active:scale-95"
+            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-6 py-3.5 rounded-xl bg-primary-green text-white font-bold text-xs uppercase tracking-wider hover:brightness-110 transition-all shadow-md active:scale-95"
           >
             <RefreshCw className="w-4 h-4" />
             Reload Page

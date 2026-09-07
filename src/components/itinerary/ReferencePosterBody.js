@@ -22,6 +22,10 @@ import {
   ClipboardCheck,
   Tag,
   ChevronDown,
+  Calendar,
+  Moon,
+  Mountain,
+  Gem,
 } from "lucide-react";
 
 export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
@@ -164,7 +168,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                       {/* 1. Day Badge */}
                       <div className="flex flex-col items-center shrink-0">
                         {/* Round Circle with Day Number inside */}
-                        <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-[#0c2b1a] text-white flex items-center justify-center shrink-0 border border-[#1b482e] shadow-xs p-1">
+                        <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-primary-green text-white flex items-center justify-center shrink-0 border border-primary-green shadow-xs p-1">
                           <span className="font-serif-display text-base sm:text-lg font-black leading-none text-white">
                             {dayNum}
                           </span>
@@ -193,11 +197,11 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                       <div className="flex items-start gap-1.5 sm:gap-2">
                         <svg
                           viewBox="0 0 24 24"
-                          className="w-4 h-4 sm:w-5 sm:h-5 text-[#0c2b1a] shrink-0 mt-0.5"
+                          className="w-4 h-4 sm:w-5 sm:h-5 text-primary-green shrink-0 mt-0.5"
                         >
                           <path
                             d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"
-                            fill="#0c2b1a"
+                            fill="var(--primary-green)"
                           />
                           <circle cx="12" cy="9" r="2.5" fill="#f0c85a" />
                         </svg>
@@ -260,57 +264,99 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
             <div className="border border-[#e2d8c3] rounded-2xl p-4 sm:p-5 space-y-4 font-poppins">
               {/* Left-Aligned Header */}
               <div className="text-left">
-                <h2 className="font-serif-display text-base sm:text-lg md:text-xl font-black uppercase tracking-[0.18em] text-[#062314]">
-                  Journey Overview
+                <h2 className="font-serif-display text-base sm:text-lg md:text-xl font-black uppercase tracking-[0.18em] text-primary-green">
+                  Journey <span className="text-[#f0c85a]">Overview</span>
                 </h2>
               </div>
 
               {/* Left-Aligned Overview Body Text */}
               {(itinerary?.overviewText || itinerary?.subtitle) && (
                 <div
-                  className="text-xs sm:text-sm text-stone-700 leading-relaxed text-left font-normal font-poppins [&_h3]:font-poppins [&_h3]:text-sm sm:[&_h3]:text-base [&_h3]:font-bold [&_h3]:text-[#062314] [&_h3]:mt-1.5 [&_h3]:mb-2 [&_ul]:space-y-2 [&_ul]:pl-0 [&_li]:text-xs sm:[&_li]:text-sm [&_li]:text-stone-700 [&_li]:leading-relaxed [&_strong]:font-semibold [&_strong]:text-stone-900"
+                  className="text-xs sm:text-sm text-stone-700 leading-relaxed text-left font-normal font-poppins [&_h3]:font-poppins [&_h3]:text-sm sm:[&_h3]:text-base [&_h3]:font-bold [&_h3]:text-primary-green [&_h3]:mt-1.5 [&_h3]:mb-2 [&_ul]:space-y-2 [&_ul]:pl-0 [&_li]:text-xs sm:[&_li]:text-sm [&_li]:text-stone-700 [&_li]:leading-relaxed [&_strong]:font-semibold [&_strong]:text-stone-900"
                   dangerouslySetInnerHTML={{ __html: itinerary.overviewText || itinerary.subtitle }}
                 />
               )}
 
-              {/* 4 Stat Metrics Bar with Vertical Dividers */}
-              <div className="border border-[#e6dece] rounded-xl p-2.5 sm:p-3">
-                <div className="grid grid-cols-4 divide-x divide-[#d9caad] text-center font-poppins">
-                  <div className="px-1 flex flex-col items-center justify-center">
-                    <div className="font-serif-display text-lg sm:text-xl font-bold text-[#062314] leading-none">
+              {/* 4 Stat Metrics Bar (Top-Aligned Icons & Numbers) */}
+              <div className="border border-[#d9caad] rounded-xl bg-[#faf7f0]/60 py-2.5 px-0.5 sm:py-3 sm:px-1 shadow-2xs">
+                <div className="grid grid-cols-4 divide-x divide-[#d9caad] text-center font-poppins items-start">
+
+                  {/* Column 1: DAYS */}
+                  <div className="px-0.5 flex flex-col items-center justify-start text-center py-0.5 h-full">
+                    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full overflow-hidden mb-1.5 shadow-xs shrink-0 flex items-center justify-center">
+                      <Image
+                        src="/images/calendar.png"
+                        alt="Days"
+                        width={44}
+                        height={44}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="font-poppins text-sm sm:text-base font-semibold text-primary-green leading-none">
                       {days}
                     </div>
-                    <div className="text-[9px] sm:text-[10px] font-bold uppercase text-stone-700 mt-1">
-                      Days
+                    <div className="font-poppins text-[8.5px] sm:text-[9.5px] md:text-[10.5px] font-medium uppercase tracking-wider text-stone-700 mt-1 leading-tight">
+                      DAYS
                     </div>
                   </div>
 
-                  <div className="px-1 flex flex-col items-center justify-center">
-                    <div className="font-serif-display text-lg sm:text-xl font-bold text-[#062314] leading-none">
+                  {/* Column 2: NIGHTS */}
+                  <div className="px-0.5 flex flex-col items-center justify-start text-center py-0.5 h-full">
+                    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full overflow-hidden mb-1.5 shadow-xs shrink-0 flex items-center justify-center">
+                      <Image
+                        src="/images/night.png"
+                        alt="Nights"
+                        width={44}
+                        height={44}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="font-poppins text-sm sm:text-base font-semibold text-primary-green leading-none">
                       {nights}
                     </div>
-                    <div className="text-[9px] sm:text-[10px] font-bold uppercase text-stone-700 mt-1">
-                      Nights
+                    <div className="font-poppins text-[8.5px] sm:text-[9.5px] md:text-[10.5px] font-medium uppercase tracking-wider text-stone-700 mt-1 leading-tight">
+                      NIGHTS
                     </div>
                   </div>
 
-                  <div className="px-1 flex flex-col items-center justify-center">
-                    <div className="font-serif-display text-lg sm:text-xl font-bold text-[#062314] leading-none">
-                      {totalActivities || "15+"}
+                  {/* Column 3: EXPERIENCES */}
+                  <div className="px-0.5 flex flex-col items-center justify-start text-center py-0.5 h-full">
+                    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full overflow-hidden mb-1.5 shadow-xs shrink-0 flex items-center justify-center">
+                      <Image
+                        src="/images/hill.png"
+                        alt="Experiences"
+                        width={44}
+                        height={44}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
-                    <div className="text-[8px] sm:text-[9px] font-bold uppercase text-stone-700 mt-1 leading-tight">
-                      Experiences
+                    <div className="font-poppins text-sm sm:text-base font-semibold text-primary-green leading-none">
+                      {totalActivities ? `${totalActivities}+` : "30+"}
+                    </div>
+                    <div className="font-poppins text-[8.5px] sm:text-[9.5px] md:text-[10.5px] font-medium uppercase tracking-wider text-stone-700 mt-1 leading-tight">
+                      EXPERIENCES
                     </div>
                   </div>
 
-                  <div className="px-1 flex flex-col items-center justify-center">
-                    <div className="font-serif-display text-lg sm:text-xl font-bold text-[#062314] leading-none">
+                  {/* Column 4: UNFORGETTABLE JOURNEY */}
+                  <div className="px-0.5 flex flex-col items-center justify-start text-center py-0.5 h-full">
+                    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full overflow-hidden mb-1.5 shadow-xs shrink-0 flex items-center justify-center">
+                      <Image
+                        src="/images/diamond.png"
+                        alt="Journey"
+                        width={44}
+                        height={44}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className="font-poppins text-sm sm:text-base font-semibold text-primary-green leading-none">
                       1
                     </div>
-                    <div className="text-[7.5px] sm:text-[8.5px] font-bold uppercase text-stone-700 mt-1 leading-tight">
-                      Unforgettable<br/>Journey
+                    <div className="font-poppins text-[7.5px] sm:text-[8.5px] md:text-[9.5px] font-medium uppercase tracking-tight text-stone-700 mt-1 leading-tight">
+                      UNFORGETTABLE<br/>JOURNEY
                     </div>
                   </div>
+
                 </div>
               </div>
 
@@ -318,7 +364,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
               <div className="space-y-2 py-1">
                 <div className="flex items-center justify-center gap-2">
                   <span className="h-[1px] w-8 sm:w-12 bg-[#c8b79b]" />
-                  <h3 className="font-serif-display text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-[#062314]">
+                  <h3 className="font-serif-display text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-primary-green">
                     Route Map
                   </h3>
                   <span className="h-[1px] w-8 sm:w-12 bg-[#c8b79b]" />
@@ -336,115 +382,193 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                 </div>
               </div>
 
-              {/* Detailed Travel Info Box (Matching Reference Image) */}
-              <div className="border border-[#e6dece] rounded-xl p-3.5 sm:p-4 space-y-3 text-xs sm:text-sm font-poppins">
-                {/* Row 1: Best Time to Visit & Travel Style */}
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="flex items-start gap-2.5">
-                    <Sun className="w-6 h-6 sm:w-7 sm:h-7 text-[#062314] shrink-0 stroke-[1.75] mt-0.5" />
+              {/* Luxury Travel Info Cards */}
+              <div className="space-y-3 font-poppins">
+
+                {/* Top Two Cards in 2 Columns */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  
+                  {/* Card 1: Best Time to Visit (Dark Green Hero Card) */}
+                  <div className="relative bg-primary-green border-2 border-[#f0c85a]/70 rounded-2xl rounded-tl-none rounded-br-none p-2.5 sm:p-3 text-white shadow-md flex flex-col justify-between">
                     <div>
-                      <div className="font-bold text-[#062314] uppercase text-[10px] sm:text-xs tracking-wider">
-                        Best Time to Visit
+                      {/* Top Header Row */}
+                      <div className="flex items-center gap-2 pr-3">
+                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary-green border-2 border-[#f0c85a] flex items-center justify-center shrink-0 shadow-inner">
+                          <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] stroke-[1.8]" />
+                        </div>
+                        <span className="w-[1.5px] h-7 bg-[#f0c85a]/40 shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <h4 className="[font-family:var(--font-display-serif)] text-xs sm:text-sm font-bold text-white leading-tight">
+                            Best Time To Visit
+                          </h4>
+                          <div className="text-[10px] sm:text-[11px] font-semibold text-[#f0c85a] mt-0.5">
+                            October to May
+                          </div>
+                        </div>
                       </div>
-                      <div className="font-semibold text-stone-800 text-[11px] sm:text-xs mt-0.5">
-                        October to May
-                      </div>
-                      <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-tight mt-0.5">
+
+                      {/* Description Below Utilizing Left Space & Full Card Width */}
+                      <div className="text-[9.5px] sm:text-[10.5px] text-stone-300 leading-snug mt-1.5 pr-4">
                         Ideal weather for sightseeing and outdoor experiences.
                       </div>
                     </div>
+
+                    <div className="absolute bottom-1.5 right-1.5 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#f0c85a] text-primary-green flex items-center justify-center shadow-xs">
+                      <span className="text-[8.5px] sm:text-[9.5px] font-black leading-none">→</span>
+                    </div>
                   </div>
 
-                  <div className="flex items-start gap-2.5">
-                    <Compass className="w-6 h-6 sm:w-7 sm:h-7 text-[#062314] shrink-0 stroke-[1.75] mt-0.5" />
+                  {/* Card 2: Travel Style (Light Cream Card) */}
+                  <div className="relative bg-[#faf7f0] border border-[#d9caad] rounded-2xl rounded-tl-none rounded-br-none p-2.5 sm:p-3 text-stone-900 shadow-2xs flex flex-col justify-between">
                     <div>
-                      <div className="font-bold text-[#062314] uppercase text-[10px] sm:text-xs tracking-wider">
-                        Travel Style
+                      {/* Top Header Row */}
+                      <div className="flex items-center gap-2 pr-3">
+                        <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary-green border-2 border-[#f0c85a] flex items-center justify-center shrink-0 shadow-inner">
+                          <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] stroke-[1.8]" />
+                        </div>
+                        <span className="w-[1.5px] h-7 bg-[#c29b4e]/40 shrink-0" />
+                        <div className="min-w-0 flex-1">
+                          <h4 className="[font-family:var(--font-display-serif)] text-xs sm:text-sm font-bold text-primary-green leading-tight">
+                            Travel Style
+                          </h4>
+                          <div className="text-[10px] sm:text-[11px] font-semibold text-[#c29b4e] mt-0.5">
+                            Nature | Adventure
+                          </div>
+                        </div>
                       </div>
-                      <div className="font-semibold text-stone-800 text-[11px] sm:text-xs mt-0.5">
-                        Nature | Adventure | Culture
-                      </div>
-                      <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-tight mt-0.5">
+
+                      {/* Description Below Utilizing Left Space & Full Card Width */}
+                      <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-snug mt-1.5 pr-4">
                         Perfect blend of relaxation and exploration.
                       </div>
                     </div>
+
+                    <div className="absolute bottom-1.5 right-1.5 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#f0c85a] text-primary-green flex items-center justify-center shadow-xs">
+                      <span className="text-[8.5px] sm:text-[9.5px] font-black leading-none">→</span>
+                    </div>
+                  </div>
+
+                </div>
+
+                {/* Card 3: Getting There (Full Width Row) */}
+                <div className="relative w-full bg-[#faf7f0] border border-[#d9caad] rounded-2xl rounded-tl-[24px] p-2.5 sm:p-3 text-stone-900 shadow-2xs flex flex-col justify-between">
+                  <div>
+                    {/* Top Header Row */}
+                    <div className="flex items-center gap-2 pr-3">
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary-green border-2 border-[#f0c85a] flex items-center justify-center shrink-0 shadow-inner">
+                        <Plane className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] stroke-[1.8]" />
+                      </div>
+                      <span className="w-[1.5px] h-7 bg-[#c29b4e]/40 shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <h4 className="[font-family:var(--font-display-serif)] text-xs sm:text-sm font-bold text-primary-green leading-tight">
+                          Getting There
+                        </h4>
+                        <div className="text-[10px] sm:text-[11px] font-semibold text-stone-800 leading-snug mt-0.5">
+                          Fly to Shillong (Umroi Airport) or Guwahati (GAU)
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Description Below Utilizing Left Space & Full Card Width */}
+                    <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-snug mt-1.5 pr-5">
+                      Road transfer included.
+                    </div>
+                  </div>
+
+                  <div className="absolute bottom-1.5 right-2 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#f0c85a] text-primary-green flex items-center justify-center shadow-xs">
+                    <span className="text-[8.5px] sm:text-[9.5px] font-black leading-none">→</span>
                   </div>
                 </div>
 
-                <div className="h-[1px] bg-[#d9caad]/60" />
-
-                {/* Row 2: Getting There */}
-                <div className="flex items-start gap-2.5">
-                  <Plane className="w-6 h-6 sm:w-7 sm:h-7 text-[#062314] shrink-0 stroke-[1.75] mt-0.5" />
+                {/* Card 4: Travel Responsibly (Full Width Row) */}
+                <div className="relative w-full bg-[#faf7f0] border border-[#d9caad] rounded-2xl rounded-tr-[24px] p-2.5 sm:p-3 text-stone-900 shadow-2xs flex flex-col justify-between">
                   <div>
-                    <div className="font-bold text-[#062314] uppercase text-[10px] sm:text-xs tracking-wider">
-                      Getting There
+                    {/* Top Header Row */}
+                    <div className="flex items-center gap-2 pr-3">
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary-green border-2 border-[#f0c85a] flex items-center justify-center shrink-0 shadow-inner">
+                        <Trees className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] stroke-[1.8]" />
+                      </div>
+                      <span className="w-[1.5px] h-7 bg-[#c29b4e]/40 shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <h4 className="[font-family:var(--font-display-serif)] text-xs sm:text-sm font-bold text-primary-green leading-tight">
+                          Travel Responsibly
+                        </h4>
+                      </div>
                     </div>
-                    <div className="font-semibold text-stone-800 text-[11px] sm:text-xs mt-0.5">
-                      Fly to Shillong (Umroi Airport) or Guwahati (GAU)
-                    </div>
-                    <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-tight mt-0.5">
-                      Road transfer included
-                    </div>
-                  </div>
-                </div>
 
-                <div className="h-[1px] bg-[#d9caad]/60" />
-
-                {/* Row 3: Travel Responsibly */}
-                <div className="flex items-start gap-2.5">
-                  <Trees className="w-6 h-6 sm:w-7 sm:h-7 text-[#062314] shrink-0 stroke-[1.75] mt-0.5" />
-                  <div>
-                    <div className="font-bold text-[#062314] uppercase text-[10px] sm:text-xs tracking-wider">
-                      Travel Responsibly
-                    </div>
-                    <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-tight mt-0.5">
+                    {/* Description Below Utilizing Left Space & Full Card Width */}
+                    <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-snug mt-1.5 pr-5">
                       We promote sustainable tourism and support local communities for a better tomorrow.
                     </div>
                   </div>
-                </div>
 
-                <div className="h-[1px] bg-[#d9caad]/60" />
-
-                {/* Row 4: 3 Sustainability Impact Metrics */}
-                <div className="grid grid-cols-3 gap-1 pt-1 text-center">
-                  <div className="flex flex-col items-center">
-                    <Cloud className="w-5 h-5 text-[#062314] stroke-[1.75] mb-1" />
-                    <span className="text-[10px] font-bold text-[#062314]">
-                      66 kg CO₂
-                    </span>
-                    <span className="text-[8.5px] text-stone-600 leading-tight">
-                      Offset per traveller
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col items-center">
-                    <Leaf className="w-5 h-5 text-[#062314] stroke-[1.75] mb-1" />
-                    <span className="text-[10px] font-bold text-[#062314]">
-                      Trees Planted
-                    </span>
-                    <span className="text-[8.5px] text-stone-600 leading-tight">
-                      For a Greener Earth
-                    </span>
-                  </div>
-
-                  <div className="flex flex-col items-center">
-                    <Users className="w-5 h-5 text-[#062314] stroke-[1.75] mb-1" />
-                    <span className="text-[10px] font-bold text-[#062314]">
-                      Local Communities
-                    </span>
-                    <span className="text-[8.5px] text-stone-600 leading-tight">
-                      Empowered
-                    </span>
+                  <div className="absolute bottom-1.5 right-2 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#f0c85a] text-primary-green flex items-center justify-center shadow-xs">
+                    <span className="text-[8.5px] sm:text-[9.5px] font-black leading-none">→</span>
                   </div>
                 </div>
+
+                {/* Card 5: Local Communities (Full Width Row) */}
+                <div className="relative w-full bg-[#faf7f0] border border-[#d9caad] rounded-2xl rounded-tl-[24px] p-2.5 sm:p-3 text-stone-900 shadow-2xs flex flex-col justify-between">
+                  <div>
+                    {/* Top Header Row */}
+                    <div className="flex items-center gap-2 pr-3">
+                      <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary-green border-2 border-[#f0c85a] flex items-center justify-center shrink-0 shadow-inner">
+                        <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] stroke-[1.8]" />
+                      </div>
+                      <span className="w-[1.5px] h-7 bg-[#c29b4e]/40 shrink-0" />
+                      <div className="min-w-0 flex-1">
+                        <h4 className="[font-family:var(--font-display-serif)] text-xs sm:text-sm font-bold text-primary-green leading-tight">
+                          Local Communities
+                        </h4>
+                        <div className="text-[10px] sm:text-[11px] font-semibold text-[#c29b4e] mt-0.5">
+                          Empowered
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Description Below Utilizing Left Space & Full Card Width */}
+                    <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-snug mt-1.5 pr-5">
+                      Directly supporting local homestays, indigenous guides, and community-led initiatives.
+                    </div>
+                  </div>
+
+                  <div className="absolute bottom-1.5 right-2 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#f0c85a] text-primary-green flex items-center justify-center shadow-xs">
+                    <span className="text-[8.5px] sm:text-[9.5px] font-black leading-none">→</span>
+                  </div>
+                </div>
+
+                {/* Sustainability Impact Bar (Preserved Offset per Traveller & Trees Planted) */}
+                <div className="border border-[#e6dece] rounded-xl bg-[#faf7f0]/80 p-3 shadow-2xs">
+                  <div className="grid grid-cols-2 gap-2 text-center divide-x divide-[#e2d8c3]">
+                    <div className="flex flex-col items-center px-1">
+                      <Cloud className="w-4.5 h-4.5 text-primary-green stroke-[1.75] mb-1" />
+                      <span className="text-[10px] font-bold text-primary-green">
+                        66 kg CO₂
+                      </span>
+                      <span className="text-[8.5px] text-stone-600 leading-tight">
+                        Offset per traveller
+                      </span>
+                    </div>
+
+                    <div className="flex flex-col items-center px-1">
+                      <Leaf className="w-4.5 h-4.5 text-primary-green stroke-[1.75] mb-1" />
+                      <span className="text-[10px] font-bold text-primary-green">
+                        Trees Planted
+                      </span>
+                      <span className="text-[8.5px] text-stone-600 leading-tight">
+                        For a Greener Earth
+                      </span>
+                    </div>
+                  </div>
+                </div>
+
               </div>
             </div>
 
             {/* Watch The Experience (Video & Shorts Block) */}
             <div className="rounded-2xl p-4 sm:p-5 border border-[#e2d8c3] space-y-3 font-poppins">
               <div className="text-center pb-1">
-                <h2 className="font-serif-display text-sm sm:text-base font-black uppercase tracking-[0.2em] text-[#062314]">
+                <h2 className="font-serif-display text-sm sm:text-base font-black uppercase tracking-[0.2em] text-primary-green">
                   Watch The {itinerary?.state || "Meghalaya"} Experience
                 </h2>
               </div>
@@ -483,11 +607,11 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                       className="object-cover group-hover:scale-105 transition-transform duration-500"
                     />
                     <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
-                      <div className="w-12 h-12 rounded-full bg-[#f8f5ed]/95 text-[#062314] flex items-center justify-center pl-1 group-hover:scale-110 transition-transform shadow-lg">
+                      <div className="w-12 h-12 rounded-full bg-[#f8f5ed]/95 text-primary-green flex items-center justify-center pl-1 group-hover:scale-110 transition-transform shadow-lg">
                         <Play className="w-5 h-5 fill-current" />
                       </div>
                     </div>
-                    <div className="absolute top-2.5 left-2.5 bg-[#f0c85a] text-[#020d07] text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md truncate max-w-[85%] shadow-md">
+                    <div className="absolute top-2.5 left-2.5 bg-[#f0c85a] text-primary-green text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md truncate max-w-[85%] shadow-md">
                       {itinerary?.premiumMedia?.youtubeVideo?.title || "Full Video"}
                     </div>
                   </a>
@@ -521,7 +645,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                         className="object-cover group-hover:scale-110 transition-transform duration-300"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col items-center justify-between p-1.5 text-center">
-                        <div className="w-5 h-5 rounded-full bg-white/90 text-[#062314] flex items-center justify-center pl-0.5 mt-1 shadow-sm group-hover:bg-[#f0c85a] transition-colors">
+                        <div className="w-5 h-5 rounded-full bg-white/90 text-primary-green flex items-center justify-center pl-0.5 mt-1 shadow-sm group-hover:bg-[#f0c85a] transition-colors">
                           <Play className="w-2.5 h-2.5 fill-current" />
                         </div>
                         <span className="text-[11px] text-white font-bold tracking-tight line-clamp-1 font-poppins">
@@ -542,7 +666,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
             {/* Unified Inclusions & Exclusions Card */}
             <div className="rounded-2xl overflow-hidden border border-[#e2d8c3] font-poppins">
               {/* Dark Forest Green Header Bar for Inclusions */}
-              <div className="bg-[#062314] text-white py-2.5 px-4 text-center border-b border-[#f0c85a]/40">
+              <div className="bg-primary-green text-white py-2.5 px-4 text-center border-b border-[#f0c85a]/40">
                 <h2 className="font-serif-display text-sm sm:text-base font-black uppercase tracking-[0.2em] text-white">
                   Inclusions
                 </h2>
@@ -566,7 +690,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                     <button
                       type="button"
                       onClick={() => setShowAllInclusions(!showAllInclusions)}
-                      className="text-xs font-semibold text-[#062314] hover:text-[#b38320] transition-colors flex items-center gap-1 focus:outline-none bg-transparent border-0 py-0.5 px-2 cursor-pointer select-none"
+                      className="text-xs font-semibold text-primary-green hover:text-[#b38320] transition-colors flex items-center gap-1 focus:outline-none bg-transparent border-0 py-0.5 px-2 cursor-pointer select-none"
                     >
                       <span>{showAllInclusions ? "Show Less" : `View More (${inclusions.length - 5} more)`}</span>
                       <ChevronDown
@@ -585,7 +709,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
                 {/* Exclusions Header */}
                 <div className="text-center pt-1 pb-1">
-                  <h2 className="font-serif-display text-xs sm:text-sm font-black uppercase tracking-[0.2em] text-[#062314]">
+                  <h2 className="font-serif-display text-xs sm:text-sm font-black uppercase tracking-[0.2em] text-primary-green">
                     Exclusions
                   </h2>
                 </div>
@@ -605,11 +729,11 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                     <button
                       type="button"
                       onClick={() => setShowAllExclusions(!showAllExclusions)}
-                      className="text-xs font-semibold text-[#062314] hover:text-red-700 transition-colors flex items-center gap-1 focus:outline-none bg-transparent border-0 py-0.5 px-2 cursor-pointer select-none"
+                      className="text-xs font-semibold text-primary-green hover:text-red-700 transition-colors flex items-center gap-1 focus:outline-none bg-transparent border-0 py-0.5 px-2 cursor-pointer select-none"
                     >
                       <span>{showAllExclusions ? "Show Less" : `View More (${exclusions.length - 4} more)`}</span>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 text-[#062314] transition-transform duration-300 ${
+                        className={`w-3.5 h-3.5 text-primary-green transition-transform duration-300 ${
                           showAllExclusions ? "rotate-180" : ""
                         }`}
                       />
@@ -621,15 +745,15 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
             {/* Flight & Visa Assistance Box */}
             <div className="rounded-2xl border border-[#e2d8c3] bg-[#fbf9f4] overflow-hidden text-center font-poppins shadow-none sm:shadow-xs">
-              <div className="bg-[#062314] py-2 px-3 text-center">
+              <div className="bg-primary-green py-2 px-3 text-center">
                 <h2 className="font-serif-display text-xs sm:text-sm font-black uppercase tracking-[0.14em] text-white">
                   Flight &amp; Visa Assistance
                 </h2>
               </div>
               <div className="grid grid-cols-3 divide-x divide-[#e2d8c3] py-3.5 px-1.5 text-center items-start">
                 <div className="flex flex-col items-center px-1">
-                  <Plane className="w-8 h-8 sm:w-9 sm:h-9 text-[#062314] mb-1.5 stroke-[1.4]" />
-                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-[#062314] leading-tight">
+                  <Plane className="w-8 h-8 sm:w-9 sm:h-9 text-primary-green mb-1.5 stroke-[1.4]" />
+                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-primary-green leading-tight">
                     Flight Tickets
                   </span>
                   <span className="text-[8px] sm:text-[9px] text-stone-600 font-medium leading-snug mt-1">
@@ -638,8 +762,8 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                 </div>
 
                 <div className="flex flex-col items-center px-1">
-                  <FileText className="w-8 h-8 sm:w-9 sm:h-9 text-[#062314] mb-1.5 stroke-[1.4]" />
-                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-[#062314] leading-tight">
+                  <FileText className="w-8 h-8 sm:w-9 sm:h-9 text-primary-green mb-1.5 stroke-[1.4]" />
+                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-primary-green leading-tight">
                     Visa Assistance
                   </span>
                   <span className="text-[8px] sm:text-[9px] text-stone-600 font-medium leading-snug mt-1">
@@ -648,8 +772,8 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                 </div>
 
                 <div className="flex flex-col items-center px-1">
-                  <UserCheck className="w-8 h-8 sm:w-9 sm:h-9 text-[#062314] mb-1.5 stroke-[1.4]" />
-                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-[#062314] leading-tight">
+                  <UserCheck className="w-8 h-8 sm:w-9 sm:h-9 text-primary-green mb-1.5 stroke-[1.4]" />
+                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-primary-green leading-tight">
                     Foreign Travellers
                   </span>
                   <span className="text-[8px] sm:text-[9px] text-stone-600 font-medium leading-snug mt-1">
@@ -661,7 +785,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
             {/* Why Travel With Us? Box */}
             <div className="rounded-2xl border border-[#e2d8c3] bg-[#fbf9f4] overflow-hidden text-center font-poppins shadow-xs">
-              <div className="bg-[#062314] py-2 px-3 text-center">
+              <div className="bg-primary-green py-2 px-3 text-center">
                 <h2 className="font-serif-display text-xs sm:text-sm font-black uppercase tracking-[0.14em] text-white">
                   {itinerary?.whyWithEncamp?.title || "Why Travel With Us?"}
                 </h2>
@@ -669,21 +793,21 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
               <div className="grid grid-cols-3 divide-x divide-[#e2d8c3] py-3.5 px-1.5 text-center items-start">
                 <div className="flex flex-col items-center px-1">
                   <Tag className="w-8 h-8 sm:w-9 sm:h-9 text-[#f0c85a] mb-1.5 stroke-[1.4]" />
-                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-[#062314] leading-tight">
+                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-primary-green leading-tight">
                     Best Price Guarantee
                   </span>
                 </div>
 
                 <div className="flex flex-col items-center px-1">
                   <ClipboardCheck className="w-8 h-8 sm:w-9 sm:h-9 text-[#f0c85a] mb-1.5 stroke-[1.4]" />
-                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-[#062314] leading-tight">
+                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-primary-green leading-tight">
                     Easy &amp; Secure Booking
                   </span>
                 </div>
 
                 <div className="flex flex-col items-center px-1">
                   <Compass className="w-8 h-8 sm:w-9 sm:h-9 text-[#f0c85a] mb-1.5 stroke-[1.4]" />
-                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-[#062314] leading-tight">
+                  <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-primary-green leading-tight">
                     24x7 Customer Support
                   </span>
                 </div>

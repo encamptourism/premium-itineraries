@@ -42,7 +42,7 @@ export default async function Home() {
           sizes="100vw"
           className="object-cover object-center scale-105"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-forest-dark via-forest-dark/50 to-forest-dark/80" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/40" />
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-5 py-12 sm:py-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gold-light text-xs font-semibold uppercase tracking-widest">

@@ -24,7 +24,7 @@ export default function ReferencePosterFaqFooter({ itinerary }) {
             
             {/* FAQ Title Header Embedded into Top Border Line */}
             <div className="absolute -top-3.5 sm:-top-4 left-1/2 -translate-x-1/2 bg-[#fbf9f4] px-4 flex items-center justify-center z-10">
-              <h2 className="font-serif-display text-base sm:text-lg md:text-xl font-black uppercase tracking-[0.2em] text-[#062314] whitespace-nowrap">
+              <h2 className="font-serif-display text-base sm:text-lg md:text-xl font-black uppercase tracking-[0.2em] text-primary-green whitespace-nowrap">
                 FAQ&apos;S
               </h2>
             </div>
@@ -38,17 +38,17 @@ export default function ReferencePosterFaqFooter({ itinerary }) {
                 >
                   {/* Question Line */}
                   <div className="text-xs sm:text-sm leading-snug flex items-start gap-1">
-                    <span className="font-extrabold text-[#062314] shrink-0">
+                    <span className="font-extrabold text-primary-green shrink-0">
                       Q{i + 1}.
                     </span>
-                    <span className="font-bold text-[#062314]">
+                    <span className="font-bold text-primary-green">
                       {faq.question}
                     </span>
                   </div>
 
                   {/* Answer Line */}
                   <div className="text-xs sm:text-sm text-stone-700 leading-relaxed flex items-start gap-1">
-                    <span className="font-bold text-[#062314] shrink-0">
+                    <span className="font-bold text-primary-green shrink-0">
                       A:
                     </span>
                     <span>{faq.answer}</span>
@@ -63,7 +63,7 @@ export default function ReferencePosterFaqFooter({ itinerary }) {
                 <button
                   type="button"
                   onClick={() => setShowAllFaqs(!showAllFaqs)}
-                  className="text-xs sm:text-sm font-semibold text-[#062314] hover:text-[#b38320] transition-colors flex items-center gap-1.5 focus:outline-none bg-transparent border-0 py-1 px-3 cursor-pointer select-none"
+                  className="text-xs sm:text-sm font-semibold text-primary-green hover:text-[#b38320] transition-colors flex items-center gap-1.5 focus:outline-none bg-transparent border-0 py-1 px-3 cursor-pointer select-none"
                 >
                   <span>{showAllFaqs ? "Show Less" : `Read More FAQs (${faqs.length - 6} more)`}</span>
                   <ChevronDown

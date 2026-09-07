@@ -38,7 +38,7 @@ export default function ForgotPasswordPage() {
       <div className="w-full max-w-md mb-6">
         <Link
           href="/login"
-          className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-[#062212] font-medium transition-colors"
+          className="inline-flex items-center gap-2 text-sm text-stone-500 hover:text-primary-green font-medium transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           Back to Sign In
@@ -56,7 +56,7 @@ export default function ForgotPasswordPage() {
               <div className="w-16 h-16 rounded-2xl bg-[#dfa62f]/10 border border-[#dfa62f]/20 flex items-center justify-center mx-auto">
                 <Mail className="w-7 h-7 text-[#dfa62f]" />
               </div>
-              <h1 className="font-serif-display text-2xl sm:text-3xl font-bold text-[#062212]">
+              <h1 className="font-serif-display text-2xl sm:text-3xl font-bold text-primary-green">
                 Reset Password
               </h1>
               <p className="text-stone-500 text-sm">
@@ -93,7 +93,7 @@ export default function ForgotPasswordPage() {
                 id="forgot-submit-btn"
                 type="submit"
                 disabled={isPending}
-                className="w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl bg-[#062212] hover:bg-[#0b3a24] text-white font-bold text-sm uppercase tracking-wider hover:shadow-lg transition-all active:scale-[0.98] disabled:opacity-60"
+                className="w-full flex items-center justify-center gap-2.5 py-4 rounded-2xl bg-primary-green hover:bg-primary-green text-white font-bold text-sm uppercase tracking-wider hover:shadow-lg transition-all active:scale-[0.98] disabled:opacity-60"
               >
                 {isPending ? (
                   <>
@@ -114,14 +114,14 @@ export default function ForgotPasswordPage() {
             <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto">
               <CheckCircle className="w-8 h-8 text-green-600" />
             </div>
-            <h2 className="font-serif-display text-2xl font-bold text-[#062212]">Code Sent!</h2>
+            <h2 className="font-serif-display text-2xl font-bold text-primary-green">Code Sent!</h2>
             <p className="text-stone-500 text-sm leading-relaxed">
               We have sent a 6-digit verification code to{' '}
               <span className="font-semibold text-stone-700">{email}</span>.
             </p>
             <Link
               href={`/login`}
-              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-[#062212] hover:bg-[#0b3a24] text-white font-bold text-xs uppercase tracking-wider transition-all"
+              className="inline-flex items-center gap-2 px-6 py-3.5 rounded-2xl bg-primary-green hover:bg-primary-green text-white font-bold text-xs uppercase tracking-wider transition-all"
             >
               Back to Sign In
               <ArrowRight className="w-4 h-4" />

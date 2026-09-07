@@ -36,7 +36,7 @@ export class ErrorBoundary extends React.Component {
             </div>
 
             <div className="space-y-2">
-              <h2 className="text-2xl font-bold text-[#062212]">
+              <h2 className="text-2xl font-bold text-primary-green">
                 {this.props.title || 'Something went wrong'}
               </h2>
               <p className="text-stone-500 text-sm leading-relaxed">
@@ -48,7 +48,7 @@ export class ErrorBoundary extends React.Component {
             <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
               <button
                 onClick={this.resetError}
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-[#062212] text-white font-bold text-xs uppercase tracking-wider hover:bg-[#0b3a24] transition-all shadow-md active:scale-95"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-5 py-3 rounded-xl bg-primary-green text-white font-bold text-xs uppercase tracking-wider hover:bg-primary-green transition-all shadow-md active:scale-95"
               >
                 <RefreshCw className="w-4 h-4" />
                 Try Again
