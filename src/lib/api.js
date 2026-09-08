@@ -43,10 +43,10 @@ export async function getPremiumItinerary(slug) {
       headers,
       signal: AbortSignal.timeout(10000),
       next: {
-        revalidate: 60, // ISR cache revalidation every 60 seconds
+        revalidate: 0, // Always fetch live fresh API response
         tags: [`itinerary-${slug}`],
       },
-      cache: "force-cache",
+      cache: "no-store",
     });
 
     if (!res.ok) {
@@ -64,6 +64,20 @@ export async function getPremiumItinerary(slug) {
     console.error(`[API Error] Failed to fetch itinerary "${slug}":`, error.message);
     return null;
   }
+}
+
+/**
+ * Get the full API URL used to fetch an itinerary by slug
+ * @param {string} slug - The itinerary slug
+ * @returns {string} Complete endpoint URL string
+ */
+export function getItineraryApiUrl(slug) {
+  const baseUrl = config.baseUrl?.replace(/\/+$/, "") || "";
+  if (!baseUrl) return "";
+  const path = baseUrl.endsWith("/premium-itineraries")
+    ? `/${slug}`
+    : `/premium-itineraries/${slug}`;
+  return `${baseUrl}${path}`;
 }
 
 /**

@@ -4,7 +4,7 @@ export const ACCESS_TOKEN_COOKIE = 'ep_access_token';
 export const REFRESH_TOKEN_COOKIE = 'ep_refresh_token';
 export const USER_COOKIE = 'ep_user';
 
-const COOKIE_MAX_AGE = 7 * 24 * 60 * 60; // 7 days
+const COOKIE_MAX_AGE = 7 * 24 * 60 * 60;
 
 const BASE_URL = (process.env.BASE_URL || '').replace(/\/+$/, '');
 const AUTH_API_BASE_URL = (
@@ -12,8 +12,6 @@ const AUTH_API_BASE_URL = (
   process.env.NEXT_PUBLIC_AUTH_API_URL ||
   `${BASE_URL}/customer/auth`
 ).replace(/\/+$/, '');
-
-// ── Mobile Number Helper (Prefix 91 to 10-digit mobile numbers) ──
 
 export function formatMobileWith91(val) {
   if (!val) return '';
@@ -29,26 +27,32 @@ export function formatMobileWith91(val) {
   return digits;
 }
 
-// ── Cookie Helpers (Store External Tokens Directly in HttpOnly Cookies) ──
-
 export async function setAuthCookies({ accessToken, refreshToken, user }) {
   const cookieStore = await cookies();
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'lax',
+    sameSite: 'strict',
     maxAge: COOKIE_MAX_AGE,
     path: '/',
   };
 
-  const tokenToSet = accessToken || 'session_active';
-  cookieStore.set(ACCESS_TOKEN_COOKIE, tokenToSet, options);
-
-  if (refreshToken) {
-    cookieStore.set(REFRESH_TOKEN_COOKIE, refreshToken, options);
+  if (accessToken && typeof accessToken === 'string' && accessToken.trim() !== '' && accessToken !== 'session_active') {
+    cookieStore.set(ACCESS_TOKEN_COOKIE, accessToken.trim(), options);
+  } else {
+    cookieStore.delete(ACCESS_TOKEN_COOKIE);
   }
-  if (user) {
+
+  if (refreshToken && typeof refreshToken === 'string' && refreshToken.trim() !== '') {
+    cookieStore.set(REFRESH_TOKEN_COOKIE, refreshToken.trim(), options);
+  } else if (refreshToken === null) {
+    cookieStore.delete(REFRESH_TOKEN_COOKIE);
+  }
+
+  if (user && typeof user === 'object') {
     cookieStore.set(USER_COOKIE, JSON.stringify(user), options);
+  } else if (user === null) {
+    cookieStore.delete(USER_COOKIE);
   }
 }
 
@@ -62,7 +66,8 @@ export async function getAuthCookies() {
   if (rawUser) {
     try {
       user = JSON.parse(rawUser);
-    } catch {
+    } catch (err) {
+      console.error('[Auth Cookie Error] Corrupted user cookie payload:', err.message);
       user = null;
     }
   }
@@ -77,7 +82,35 @@ export async function clearAuthCookies() {
   cookieStore.delete(USER_COOKIE);
 }
 
-// ── External Auth API Calls ──
+function sanitizeErrorMessage(rawErrorMsg, defaultUserMsg = 'An error occurred. Please try again.') {
+  if (!rawErrorMsg) return defaultUserMsg;
+  const msg = String(rawErrorMsg).trim();
+
+  const safePatterns = [
+    /invalid.*otp/i,
+    /otp.*expired/i,
+    /incorrect.*password/i,
+    /user.*not.*found/i,
+    /user.*already.*exist/i,
+    /email.*already.*exist/i,
+    /mobile.*already.*exist/i,
+    /already registered/i,
+    /invalid email/i,
+    /invalid mobile/i,
+    /invalid phone/i,
+    /session expired/i,
+    /please log in/i,
+    /passwords do not match/i,
+  ];
+
+  for (const pattern of safePatterns) {
+    if (pattern.test(msg)) {
+      return msg;
+    }
+  }
+
+  return defaultUserMsg;
+}
 
 async function fetchAuthApi(endpoint, options = {}) {
   const url = `${AUTH_API_BASE_URL}/${endpoint.replace(/^\/+/, '')}`;
@@ -87,14 +120,45 @@ async function fetchAuthApi(endpoint, options = {}) {
       headers: { accept: '*/*', 'Content-Type': 'application/json', ...(options.headers || {}) },
       signal: AbortSignal.timeout(15000),
     });
-    const data = await res.json().catch(() => null);
-    if (!res.ok) {
-      const msg = data?.message || data?.error || `Request failed with status ${res.status}`;
-      return { success: false, error: msg };
+
+    const text = await res.text();
+    let data = null;
+    if (text) {
+      try {
+        data = JSON.parse(text);
+      } catch (parseErr) {
+        console.error(`[Auth API Error] Failed to parse JSON response from ${url}:`, parseErr.message, 'Raw text:', text.substring(0, 200));
+        return {
+          success: false,
+          error: 'Authentication service unavailable. Please try again later.',
+        };
+      }
     }
-    return { success: data?.success ?? true, ...data };
+
+    if (!res.ok) {
+      const rawMsg = Array.isArray(data?.message)
+        ? data.message.join(', ')
+        : (data?.message || data?.error || (typeof data === 'string' ? data : `Request failed with status ${res.status}`));
+      
+      console.error(`[Auth API Error] HTTP ${res.status} from ${url}:`, rawMsg);
+      return { success: false, error: sanitizeErrorMessage(rawMsg, 'Authentication request failed. Please try again.') };
+    }
+
+    const isPayloadSuccess = data?.success !== false && data?.status !== false && data?.status !== 'error' && !data?.error;
+
+    if (!isPayloadSuccess) {
+      const rawMsg = Array.isArray(data?.message)
+        ? data.message.join(', ')
+        : (data?.message || data?.error || 'Auth API indicated request failure.');
+      
+      console.error(`[Auth API Payload Failure] ${url}:`, rawMsg);
+      return { success: false, error: sanitizeErrorMessage(rawMsg, 'Authentication request failed. Please try again.') };
+    }
+
+    return { success: true, ...data };
   } catch (err) {
-    return { success: false, error: err.message || 'Unable to connect to auth server.' };
+    console.error(`[Auth API Fetch Error] Call to ${url} failed:`, err);
+    return { success: false, error: 'Unable to connect to authentication server. Please try again later.' };
   }
 }
 
@@ -138,22 +202,28 @@ export async function verifyOtp(identifier, otp) {
 }
 
 export async function logoutUser(accessToken) {
-  const headers = accessToken ? { Authorization: accessToken.startsWith('Bearer ') ? accessToken : `Bearer ${accessToken}` } : {};
+  if (!accessToken || accessToken === 'session_active') {
+    return { success: false, error: 'Missing access token for logout.' };
+  }
+  const headers = { Authorization: accessToken.startsWith('Bearer ') ? accessToken : `Bearer ${accessToken}` };
   return fetchAuthApi('logout', { method: 'POST', headers, body: JSON.stringify({}) });
 }
 
 export async function updateProfileUser(formData, accessToken) {
-  const url = `${BASE_URL}/customer/profile/update`;
-  const token = (accessToken && accessToken !== 'session_active')
-    ? accessToken
-    : (process.env.BASE_TOKEN || '');
-
-  const headers = { accept: '*/*' };
-  if (token) {
-    headers['Authorization'] = token.startsWith('Bearer ') ? token : `Bearer ${token}`;
-    headers['token'] = token;
-    headers['base-token'] = token;
+  if (!accessToken || accessToken === 'session_active') {
+    return {
+      success: false,
+      error: 'Session expired. Please log in again to update your profile.',
+    };
   }
+
+  const url = `${BASE_URL}/customer/profile/update`;
+  const token = accessToken.trim();
+
+  const headers = {
+    accept: '*/*',
+    Authorization: token.startsWith('Bearer ') ? token : `Bearer ${token}`,
+  };
 
   const payloadEntries = Array.from(formData.entries()).map(([k, v]) => [
     k,
@@ -178,7 +248,16 @@ export async function updateProfileUser(formData, accessToken) {
       signal: AbortSignal.timeout(20000),
     });
 
-    const data = await res.json().catch(() => null);
+    const text = await res.text();
+    let data = null;
+    if (text) {
+      try {
+        data = JSON.parse(text);
+      } catch (parseErr) {
+        console.error('[API FETCH Error] Failed to parse JSON profile update response:', parseErr.message, 'Raw response:', text.substring(0, 200));
+        return { success: false, error: 'Profile update service unavailable. Please try again later.' };
+      }
+    }
 
     console.log('[API FETCH] Profile Update Backend Response:');
     console.log('Status Code:', res.status);
@@ -186,20 +265,43 @@ export async function updateProfileUser(formData, accessToken) {
     console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
 
     if (!res.ok) {
-      const msg = Array.isArray(data?.message)
+      const rawMsg = Array.isArray(data?.message)
         ? data.message.join(', ')
-        : (data?.message || data?.error || (typeof data === 'string' ? data : `Request failed with status ${res.status}`));
-      return { success: false, error: msg };
+        : (data?.message || data?.error || (typeof data === 'string' ? data : `Status code ${res.status}`));
+      
+      console.error(`[Profile Update Error] HTTP ${res.status}:`, rawMsg);
+      return { success: false, error: sanitizeErrorMessage(rawMsg, 'Profile update failed. Please check your details and try again.') };
     }
 
-    const returnedUser = data?.user || data?.data?.user || data?.data || data || null;
+    const isPayloadSuccess = data?.success !== false && data?.status !== false && data?.status !== 'error' && !data?.error;
+
+    if (!isPayloadSuccess) {
+      const rawMsg = Array.isArray(data?.message)
+        ? data.message.join(', ')
+        : (data?.message || data?.error || 'Profile update rejected');
+      
+      console.error('[Profile Update Payload Error]:', rawMsg);
+      return { success: false, error: sanitizeErrorMessage(rawMsg, 'Profile update failed. Please check your details and try again.') };
+    }
+
+    const returnedUser = data?.user || data?.data?.user || data?.data || null;
+
+    if (!returnedUser || typeof returnedUser !== 'object') {
+      console.error('[Profile Update Error] Server succeeded but returned empty user object:', data);
+      return {
+        success: false,
+        error: 'Profile update could not be completed. Please try logging in again.',
+      };
+    }
+
     return {
-      success: data?.success ?? true,
-      message: data?.message || 'Profile updated successfully',
+      success: true,
+      message: 'Profile updated successfully',
       user: returnedUser,
     };
   } catch (err) {
-    console.error('[API FETCH Error] Profile update failed:', err);
-    return { success: false, error: err.message || 'Unable to update profile.' };
+    console.error('[API FETCH Error] Profile update exception:', err);
+    return { success: false, error: 'Unable to update profile. Please try again later.' };
   }
 }
+

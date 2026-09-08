@@ -28,6 +28,132 @@ import {
   Gem,
 } from "lucide-react";
 
+/**
+ * Safely extracts the array of image URLs for a day item.
+ * Strictly respects day.images if provided by the API, without mixing in stay/activity images.
+ */
+function getDayImages(day) {
+  const images = [];
+
+  const addUrl = (item) => {
+    if (!item) return;
+    if (typeof item === "string") {
+      const trimmed = item.trim();
+      if (trimmed && !images.includes(trimmed)) {
+        images.push(trimmed);
+      }
+    } else if (typeof item === "object") {
+      const u =
+        item.url ||
+        item.src ||
+        item.image ||
+        item.imageUrl ||
+        item.photo ||
+        item.path ||
+        item.uri ||
+        item.s3Url ||
+        item.link;
+      if (typeof u === "string" && u.trim()) {
+        const trimmed = u.trim();
+        if (!images.includes(trimmed)) {
+          images.push(trimmed);
+        }
+      }
+    }
+  };
+
+  // 1. Primary check: day.images array or single item
+  if (Array.isArray(day?.images) && day.images.length > 0) {
+    day.images.forEach(addUrl);
+  } else if (day?.images) {
+    addUrl(day.images);
+  }
+
+  // 2. Secondary check: day.image single string/object
+  if (images.length === 0 && day?.image) {
+    addUrl(day.image);
+  }
+
+  // 3. Tertiary check: day.photos / day.gallery
+  if (images.length === 0) {
+    if (Array.isArray(day?.photos) && day.photos.length > 0) {
+      day.photos.forEach(addUrl);
+    } else if (Array.isArray(day?.gallery) && day.gallery.length > 0) {
+      day.gallery.forEach(addUrl);
+    }
+  }
+
+  // 4. Quaternary check: day.stay image if no day images found
+  if (images.length === 0 && Array.isArray(day?.stay)) {
+    day.stay.forEach((s) => {
+      if (s?.image) addUrl(s.image);
+      else if (s?.url) addUrl(s.url);
+    });
+  }
+
+  // 5. Fallback default image if completely empty
+  if (images.length === 0) {
+    images.push(
+      "https://encamp-s3b.s3.ap-south-1.amazonaws.com/1787245472531_Encamp%20terra%20meghalaya.png.jpg"
+    );
+  }
+
+  return images;
+}
+
+/**
+ * Image Slider component that automatically cycles images every 5 seconds
+ */
+function DayImageSlider({ images, alt, className = "" }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!images || images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [images]);
+
+  if (!images || images.length === 0) return null;
+
+  return (
+    <div className={`relative w-full h-full overflow-hidden ${className}`}>
+      {images.map((img, idx) => (
+        <Image
+          key={`${img}-${idx}`}
+          src={img}
+          alt={alt}
+          fill
+          sizes="(max-width: 640px) 100vw, 140px"
+          className={`object-cover transition-opacity duration-1000 ease-in-out ${
+            idx === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+          }`}
+          priority={idx === 0}
+        />
+      ))}
+
+      {/* Pagination dot indicators when multiple images are present */}
+      {images.length > 1 && (
+        <div className="absolute bottom-1.5 left-0 right-0 z-20 flex justify-center items-center gap-1 pointer-events-none px-1">
+          {images.map((_, idx) => (
+            <span
+              key={idx}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                idx === currentIndex
+                  ? "w-3.5 bg-white shadow-xs opacity-100"
+                  : "w-1.5 bg-white/60 drop-shadow-xs"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
   const [showAllInclusions, setShowAllInclusions] = useState(false);
   const [showAllExclusions, setShowAllExclusions] = useState(false);
@@ -102,7 +228,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
     : [];
 
   const galleryImages = Array.isArray(itinerary?.gallery) ? itinerary.gallery.map((g) => g.url) : [];
-  const dayImages = dayWise.map((d) => d.image || (Array.isArray(d.gallery) && d.gallery[0]?.url)).filter(Boolean);
+  const dayImages = dayWise.flatMap((d) => getDayImages(d)).filter(Boolean);
   const uniqueImagesPool = [...new Set([...galleryImages, ...dayImages, overviewImage])];
 
   const shortsToRender = (locations.length > 0 ? locations.slice(0, 4) : ["Shillong", "Cherrapunji", "Dawki", "Meghalaya"]).map((loc, idx) => {
@@ -152,11 +278,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
             <div className="space-y-6 pt-1">
               {dayWise.map((day, idx) => {
                 const dayNum = day.dayNumber || idx + 1;
-                const dayImage =
-                  day.image ||
-                  (Array.isArray(day.gallery) && day.gallery[0]?.url) ||
-                  (Array.isArray(day.stay) && day.stay[0]?.image) ||
-                  "https://encamp-s3b.s3.ap-south-1.amazonaws.com/1787245472531_Encamp%20terra%20meghalaya.png.jpg";
+                const currentDayImages = getDayImages(day);
 
                 return (
                   <div
@@ -179,15 +301,9 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                         </span>
                       </div>
 
-                      {/* 2. Day Thumbnail Photo (Expanded width on phone view) */}
+                      {/* 2. Day Thumbnail Photo (Expanded width on phone view & Auto-cycles images every 5s) */}
                       <div className="relative flex-1 sm:flex-none w-full sm:w-32 h-24 sm:h-32 rounded-xl sm:rounded-2xl overflow-hidden border border-stone-200/80 shadow-xs">
-                        <Image
-                          src={dayImage}
-                          alt={`Day ${dayNum}`}
-                          fill
-                          sizes="(max-width: 640px) 100vw, 140px"
-                          className="object-cover"
-                        />
+                        <DayImageSlider images={currentDayImages} alt={`Day ${dayNum}`} />
                       </div>
                     </div>
 
@@ -361,26 +477,28 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
               </div>
 
               {/* ROUTE MAP Container */}
-              <div className="space-y-2 py-1">
-                <div className="flex items-center justify-center gap-2">
-                  <span className="h-[1px] w-8 sm:w-12 bg-[#c8b79b]" />
-                  <h3 className="font-serif-display text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-primary-green">
-                    Route Map
-                  </h3>
-                  <span className="h-[1px] w-8 sm:w-12 bg-[#c8b79b]" />
-                </div>
+              {(itinerary?.sitemapImage || itinerary?.mapImage) && (
+                <div className="space-y-2 py-1">
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="h-[1px] w-8 sm:w-12 bg-[#c8b79b]" />
+                    <h3 className="font-serif-display text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-primary-green">
+                      Route Map
+                    </h3>
+                    <span className="h-[1px] w-8 sm:w-12 bg-[#c8b79b]" />
+                  </div>
 
-                {/* Map Graphic Image */}
-                <div className="relative w-full h-44 sm:h-52 rounded-lg overflow-hidden flex items-center justify-center p-1">
-                  <Image
-                    src={itinerary?.mapImage || "/images/map.png"}
-                    alt="Route Map"
-                    width={500}
-                    height={300}
-                    className="w-full h-auto object-contain max-h-52"
-                  />
+                  {/* Map Graphic Image */}
+                  <div className="relative w-full h-44 sm:h-52 rounded-lg overflow-hidden flex items-center justify-center p-1">
+                    <Image
+                      src={typeof itinerary?.sitemapImage === "string" ? itinerary.sitemapImage : itinerary?.sitemapImage?.url || itinerary?.mapImage}
+                      alt="Route Map"
+                      width={500}
+                      height={300}
+                      className="w-full h-auto object-contain max-h-52"
+                    />
+                  </div>
                 </div>
-              </div>
+              )}
 
               {/* Luxury Travel Info Cards */}
               <div className="space-y-3 font-poppins">
@@ -662,7 +780,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
           {/* ========================================================================= */}
           {/* COLUMN 3 (RIGHT): INCLUSIONS, EXCLUSIONS, FLIGHT/VISA, WHY TRAVEL */}
           {/* ========================================================================= */}
-          <div className="lg:col-span-3 space-y-4 mt-[10px] pt-8 sm:pt-14 lg:pt-32 w-full max-w-2xl lg:max-w-[300px] mx-auto lg:ml-auto transform lg:translate-x-6">
+          <div className="lg:col-span-3 space-y-4 mt-[10px] pt-8 sm:pt-14 lg:pt-48 w-full max-w-2xl lg:max-w-[300px] mx-auto lg:ml-auto transform lg:translate-x-6">
             {/* Unified Inclusions & Exclusions Card */}
             <div className="rounded-2xl overflow-hidden border border-[#e2d8c3] font-poppins">
               {/* Dark Forest Green Header Bar for Inclusions */}

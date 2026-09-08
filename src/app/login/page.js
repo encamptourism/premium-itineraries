@@ -304,11 +304,11 @@ export default function LoginPage() {
         <div className="w-full max-w-md space-y-6">
           <div>
             <h1 className="text-3xl sm:text-4xl font-bold text-primary-green tracking-tight">
-              {otpSent ? 'Verify OTP' : 'Sign In or Register'}
+              {otpSent ? 'Verify Code' : 'Sign In or Register'}
             </h1>
             <p className="text-stone-500 mt-2 text-sm">
               {otpSent
-                ? `Verification code sent to your ${sentChannel}`
+                ? 'Enter the 6-digit security code sent to your account.'
                 : `Enter your ${identifierMode === 'email' ? 'email address' : 'mobile number'} to continue`}
             </p>
           </div>
@@ -427,22 +427,32 @@ export default function LoginPage() {
               </>
             ) : (
               <div className="space-y-5 animate-fadeIn">
-                <div className="bg-amber-500/10 border border-[#dfa62f]/30 rounded-2xl p-4 text-center space-y-1">
-                  <p className="text-xs text-stone-600 font-medium">
-                    Code sent to <span className="font-bold text-stone-800 uppercase">{sentChannel}</span>
-                  </p>
-                  <div className="flex items-center justify-center gap-2">
-                    <span className="font-mono text-sm font-bold text-primary-green">
-                      {formattedDisplayIdentifier}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={handleEditIdentifier}
-                      className="text-xs text-[#dfa62f] hover:text-[#c48f22] font-semibold flex items-center gap-1 underline transition-colors"
-                    >
-                      <Edit2 className="w-3 h-3" /> Change
-                    </button>
+                <div className="bg-white border border-stone-200/90 rounded-2xl p-4 flex items-center justify-between shadow-xs transition-all hover:border-stone-300">
+                  <div className="flex items-center gap-3.5 min-w-0">
+                    <div className="w-10 h-10 rounded-xl bg-stone-100/80 border border-stone-200/60 flex items-center justify-center text-primary-green shrink-0">
+                      {sentChannel === 'email' ? (
+                        <Mail className="w-5 h-5" />
+                      ) : (
+                        <Smartphone className="w-5 h-5" />
+                      )}
+                    </div>
+                    <div className="min-w-0 text-left">
+                      <div className="text-[11px] font-bold text-stone-400 uppercase tracking-wider">
+                        Sent to {sentChannel === 'email' ? 'Email' : 'Mobile'}
+                      </div>
+                      <div className="text-sm font-bold text-stone-800 truncate">
+                        {formattedDisplayIdentifier}
+                      </div>
+                    </div>
                   </div>
+                  <button
+                    type="button"
+                    onClick={handleEditIdentifier}
+                    className="shrink-0 text-xs font-semibold text-stone-700 hover:text-primary-green px-3 py-1.5 rounded-xl bg-stone-100 hover:bg-stone-200/80 border border-stone-200/80 transition-all flex items-center gap-1.5 cursor-pointer ml-2 shadow-2xs active:scale-[0.98]"
+                  >
+                    <Edit2 className="w-3.5 h-3.5 text-stone-500" />
+                    <span>Edit</span>
+                  </button>
                 </div>
 
                 <div className="pt-2">

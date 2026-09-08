@@ -55,14 +55,14 @@ export default function OtpInput({ value, onChange, error, success, disabled }) 
 
   const boxClass = (digit) => {
     const base =
-      'w-12 h-14 sm:w-14 sm:h-16 text-center text-xl sm:text-2xl font-bold rounded-2xl border-2 transition-all duration-200 focus:outline-none caret-transparent select-none';
+      'w-11 h-13 sm:w-13 sm:h-15 text-center text-xl sm:text-2xl font-bold rounded-2xl border transition-all duration-200 focus:outline-none select-none';
     if (success)
-      return `${base} border-green-400 bg-green-50 text-green-700`;
+      return `${base} border-green-500 bg-green-50/60 text-green-700 ring-2 ring-green-500/20`;
     if (error)
-      return `${base} border-red-400 bg-red-50 text-red-600 animate-shake`;
+      return `${base} border-red-400 bg-red-50/60 text-red-600 ring-2 ring-red-500/20 animate-shake`;
     if (digit)
-      return `${base} border-gold bg-amber-50 text-forest`;
-    return `${base} border-stone-200 bg-stone-50 text-stone-900 focus:border-gold focus:bg-amber-50/50 focus:ring-2 focus:ring-gold/20`;
+      return `${base} border-[#dfa62f] bg-white text-stone-900 ring-2 ring-[#dfa62f]/20 shadow-xs`;
+    return `${base} border-stone-200 bg-white text-stone-900 focus:border-[#dfa62f] focus:ring-2 focus:ring-[#dfa62f]/20 shadow-xs`;
   };
 
   return (

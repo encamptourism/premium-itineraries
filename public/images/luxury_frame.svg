@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 320" width="200" height="320">
+  <defs>
+    <!-- Metallic Gold Gradient matching reference image -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FCE082"/>
+      <stop offset="20%" stop-color="#E5B842"/>
+      <stop offset="45%" stop-color="#C68E22"/>
+      <stop offset="70%" stop-color="#F3CA5C"/>
+      <stop offset="85%" stop-color="#DFAC38"/>
+      <stop offset="100%" stop-color="#9C6B16"/>
+    </linearGradient>
+
+    <!-- Inner Parallel Line Metallic Gold Gradient -->
+    <linearGradient id="goldInnerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFEBB0"/>
+      <stop offset="30%" stop-color="#E5B342"/>
+      <stop offset="60%" stop-color="#B88219"/>
+      <stop offset="100%" stop-color="#F7C95C"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Deep Forest Green Card Background Fill (#123B2A) -->
+  <path
+    d="M 30,5 L 170,5 A 10,10 0 0 1 180,9 A 14,14 0 0 0 191,20 A 10,10 0 0 1 195,30 L 195,290 A 10,10 0 0 1 191,300 A 14,14 0 0 0 180,311 A 10,10 0 0 1 170,315 L 30,315 A 10,10 0 0 1 20,311 A 14,14 0 0 0 9,300 A 10,10 0 0 1 5,290 L 5,30 A 10,10 0 0 1 9,20 A 14,14 0 0 0 20,9 A 10,10 0 0 1 30,5 Z"
+    fill="#123B2A"
+  />
+
+  <!-- Outer Thick Metallic Gold Border -->
+  <path
+    d="M 30,5 L 170,5 A 10,10 0 0 1 180,9 A 14,14 0 0 0 191,20 A 10,10 0 0 1 195,30 L 195,290 A 10,10 0 0 1 191,300 A 14,14 0 0 0 180,311 A 10,10 0 0 1 170,315 L 30,315 A 10,10 0 0 1 20,311 A 14,14 0 0 0 9,300 A 10,10 0 0 1 5,290 L 5,30 A 10,10 0 0 1 9,20 A 14,14 0 0 0 20,9 A 10,10 0 0 1 30,5 Z"
+    fill="none"
+    stroke="url(#goldGrad)"
+    stroke-width="3.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Inner Parallel Thin Metallic Gold Line -->
+  <path
+    d="M 32,13 L 168,13 A 7,7 0 0 1 176,16 A 10,10 0 0 0 184,24 A 7,7 0 0 1 187,32 L 187,288 A 7,7 0 0 1 184,296 A 10,10 0 0 0 176,304 A 7,7 0 0 1 168,307 L 32,307 A 7,7 0 0 1 24,304 A 10,10 0 0 0 16,296 A 7,7 0 0 1 13,288 L 13,32 A 7,7 0 0 1 16,24 A 10,10 0 0 0 24,16 A 7,7 0 0 1 32,13 Z"
+    fill="none"
+    stroke="url(#goldInnerGrad)"
+    stroke-width="1.5"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+</svg>

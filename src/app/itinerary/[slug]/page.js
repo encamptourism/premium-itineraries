@@ -1,9 +1,10 @@
 import { notFound } from "next/navigation";
-import { getPremiumItinerary } from "@/lib/api";
+import { getPremiumItinerary, getItineraryApiUrl } from "@/lib/api";
 import ReferencePosterHeader from "@/components/itinerary/ReferencePosterHeader";
 import ReferencePosterBody from "@/components/itinerary/ReferencePosterBody";
 import ReferencePosterFaqFooter from "@/components/itinerary/ReferencePosterFaqFooter";
 import MobileStickyCTA from "@/components/itinerary/MobileStickyCTA";
+// import DebugPreview from "@/components/itinerary/DebugPreview";
 
 /**
  * Generate dynamic SEO metadata directly from the live API response
@@ -72,6 +73,7 @@ export async function generateMetadata({ params }) {
 export default async function ItineraryPage({ params }) {
   const { slug } = await params;
   const itinerary = await getPremiumItinerary(slug);
+  const apiUrl = getItineraryApiUrl(slug);
 
   if (!itinerary) {
     notFound();
@@ -126,6 +128,9 @@ export default async function ItineraryPage({ params }) {
 
         {/* 4. Mobile Sticky CTA Bottom Bar */}
         <MobileStickyCTA itinerary={itinerary} />
+
+        {/* 5. Isolated Debug Preview Component (Disabled for production) */}
+        {/* <DebugPreview itinerary={itinerary} apiUrl={apiUrl} /> */}
       </main>
     </>
   );

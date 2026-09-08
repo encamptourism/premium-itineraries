@@ -1,5 +1,126 @@
+"use client";
+
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import { Clock, BedDouble, CheckCircle2, Sparkles } from "lucide-react";
+
+/**
+ * Safely extracts the array of image URLs for a day item.
+ * Strictly respects day.images if provided by the API, without mixing in stay/activity images.
+ */
+function getDayImages(day) {
+  const images = [];
+
+  const addUrl = (item) => {
+    if (!item) return;
+    if (typeof item === "string") {
+      const trimmed = item.trim();
+      if (trimmed && !images.includes(trimmed)) {
+        images.push(trimmed);
+      }
+    } else if (typeof item === "object") {
+      const u =
+        item.url ||
+        item.src ||
+        item.image ||
+        item.imageUrl ||
+        item.photo ||
+        item.path ||
+        item.uri ||
+        item.s3Url ||
+        item.link;
+      if (typeof u === "string" && u.trim()) {
+        const trimmed = u.trim();
+        if (!images.includes(trimmed)) {
+          images.push(trimmed);
+        }
+      }
+    }
+  };
+
+  // 1. Primary check: day.images array or single item
+  if (Array.isArray(day?.images) && day.images.length > 0) {
+    day.images.forEach(addUrl);
+  } else if (day?.images) {
+    addUrl(day.images);
+  }
+
+  // 2. Secondary check: day.image single string/object
+  if (images.length === 0 && day?.image) {
+    addUrl(day.image);
+  }
+
+  // 3. Tertiary check: day.photos / day.gallery
+  if (images.length === 0) {
+    if (Array.isArray(day?.photos) && day.photos.length > 0) {
+      day.photos.forEach(addUrl);
+    } else if (Array.isArray(day?.gallery) && day.gallery.length > 0) {
+      day.gallery.forEach(addUrl);
+    }
+  }
+
+  // 4. Quaternary check: day.stay image if no day images found
+  if (images.length === 0 && Array.isArray(day?.stay)) {
+    day.stay.forEach((s) => {
+      if (s?.image) addUrl(s.image);
+      else if (s?.url) addUrl(s.url);
+    });
+  }
+
+  return images;
+}
+
+/**
+ * Image Slider component that automatically cycles images every 5 seconds
+ */
+function DayImageSlider({ images, alt, className = "" }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  useEffect(() => {
+    if (!images || images.length <= 1) return;
+
+    const interval = setInterval(() => {
+      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [images]);
+
+  if (!images || images.length === 0) return null;
+
+  return (
+    <div className={`relative w-full h-full overflow-hidden ${className}`}>
+      {images.map((img, idx) => (
+        <Image
+          key={`${img}-${idx}`}
+          src={img}
+          alt={alt}
+          fill
+          sizes="(max-width: 768px) 100vw, 450px"
+          className={`object-cover object-center transition-opacity duration-1000 ease-in-out ${
+            idx === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+          }`}
+          priority={idx === 0}
+        />
+      ))}
+
+      {images.length > 1 && (
+        <div className="absolute bottom-2 left-0 right-0 z-20 flex justify-center items-center gap-1.5 pointer-events-none px-2">
+          {images.map((_, idx) => (
+            <span
+              key={idx}
+              className={`h-1.5 rounded-full transition-all duration-500 ${
+                idx === currentIndex
+                  ? "w-4 bg-white shadow-xs opacity-100"
+                  : "w-1.5 bg-white/60 drop-shadow-xs"
+              }`}
+            />
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function DayWiseItinerary({ dayWiseItinerary = [] }) {
   if (!dayWiseItinerary || dayWiseItinerary.length === 0) return null;
@@ -27,11 +148,7 @@ export default function DayWiseItinerary({ dayWiseItinerary = [] }) {
 
           {dayWiseItinerary.map((day, index) => {
             const dayNum = day.dayNumber || index + 1;
-            const dayImage =
-              day.image ||
-              (Array.isArray(day.gallery) && day.gallery[0]?.url) ||
-              (Array.isArray(day.stay) && day.stay[0]?.image) ||
-              null;
+            const currentDayImages = getDayImages(day);
 
             return (
               <div
@@ -77,20 +194,13 @@ export default function DayWiseItinerary({ dayWiseItinerary = [] }) {
                   </div>
 
                   {/* Responsive Grid: Image & Activity Timeline */}
-                  <div className={`grid grid-cols-1 ${dayImage ? "md:grid-cols-12 gap-6" : ""} items-start`}>
+                  <div className={`grid grid-cols-1 ${currentDayImages.length > 0 ? "md:grid-cols-12 gap-6" : ""} items-start`}>
                     {/* Day Visual / Photo */}
-                    {dayImage && (
+                    {currentDayImages.length > 0 && (
                       <div className="md:col-span-5 relative w-full h-56 sm:h-64 md:h-72 rounded-xl overflow-hidden shadow-sm">
-                        <Image
-                          src={dayImage}
-                          alt={`Day ${dayNum}: ${day.title}`}
-                          fill
-                          sizes="(max-width: 768px) 100vw, 450px"
-                          className="object-cover object-center group-hover:scale-105 transition-transform duration-700 ease-out"
-                          loading={index < 2 ? "eager" : "lazy"}
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-                        <div className="absolute bottom-3 left-3 right-3 text-white">
+                        <DayImageSlider images={currentDayImages} alt={`Day ${dayNum}: ${day.title}`} />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none z-15" />
+                        <div className="absolute bottom-3 left-3 right-3 text-white pointer-events-none z-25">
                           <span className="text-xs font-semibold uppercase tracking-wider bg-black/40 backdrop-blur-md px-2.5 py-1 rounded-full border border-white/20">
                             {day.title?.split("→")[0]?.trim() || `Day ${dayNum}`}
                           </span>
@@ -99,7 +209,7 @@ export default function DayWiseItinerary({ dayWiseItinerary = [] }) {
                     )}
 
                     {/* Activities List */}
-                    <div className={dayImage ? "md:col-span-7 space-y-4" : "w-full space-y-4"}>
+                    <div className={currentDayImages.length > 0 ? "md:col-span-7 space-y-4" : "w-full space-y-4"}>
                       {day.activities && day.activities.length > 0 && (
                         <div className="space-y-4">
                           {day.activities.map((act, actIdx) => (

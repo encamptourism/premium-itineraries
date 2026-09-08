@@ -95,7 +95,15 @@ export async function verifyOtpAction(identifier, otp, redirectUrl = '/') {
 
   const existingAuth = await getAuthCookies();
   let sessionUser = result.user || result.data?.user || existingAuth.user || null;
-  const tokenToUse = result.accessToken || result.token || result.data?.token || existingAuth.accessToken || 'session_active';
+  const tokenToUse =
+    result.accessToken ||
+    result.token ||
+    result.data?.accessToken ||
+    result.data?.token ||
+    result.access_token ||
+    result.data?.access_token ||
+    existingAuth.accessToken ||
+    '';
 
   if (!sessionUser) {
     const isEmail = String(identifier).includes('@');

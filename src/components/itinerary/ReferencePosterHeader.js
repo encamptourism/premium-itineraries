@@ -14,6 +14,25 @@ import {
   Flame,
 } from "lucide-react";
 
+function LuxuryPackageCard({ children, className = "" }) {
+  return (
+    <div
+      className={`relative text-white font-poppins  ${className}`}
+      style={{
+        borderStyle: "solid",
+        borderWidth: "24px",
+        borderImageSource: "url('/images/luxury_frame.svg')",
+        borderImageSlice: "38 fill",
+        borderImageRepeat: "stretch",
+      }}
+    >
+      <div className="relative z-10 flex flex-col justify-between h-full p-1 ">
+        {children}
+      </div>
+    </div>
+  );
+}
+
 export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
   const bannerImage =
     itinerary?.gallery?.find((g) => g.tag === "banner")?.url ||
@@ -106,135 +125,135 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
             </div>
 
             {/* Desktop-only Right 3 Columns: "OUR PACKAGES" Card POPPING OUT from Bottom */}
-            <div className="hidden lg:flex lg:col-span-3 w-full max-w-[290px] sm:max-w-[300px] mx-auto lg:ml-auto bg-primary-green text-white rounded-2xl p-3 sm:p-4 flex-col justify-between border-2 border-[#f0c85a] transform translate-y-6 sm:translate-y-12 lg:translate-y-24 lg:translate-x-6 z-30">
-
-              {/* Packages Title */}
-              <div className="text-center pb-3 border-b border-white/20">
-                <h2 className="font-serif-display text-base sm:text-lg font-bold uppercase tracking-[0.2em] text-white">
-                  Our Packages
-                </h2>
-              </div>
-
-              {/* Package Blocks Spaced Between */}
-              <div className="py-3 flex-1 flex flex-col justify-between space-y-4">
-
-                {/* 1. Premium Package */}
-                <div className="space-y-2 pb-3 border-b border-white/20">
-                  <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
-                    Premium Package
-                  </div>
-
-                  {/* 4 Mini Gold Icons */}
-                  <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
-                    <div className="flex flex-col items-center">
-                      <BedDouble className="w-4 h-4 text-[#f0c85a] mb-1" />
-                      <span>4★ Hotels</span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <Utensils className="w-4 h-4 text-[#f0c85a] mb-1" />
-                      <span>Breakfast</span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <Car className="w-4 h-4 text-[#f0c85a] mb-1" />
-                      <span>Private Cab</span>
-                    </div>
-                    <div className="flex flex-col items-center">
-                      <Camera className="w-4 h-4 text-[#f0c85a] mb-1" />
-                      <span>All Sightseeing</span>
-                    </div>
-                  </div>
-
-                  <div className="text-center pt-1.5">
-                    <div className="font-poppins text-2xl font-black text-white leading-none">
-                      {formattedStartingPrice}/-
-                    </div>
-                    <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">1-2 guest</div>
-                  </div>
-
-                  <button
-                    onClick={onOpenEnquiry}
-                    className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
-                  >
-                    Book Now
-                  </button>
+            <div className="hidden lg:flex lg:col-span-3 w-full max-w-[293px] sm:max-w-[303px] mx-auto lg:ml-auto transform translate-y-6 sm:translate-y-12 lg:translate-y-24 lg:translate-x-6 z-30">
+              <LuxuryPackageCard className="w-full">
+                {/* Packages Title */}
+                <div className="text-center pb-3 border-b border-white/20">
+                  <h2 className="font-serif-display text-base sm:text-lg font-bold uppercase tracking-[0.2em] text-white">
+                    Our Packages
+                  </h2>
                 </div>
 
-                {/* 2. Luxury Package */}
-                <div className="space-y-2 pb-3 border-b border-white/20">
-                  <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
-                    Luxury Package
+                {/* Package Blocks Spaced Between */}
+                <div className="py-3 flex-1 flex flex-col justify-between space-y-4">
+
+                  {/* 1. Premium Package */}
+                  <div className="space-y-2 pb-3 border-b border-white/20">
+                    <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
+                      Premium Package
+                    </div>
+
+                    {/* 4 Mini Gold Icons */}
+                    <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
+                      <div className="flex flex-col items-center">
+                        <BedDouble className="w-4 h-4 text-[#f0c85a] mb-1" />
+                        <span>4★ Hotels</span>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <Utensils className="w-4 h-4 text-[#f0c85a] mb-1" />
+                        <span>Breakfast</span>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <Car className="w-4 h-4 text-[#f0c85a] mb-1" />
+                        <span>Private Cab</span>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <Camera className="w-4 h-4 text-[#f0c85a] mb-1" />
+                        <span>All Sightseeing</span>
+                      </div>
+                    </div>
+
+                    <div className="text-center pt-1.5">
+                      <div className="font-poppins text-2xl font-black text-white leading-none">
+                        {formattedStartingPrice}/-
+                      </div>
+                      <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">1-2 guest</div>
+                    </div>
+
+                    <button
+                      onClick={onOpenEnquiry}
+                      className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
+                    >
+                      Book Now
+                    </button>
                   </div>
 
-                  {/* 4 Mini Gold Icons */}
-                  <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
-                    <div className="flex flex-col items-center">
-                      <BedDouble className="w-4 h-4 text-[#f0c85a] mb-1" />
-                      <span>5★ Hotels</span>
+                  {/* 2. Luxury Package */}
+                  <div className="space-y-2 pb-3 border-b border-white/20">
+                    <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
+                      Luxury Package
                     </div>
-                    <div className="flex flex-col items-center">
-                      <Utensils className="w-4 h-4 text-[#f0c85a] mb-1" />
-                      <span>All Meals</span>
+
+                    {/* 4 Mini Gold Icons */}
+                    <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
+                      <div className="flex flex-col items-center">
+                        <BedDouble className="w-4 h-4 text-[#f0c85a] mb-1" />
+                        <span>5★ Hotels</span>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <Utensils className="w-4 h-4 text-[#f0c85a] mb-1" />
+                        <span>All Meals</span>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <Car className="w-4 h-4 text-[#f0c85a] mb-1" />
+                        <span>Private Cab</span>
+                      </div>
+                      <div className="flex flex-col items-center">
+                        <Camera className="w-4 h-4 text-[#f0c85a] mb-1" />
+                        <span>All Sightseeing</span>
+                      </div>
                     </div>
-                    <div className="flex flex-col items-center">
-                      <Car className="w-4 h-4 text-[#f0c85a] mb-1" />
-                      <span>Private Cab</span>
+
+                    <div className="text-center pt-1.5">
+                      <div className="font-poppins text-2xl font-black text-white leading-none">
+                        {formattedLuxuryPrice}/-
+                      </div>
+                      <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">1-2 guest</div>
                     </div>
-                    <div className="flex flex-col items-center">
-                      <Camera className="w-4 h-4 text-[#f0c85a] mb-1" />
-                      <span>All Sightseeing</span>
-                    </div>
+
+                    <button
+                      onClick={onOpenEnquiry}
+                      className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
+                    >
+                      Book Now
+                    </button>
                   </div>
 
-                  <div className="text-center pt-1.5">
-                    <div className="font-poppins text-2xl font-black text-white leading-none">
-                      {formattedLuxuryPrice}/-
+                  {/* 3. Custom Package */}
+                  <div className="space-y-2">
+                    <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
+                      Custom Package
                     </div>
-                    <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">1-2 guest</div>
+
+                    <ul className="space-y-1.5 text-[11px] text-stone-200">
+                      <li className="flex items-center gap-2">
+                        <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
+                        <span>Tailor Made Itinerary</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
+                        <span>Personalized Experiences</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
+                        <span>Flexible Plans</span>
+                      </li>
+                      <li className="flex items-center gap-2">
+                        <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
+                        <span>24x7 Support</span>
+                      </li>
+                    </ul>
+
+                    <button
+                      onClick={onOpenEnquiry}
+                      className="w-full border-2 border-[#f0c85a] text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-2"
+                    >
+                      Enquire Now
+                    </button>
                   </div>
 
-                  <button
-                    onClick={onOpenEnquiry}
-                    className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
-                  >
-                    Book Now
-                  </button>
                 </div>
-
-                {/* 3. Custom Package */}
-                <div className="space-y-2">
-                  <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
-                    Custom Package
-                  </div>
-
-                  <ul className="space-y-1.5 text-[11px] text-stone-200">
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
-                      <span>Tailor Made Itinerary</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
-                      <span>Personalized Experiences</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
-                      <span>Flexible Plans</span>
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
-                      <span>24x7 Support</span>
-                    </li>
-                  </ul>
-
-                  <button
-                    onClick={onOpenEnquiry}
-                    className="w-full border-2 border-[#f0c85a] text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-2"
-                  >
-                    Enquire Now
-                  </button>
-                </div>
-
-              </div>
-
+              </LuxuryPackageCard>
             </div>
 
           </div>
@@ -287,7 +306,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
 
       {/* Mobile-only "OUR PACKAGES" Card rendered below 80vh hero section */}
       <div className="block lg:hidden pt-10 sm:pt-14 px-2 sm:px-4 w-full max-w-2xl mx-auto">
-        <div className="bg-primary-green text-white rounded-2xl p-4 sm:p-5 border-2 border-[#f0c85a] shadow-none sm:shadow-xl w-full">
+        <LuxuryPackageCard className="w-full">
           {/* Packages Title */}
           <div className="text-center pb-3 border-b border-white/20">
             <h2 className="font-serif-display text-base sm:text-lg font-bold uppercase tracking-[0.2em] text-white">
@@ -414,7 +433,7 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
             </div>
 
           </div>
-        </div>
+        </LuxuryPackageCard>
       </div>
 
     </div>

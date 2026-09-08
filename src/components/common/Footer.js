@@ -248,7 +248,7 @@ export default function Footer() {
                   <div className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center shrink-0 group-hover:border-[#f0c85a] group-hover:bg-[#f0c85a]/10 transition-all">
                     <MountainIcon />
                   </div>
-                  <Link href="/itinerary/test-premium-luxury-expedition-3862" className="text-[#E2DDD3] hover:text-[#f0c85a] transition-colors font-medium">
+                  <Link href="/itinerary/meghalaya-private-luxury-tour" className="text-[#E2DDD3] hover:text-[#f0c85a] transition-colors font-medium">
                     Meghalaya Grandeur (7D / 6N)
                   </Link>
                 </li>
