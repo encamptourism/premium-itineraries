@@ -45,13 +45,25 @@
   --color-border: var(--border);
 }
 
-/* Global Default Theme: Strictly White Background, Black Text */
+html, body {
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+  top: 0 !important;
+}
+
 body {
   background-color: #ffffff;
   color: #000000;
   font-family: var(--font-poppins), var(--font-sans), ui-sans-serif, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Prevent external SDK fallback elements from showing above header */
+body > iframe[src*="carbontrace"],
+body > div[id*="ct_header"],
+body > div[class*="ct_header"] {
+  display: none !important;
 }
 
 /* Typography Token Utilities */
@@ -163,4 +175,14 @@ body {
   letter-spacing: 0.18em;
   font-size: 0.75rem;
   font-weight: 600;
+}
+
+/* Fix browser autofill blue background to match luxury package theme */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus, 
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 40px #fdfbf7 inset !important;
+  -webkit-text-fill-color: #14281e !important;
+  transition: background-color 5000s ease-in-out 0s;
 }

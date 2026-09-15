@@ -4,14 +4,24 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Phone, Mail, User, LogOut, ChevronDown, Settings } from 'lucide-react';
+import { Phone, Mail, User, LogOut, ChevronDown, Settings, Coins, Wallet } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
+import { useCarbonTrace } from '@/context/CarbonTraceContext';
+import CarbonTraceWalletModal from '@/components/checkout/CarbonTraceWalletModal';
 
 export default function Navbar() {
   const { user, ctCoins, isAuthenticated, isLoading, logout } = useAuth();
+  const ctContext = useCarbonTrace();
+  
+  const connected = ctContext?.connected || false;
+  const address = ctContext?.address || null;
+  const ctcoins = ctContext?.ctcoins || 0;
+  const getCTCoinBalance = ctContext?.getCTCoinBalance;
+
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
+  const [isCtModalOpen, setIsCtModalOpen] = useState(false);
   const dropdownRef = useRef(null);
   const contactRef = useRef(null);
 
@@ -41,6 +51,11 @@ export default function Navbar() {
 
   const tier = ctCoins?.tierInfo;
 
+  // Prioritize active wallet balance or authenticated CT coin balance
+  const activeCtcoins = connected
+    ? (typeof getCTCoinBalance === 'function' ? getCTCoinBalance() : ctcoins)
+    : (ctCoins?.balance ?? ctcoins ?? 0);
+
   const handleLogout = async () => {
     setOpen(false);
     await logout();
@@ -64,7 +79,8 @@ export default function Navbar() {
         </Link>
 
         {/* Right actions */}
-        <div className="flex items-center gap-3 sm:gap-4">
+        <div className="flex items-center gap-2.5 sm:gap-4">
+
           {/* Contact popover */}
           <div className="relative" ref={contactRef}>
             <button
@@ -74,12 +90,12 @@ export default function Navbar() {
                 setContactOpen((v) => !v);
                 setOpen(false);
               }}
-              className="flex items-center gap-2 text-xs font-semibold tracking-wider text-stone-200 hover:text-[#dfa62f] transition-all py-1.5 px-3 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10 cursor-pointer select-none"
+              className="flex items-center gap-1.5 sm:gap-2 text-xs font-semibold tracking-wider text-stone-200 hover:text-[#dfa62f] transition-all py-1.5 px-2.5 sm:px-3 rounded-full hover:bg-white/5 border border-transparent hover:border-white/10 cursor-pointer select-none"
               aria-label="Contact options"
               aria-expanded={contactOpen}
             >
               <Phone className="w-3.5 h-3.5 text-[#dfa62f]" />
-              <span className="tracking-wider text-xs font-semibold">Contact Us</span>
+              <span className="tracking-wider text-xs font-semibold hidden sm:inline">Contact Us</span>
               <ChevronDown className={`w-3 h-3 text-stone-400 transition-transform duration-200 ${contactOpen ? 'rotate-180' : ''}`} />
             </button>
 
@@ -160,27 +176,51 @@ export default function Navbar() {
 
                 {/* Dropdown */}
                 {open && (
-                  <div className="absolute right-0 top-full mt-3.5 w-60 bg-white border border-stone-200 rounded-2xl shadow-xl shadow-stone-300/50 overflow-hidden z-50 animate-fade-in text-stone-900">
+                  <div className="absolute right-0 top-full mt-3.5 w-64 bg-white border border-stone-200 rounded-2xl shadow-xl shadow-stone-300/50 overflow-hidden z-50 animate-fade-in text-stone-900">
                     {/* User info */}
                     <div className="px-4 py-3.5 border-b border-stone-100 bg-stone-50/70">
                       <p className="text-primary-green text-sm font-bold truncate">{user?.name}</p>
                       <p className="text-stone-500 text-xs truncate mt-0.5">{user?.email}</p>
-                      {tier && (
-                        <span className="inline-flex items-center gap-1 text-[10px] font-bold mt-1.5 px-2.5 py-0.5 rounded-full bg-primary-green/5 text-primary-green border border-primary-green/15">
-                          {tier.name} Member
+                      
+                      {/* CT Coins Summary in Menu */}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOpen(false);
+                          setIsCtModalOpen(true);
+                        }}
+                        className="w-full mt-2.5 p-2 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center justify-between hover:bg-amber-100/70 transition-colors cursor-pointer text-left"
+                      >
+                        <div className="flex items-center gap-1.5">
+                          <Coins className="w-3.5 h-3.5 text-[#dfa62f]" />
+                          <span className="text-xs font-bold text-stone-800">{activeCtcoins.toLocaleString()} CTCoin</span>
+                        </div>
+                        <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white border border-amber-200 text-stone-700">
+                          Wallet & Redeem
                         </span>
-                      )}
+                      </button>
                     </div>
 
                     {/* Nav items */}
                     <div className="py-1.5">
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setOpen(false);
+                          setIsCtModalOpen(true);
+                        }}
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-stone-700 hover:text-primary-green hover:bg-stone-50 font-semibold transition-colors text-left cursor-pointer"
+                      >
+                        <Wallet className="w-4 h-4 text-[#dfa62f]" />
+                        CarbonTrace Wallet & Redeem
+                      </button>
                       <Link
                         href="/profile"
                         id="navbar-profile-link"
                         onClick={() => setOpen(false)}
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-stone-700 hover:text-primary-green hover:bg-stone-50 font-semibold transition-colors"
                       >
-                        <User className="w-4 h-4 text-[#dfa62f]" />
+                        <User className="w-4 h-4 text-stone-400" />
                         My Profile
                       </Link>
                       <Link
@@ -198,7 +238,7 @@ export default function Navbar() {
                       <button
                         id="navbar-logout-btn"
                         onClick={handleLogout}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-xl font-semibold transition-colors"
+                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 rounded-xl font-semibold transition-colors cursor-pointer"
                       >
                         <LogOut className="w-4 h-4 text-red-500" />
                         Sign Out
@@ -220,6 +260,12 @@ export default function Navbar() {
           )}
         </div>
       </div>
+
+      {/* CarbonTrace SDK Wallet & Redemption Modal */}
+      <CarbonTraceWalletModal
+        isOpen={isCtModalOpen}
+        onClose={() => setIsCtModalOpen(false)}
+      />
     </header>
   );
 }

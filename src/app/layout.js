@@ -3,6 +3,7 @@ import { headers } from "next/headers";
 import Navbar from "@/components/itinerary/Navbar";
 import Footer from "@/components/common/Footer";
 import AuthProvider from "@/context/AuthProvider";
+import { CarbonTraceProvider } from "@/context/CarbonTraceContext";
 import "./globals.css";
 
 const alexBrush = Alex_Brush({
@@ -65,9 +66,11 @@ export default async function RootLayout({ children }) {
         className="min-h-full flex flex-col font-sans bg-white text-black"
       >
         <AuthProvider>
-          {!isAuthPage && <Navbar />}
-          <main className="flex-1">{children}</main>
-          {!isAuthPage && <Footer />}
+          <CarbonTraceProvider>
+            {!isAuthPage && <Navbar />}
+            <main className="flex-1">{children}</main>
+            {!isAuthPage && <Footer />}
+          </CarbonTraceProvider>
         </AuthProvider>
       </body>
     </html>

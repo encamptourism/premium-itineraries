@@ -1,22 +1,50 @@
 "use client";
 
-import { useState } from "react";
-import { Check, Phone, MessageSquare, Sparkles, Shield, ArrowRight } from "lucide-react";
-import EnquiryModal from "./EnquiryModal";
+import { useState, useEffect } from "react";
+import { Check, Phone, MessageSquare, Sparkles, Shield, ArrowRight, Coins, Wallet } from "lucide-react";
+import { useCarbonTrace } from "@/context/CarbonTraceContext";
+import CarbonTraceWalletModal from "@/components/checkout/CarbonTraceWalletModal";
 
 export default function PricingSection({ itinerary }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCtModalOpen, setIsCtModalOpen] = useState(false);
+  const ctContext = useCarbonTrace();
+  const connected = ctContext?.connected || false;
+  const setCheckoutData = ctContext?.setCheckoutData;
+  const userCoins = typeof ctContext?.getCTCoinBalance === 'function' ? ctContext.getCTCoinBalance() : (ctContext?.ctcoins || 0);
 
   const priceItem = Array.isArray(itinerary?.startingFrom) && itinerary.startingFrom.length > 0
     ? itinerary.startingFrom[0]
     : null;
 
-  const formattedPrice = priceItem?.pricePerPerson
+  const rawPrice = priceItem?.pricePerPerson || priceItem?.totalPricePerPerson || 0;
+
+  // Dynamically sync itinerary price and carbon footprint to CarbonTrace SDK
+  useEffect(() => {
+    if (itinerary && typeof setCheckoutData === "function") {
+      const carbon = itinerary.carbonFootprint || itinerary.carbon_footprint || 0;
+      setCheckoutData({
+        invoiceAmount: rawPrice,
+        carbonFootprint: carbon,
+      });
+    }
+  }, [itinerary, rawPrice, setCheckoutData]);
+
+  const appliedRedemption = ctContext?.appliedRedemption;
+  const discountAmount = appliedRedemption?.amount || 0;
+  const netRawPrice = Math.max(0, rawPrice - discountAmount);
+
+  const formattedNetPrice = new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(netRawPrice);
+
+  const formattedPrice = rawPrice
     ? new Intl.NumberFormat("en-IN", {
         style: "currency",
         currency: "INR",
         maximumFractionDigits: 0,
-      }).format(priceItem.pricePerPerson)
+      }).format(rawPrice)
     : null;
 
   const advanceVal = itinerary?.advancePayment?.isAvailable && itinerary.advancePayment.value
@@ -27,10 +55,12 @@ export default function PricingSection({ itinerary }) {
       }).format(itinerary.advancePayment.value)
     : null;
 
+  const estimatedCtCoinsEarned = rawPrice ? Math.round(rawPrice * 0.01) : 0;
+
   const days = itinerary?.duration?.days || 0;
   const nights = itinerary?.duration?.nights || 0;
-  const tripType = itinerary?.tripType || "Private Expedition";
-  const title = itinerary?.title || "Luxury Expedition";
+  const tripType = itinerary?.tripType || "";
+  const title = itinerary?.title || "";
   const encodedTitle = encodeURIComponent(title);
 
   return (
@@ -47,6 +77,22 @@ export default function PricingSection({ itinerary }) {
           <p className="body-sm text-stone-600 mt-2">
             Choose our masterfully curated private expedition or let our travel architects tailor every detail to your schedule.
           </p>
+
+          {/* CTCoin Benefit Highlight Banner */}
+          <div className="mt-4 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-amber-50 border border-amber-200 text-stone-800 text-xs font-semibold shadow-2xs">
+            <Coins className="w-4 h-4 text-[#dfa62f]" />
+            <span>
+              {estimatedCtCoinsEarned > 0 && <span>Earn up to <strong>+{estimatedCtCoinsEarned} CTCoin</strong> · </span>}
+              Your balance: <strong className="text-[#dfa62f]">{userCoins.toLocaleString()} CTCoin</strong>
+            </span>
+            <button
+              type="button"
+              onClick={() => setIsCtModalOpen(true)}
+              className="ml-2 px-2.5 py-0.5 rounded-full bg-forest text-ivory text-[11px] font-bold hover:bg-forest-light transition-all cursor-pointer"
+            >
+              {connected ? "Redeem" : "Connect & Redeem"}
+            </button>
+          </div>
         </div>
 
         {/* Pricing Cards Grid */}
@@ -65,29 +111,55 @@ export default function PricingSection({ itinerary }) {
                     {itinerary.itineraryType}
                   </span>
                 )}
-                <h3 className="font-serif-display text-3xl sm:text-4xl font-bold uppercase tracking-wider text-white mt-1">
-                  {title}
-                </h3>
+                {title && (
+                  <h3 className="font-serif-display text-3xl sm:text-4xl font-bold uppercase tracking-wider text-white mt-1">
+                    {title}
+                  </h3>
+                )}
                 {(days > 0 || nights > 0) && (
                   <p className="text-sm text-stone-300 font-sans mt-2">
-                    {days} Days · {nights} Nights · {tripType}
+                    {days} Days {nights ? `· ${nights} Nights` : ''} {tripType ? `· ${tripType}` : ''}
                   </p>
                 )}
               </div>
 
-              {/* Price Row */}
+              {/* Price & CTCoin Reward Row */}
               {formattedPrice && (
-                <div className="flex flex-wrap items-baseline gap-3 py-4 border-y border-forest-light">
-                  <span className="font-poppins text-4xl sm:text-5xl font-bold text-gold">
-                    {formattedPrice}
-                  </span>
-                  <span className="font-poppins text-sm text-stone-300 uppercase tracking-wider font-medium">
-                    1-2 guest
-                  </span>
-                  {priceItem?.people && (
-                    <span className="font-poppins text-xs text-stone-400">
-                      ({priceItem.people})
+                <div className="flex flex-wrap items-center justify-between gap-4 py-4 border-y border-forest-light">
+                  <div className="flex flex-wrap items-baseline gap-3">
+                    {discountAmount > 0 ? (
+                      <div className="flex flex-col">
+                        <div className="flex items-baseline gap-2">
+                          <span className="line-through text-stone-400 text-lg font-semibold">{formattedPrice}</span>
+                          <span className="font-poppins text-4xl sm:text-5xl font-bold text-gold">{formattedNetPrice}</span>
+                        </div>
+                        <span className="text-xs text-emerald-300 font-bold mt-0.5">-₹{discountAmount.toLocaleString()} CTCoin Discount Applied</span>
+                      </div>
+                    ) : (
+                      <span className="font-poppins text-4xl sm:text-5xl font-bold text-gold">
+                        {formattedPrice}
+                      </span>
+                    )}
+                    <span className="font-poppins text-sm text-stone-300 uppercase tracking-wider font-medium">
+                      1-2 guest
                     </span>
+                    {priceItem?.people && (
+                      <span className="font-poppins text-xs text-stone-400">
+                        ({priceItem.people})
+                      </span>
+                    )}
+                  </div>
+
+                  {/* CTCoin Reward Badge */}
+                  {estimatedCtCoinsEarned > 0 && (
+                    <button
+                      type="button"
+                      onClick={() => setIsCtModalOpen(true)}
+                      className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gold/15 hover:bg-gold/25 border border-gold/30 text-gold text-xs font-bold font-poppins transition-all cursor-pointer"
+                    >
+                      <Coins className="w-4 h-4 text-gold" />
+                      <span>+{estimatedCtCoinsEarned} CTCoin · Redeem</span>
+                    </button>
                   )}
                 </div>
               )}
@@ -128,7 +200,10 @@ export default function PricingSection({ itinerary }) {
             {/* Action Buttons */}
             <div className="pt-8 flex flex-col sm:flex-row gap-4">
               <button
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => {
+                  const card = document.getElementById("booking-card") || document.getElementById("package-booking-card");
+                  if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
+                }}
                 className="flex-1 bg-gold text-forest-dark hover:bg-gold-light py-4 px-8 rounded-full font-bold text-sm uppercase tracking-wider flex items-center justify-center gap-2 shadow-lg transition-all active:scale-98 cursor-pointer"
               >
                 <span>Enquire & Reserve Journey</span>
@@ -177,16 +252,28 @@ export default function PricingSection({ itinerary }) {
                   <Check className="w-4 h-4 text-forest shrink-0 mt-0.5" />
                   <span>Private dining & cultural performances</span>
                 </div>
-                <div className="flex items-start gap-2.5 text-xs sm:text-sm text-stone-700">
-                  <Check className="w-4 h-4 text-forest shrink-0 mt-0.5" />
-                  <span>Personal travel curator assigned</span>
+                <div className="flex items-start justify-between gap-2 text-xs sm:text-sm text-stone-700">
+                  <div className="flex items-start gap-2.5">
+                    <Coins className="w-4 h-4 text-[#dfa62f] shrink-0 mt-0.5" />
+                    <span className="font-semibold text-forest">Redeem CTCoin credits & offset emissions</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsCtModalOpen(true)}
+                    className="px-2.5 py-0.5 rounded-md bg-forest text-ivory text-[11px] font-bold shrink-0 hover:bg-forest-light cursor-pointer"
+                  >
+                    Redeem
+                  </button>
                 </div>
               </div>
             </div>
 
             <div className="pt-8 space-y-3">
               <button
-                onClick={() => setIsModalOpen(true)}
+                onClick={() => {
+                  const card = document.getElementById("booking-card") || document.getElementById("package-booking-card");
+                  if (card) card.scrollIntoView({ behavior: "smooth", block: "center" });
+                }}
                 className="w-full bg-forest text-ivory hover:bg-forest-light py-3.5 px-6 rounded-full font-bold text-xs sm:text-sm uppercase tracking-wider flex items-center justify-center gap-2 transition-all cursor-pointer"
               >
                 <span>Request Custom Quote</span>
@@ -204,11 +291,12 @@ export default function PricingSection({ itinerary }) {
         </div>
       </div>
 
-      {/* Interactive Modal */}
-      <EnquiryModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        itineraryTitle={title}
+      {/* CarbonTrace SDK Wallet & Redemption Modal */}
+      <CarbonTraceWalletModal
+        isOpen={isCtModalOpen}
+        onClose={() => setIsCtModalOpen(false)}
+        invoiceAmount={rawPrice}
+        carbonFootprint={itinerary?.carbonFootprint || itinerary?.carbon_footprint || 12.8}
       />
     </section>
   );

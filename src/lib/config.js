@@ -3,7 +3,7 @@
  * This configuration is strictly server-side and never exposed to the client browser.
  */
 export const config = {
-  baseUrl: process.env.BASE_URL || "http://localhost:3000",
+  baseUrl: process.env.BASE_URL || "",
   baseToken: process.env.BASE_TOKEN || "",
 };
 

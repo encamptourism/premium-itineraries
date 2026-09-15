@@ -1,82 +1,63 @@
+'use client';
+
+import { useEffect } from "react";
 import Image from "next/image";
 import {
   Compass,
-  Sparkles,
   Home,
   UserCheck,
   Headset,
   Leaf,
-  BedDouble,
-  Utensils,
-  Car,
-  Camera,
-  Check,
-  Flame,
 } from "lucide-react";
+import { useCarbonTrace } from "@/context/CarbonTraceContext";
 
-function LuxuryPackageCard({ children, className = "" }) {
-  return (
-    <div
-      className={`relative text-white font-poppins  ${className}`}
-      style={{
-        borderStyle: "solid",
-        borderWidth: "24px",
-        borderImageSource: "url('/images/luxury_frame.svg')",
-        borderImageSlice: "38 fill",
-        borderImageRepeat: "stretch",
-      }}
-    >
-      <div className="relative z-10 flex flex-col justify-between h-full p-1 ">
-        {children}
-      </div>
-    </div>
-  );
-}
+export default function ReferencePosterHeader({ itinerary }) {
+  const ctContext = useCarbonTrace();
+  const setCheckoutData = ctContext?.setCheckoutData;
 
-export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
   const bannerImage =
     itinerary?.gallery?.find((g) => g.tag === "banner")?.url ||
     itinerary?.gallery?.[0]?.url ||
-    "https://encamp-s3b.s3.ap-south-1.amazonaws.com/1787245472531_Encamp%20terra%20meghalaya.png.jpg";
+    "";
 
-  const days = itinerary?.duration?.days || 7;
-  const nights = itinerary?.duration?.nights || 6;
-  const durationText = `${days} DAYS | ${nights} NIGHTS`;
+  const days = itinerary?.duration?.days || 0;
+  const nights = itinerary?.duration?.nights || 0;
+  const durationText = days && nights ? `${days} DAYS | ${nights} NIGHTS` : days ? `${days} DAYS` : "";
 
-  const startingPrice = itinerary?.packagePricing?.premiumPackagePrice || itinerary?.startingFrom?.[0]?.totalPricePerPerson || itinerary?.startingFrom?.[0]?.pricePerPerson || 42999;
-  const luxuryPrice = itinerary?.packagePricing?.luxuryPackagePrice || Math.round(startingPrice * 1.37);
+  const startingPrice = itinerary?.packagePricing?.premiumPackagePrice || itinerary?.startingFrom?.[0]?.totalPricePerPerson || itinerary?.startingFrom?.[0]?.pricePerPerson || 0;
 
-  const formattedStartingPrice = new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(startingPrice);
-
-  const formattedLuxuryPrice = new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 0,
-  }).format(luxuryPrice);
+  // Dynamically sync current itinerary invoice price & carbon footprint to CarbonTrace SDK
+  useEffect(() => {
+    if (itinerary && typeof setCheckoutData === "function") {
+      const carbon = itinerary.carbonFootprint || itinerary.carbon_footprint || 0;
+      setCheckoutData({
+        invoiceAmount: startingPrice,
+        carbonFootprint: carbon,
+      });
+    }
+  }, [itinerary, startingPrice, setCheckoutData]);
 
   return (
     <div className="w-full bg-[#fbf9f4] font-poppins pb-2 sm:pb-8 lg:pb-10">
 
       {/* 100% Full Screen Width Hero Section */}
-      <section className="relative w-full bg-primary-green overflow-visible pt-3 sm:pt-6 pb-8 sm:pb-14 h-[60vh] min-h-[480px] lg:min-h-[560px] lg:h-[65vh] flex flex-col justify-between shadow-none sm:shadow-2xl">
+      <section className="relative w-full bg-primary-green overflow-visible pt-3 sm:pt-6 pb-8 sm:pb-14 h-[80vh] min-h-[560px] lg:min-h-[640px] lg:h-[80vh] flex flex-col justify-between shadow-none sm:shadow-2xl">
 
         {/* Full Viewport Screen Width API Hero Background Image */}
-        <div className="absolute inset-0 w-full h-full overflow-hidden">
-          <Image
-            src={bannerImage}
-            alt={itinerary?.title || "Encamp Expedition Hero"}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover object-center transform scale-102 transition-transform duration-1000"
-          />
-          {/* Rich Scrim Overlays */}
-          <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-black/60" />
-        </div>
+        {bannerImage && (
+          <div className="absolute inset-0 w-full h-full overflow-hidden">
+            <Image
+              src={bannerImage}
+              alt={itinerary?.title || "Encamp Expedition Hero"}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover object-center transform scale-102 transition-transform duration-1000"
+            />
+            {/* Rich Scrim Overlays */}
+            <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-black/60" />
+          </div>
+        )}
 
         {/* Top Left: Encamp Tag Logo anchored directly to Hero Section */}
         <div className="absolute left-3 sm:left-6 lg:left-8 top-3 sm:top-5 z-30 w-36 sm:w-48 lg:w-56 h-12 sm:h-16 lg:h-20 shrink-0 rounded-xl overflow-hidden">
@@ -93,168 +74,44 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
         <div className="relative z-10 w-[96%] sm:w-[94%] lg:w-[94%] xl:w-[95%] max-w-[1920px] mx-auto px-2 sm:px-4 lg:px-6 flex-1 flex flex-col justify-center my-auto h-full">
 
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-center justify-between w-full my-auto h-full">
-
             {/* Left & Center: Crest Logo & Title Banner */}
-            <div className="lg:col-span-9 relative flex flex-col justify-center items-center h-full space-y-2 sm:space-y-4 my-auto">
+            <div className="lg:col-span-9 xl:col-span-9 relative flex flex-col justify-center items-center h-full space-y-2 sm:space-y-4 my-auto">
 
               {/* Top Center: Editorial Title Section (Visually Balanced Vertical & Horizontal Center) */}
-              <div className="w-full max-w-xs sm:max-w-2xl md:max-w-3xl lg:max-w-3xl xl:max-w-4xl mx-auto flex flex-col items-center justify-center text-center px-2 sm:px-4 lg:pl-32 xl:pl-40 lg:pr-8 text-white my-auto lg:mt-8 z-10">
-                <span className="font-script text-base sm:text-lg md:text-xl lg:text-2xl text-[#f0c85a] drop-shadow-md leading-tight">
-                  {itinerary?.subtitle}
-                </span>
+              <div className="w-full max-w-xs sm:max-w-2xl md:max-w-3xl lg:max-w-3xl xl:max-w-4xl mx-auto flex flex-col items-center justify-center text-center px-2 sm:px-4 lg:pl-12 xl:pl-20 lg:pr-4 text-white my-auto lg:mt-8 z-10">
+                {itinerary?.subtitle && (
+                  <span className="font-script text-base sm:text-lg md:text-xl lg:text-2xl text-[#f0c85a] drop-shadow-md leading-tight">
+                    {itinerary.subtitle}
+                  </span>
+                )}
 
-                <h1 className="font-serif-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black uppercase tracking-[0.06em] text-white drop-shadow-lg leading-tight my-1">
-                  {itinerary?.title || "MEGHALAYA"}
-                </h1>
+                {itinerary?.title && (
+                  <h1 className="font-serif-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-black uppercase tracking-[0.06em] text-white drop-shadow-lg leading-tight my-1">
+                    {itinerary.title}
+                  </h1>
+                )}
 
-                {/* Double-Pointed Gold Ribbon Banner with Attached Gold Accent Lines (Exact Match to Reference Image) */}
-                <div className="flex items-center justify-center gap-0 my-1.5 sm:my-2 w-full">
-                  {/* Left Attached Gold Accent Line */}
-                  <span className="h-[1.5px] w-6 sm:w-14 md:w-20 lg:w-24 bg-[#d4a853] opacity-85" />
+                {/* Double-Pointed Gold Ribbon Banner with Attached Gold Accent Lines */}
+                {durationText && (
+                  <div className="flex items-center justify-center gap-0 my-1.5 sm:my-2 w-full">
+                    {/* Left Attached Gold Accent Line */}
+                    <span className="h-[1.5px] w-6 sm:w-14 md:w-20 lg:w-24 bg-[#d4a853] opacity-85" />
 
-                  {/* Double-Pointed Gold Ribbon Banner */}
-                  <div className="relative px-3 sm:px-7 py-0.5 sm:py-1 bg-gradient-to-r from-[#c68e22] via-[#e5aa2d] to-[#c68e22] text-[#fffdf5] font-serif text-[9px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.18em] shadow-md [clip-path:polygon(9px_0,calc(100%-9px)_0,100%_50%,calc(100%-9px)_100%,9px_100%,0_50%)] flex items-center justify-center shrink-0">
-                    {durationText}
+                    {/* Double-Pointed Gold Ribbon Banner */}
+                    <div className="relative px-3 sm:px-7 py-0.5 sm:py-1 bg-gradient-to-r from-[#c68e22] via-[#e5aa2d] to-[#c68e22] text-[#fffdf5] font-serif text-[9px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.18em] shadow-md [clip-path:polygon(9px_0,calc(100%-9px)_0,100%_50%,calc(100%-9px)_100%,9px_100%,0_50%)] flex items-center justify-center shrink-0">
+                      {durationText}
+                    </div>
+
+                    {/* Right Attached Gold Accent Line */}
+                    <span className="h-[1.5px] w-6 sm:w-14 md:w-20 lg:w-24 bg-[#d4a853] opacity-85" />
                   </div>
-
-                  {/* Right Attached Gold Accent Line */}
-                  <span className="h-[1.5px] w-6 sm:w-14 md:w-20 lg:w-24 bg-[#d4a853] opacity-85" />
-                </div>
+                )}
               </div>
 
             </div>
 
-            {/* Desktop-only Right 3 Columns: "OUR PACKAGES" Card POPPING OUT from Bottom */}
-            <div className="hidden lg:flex lg:col-span-3 w-full max-w-[293px] sm:max-w-[303px] mx-auto lg:ml-auto transform translate-y-6 sm:translate-y-12 lg:translate-y-24 lg:translate-x-6 z-30">
-              <LuxuryPackageCard className="w-full">
-                {/* Packages Title */}
-                <div className="text-center pb-3 border-b border-white/20">
-                  <h2 className="font-serif-display text-base sm:text-lg font-bold uppercase tracking-[0.2em] text-white">
-                    Our Packages
-                  </h2>
-                </div>
-
-                {/* Package Blocks Spaced Between */}
-                <div className="py-3 flex-1 flex flex-col justify-between space-y-4">
-
-                  {/* 1. Premium Package */}
-                  <div className="space-y-2 pb-3 border-b border-white/20">
-                    <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
-                      Premium Package
-                    </div>
-
-                    {/* 4 Mini Gold Icons */}
-                    <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
-                      <div className="flex flex-col items-center">
-                        <BedDouble className="w-4 h-4 text-[#f0c85a] mb-1" />
-                        <span>4★ Hotels</span>
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <Utensils className="w-4 h-4 text-[#f0c85a] mb-1" />
-                        <span>Breakfast</span>
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <Car className="w-4 h-4 text-[#f0c85a] mb-1" />
-                        <span>Private Cab</span>
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <Camera className="w-4 h-4 text-[#f0c85a] mb-1" />
-                        <span>All Sightseeing</span>
-                      </div>
-                    </div>
-
-                    <div className="text-center pt-1.5">
-                      <div className="font-poppins text-2xl font-black text-white leading-none">
-                        {formattedStartingPrice}/-
-                      </div>
-                      <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">1-2 guest</div>
-                    </div>
-
-                    <button
-                      onClick={onOpenEnquiry}
-                      className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
-                    >
-                      Book Now
-                    </button>
-                  </div>
-
-                  {/* 2. Luxury Package */}
-                  <div className="space-y-2 pb-3 border-b border-white/20">
-                    <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
-                      Luxury Package
-                    </div>
-
-                    {/* 4 Mini Gold Icons */}
-                    <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
-                      <div className="flex flex-col items-center">
-                        <BedDouble className="w-4 h-4 text-[#f0c85a] mb-1" />
-                        <span>5★ Hotels</span>
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <Utensils className="w-4 h-4 text-[#f0c85a] mb-1" />
-                        <span>All Meals</span>
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <Car className="w-4 h-4 text-[#f0c85a] mb-1" />
-                        <span>Private Cab</span>
-                      </div>
-                      <div className="flex flex-col items-center">
-                        <Camera className="w-4 h-4 text-[#f0c85a] mb-1" />
-                        <span>All Sightseeing</span>
-                      </div>
-                    </div>
-
-                    <div className="text-center pt-1.5">
-                      <div className="font-poppins text-2xl font-black text-white leading-none">
-                        {formattedLuxuryPrice}/-
-                      </div>
-                      <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">1-2 guest</div>
-                    </div>
-
-                    <button
-                      onClick={onOpenEnquiry}
-                      className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
-                    >
-                      Book Now
-                    </button>
-                  </div>
-
-                  {/* 3. Custom Package */}
-                  <div className="space-y-2">
-                    <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
-                      Custom Package
-                    </div>
-
-                    <ul className="space-y-1.5 text-[11px] text-stone-200">
-                      <li className="flex items-center gap-2">
-                        <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
-                        <span>Tailor Made Itinerary</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
-                        <span>Personalized Experiences</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
-                        <span>Flexible Plans</span>
-                      </li>
-                      <li className="flex items-center gap-2">
-                        <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
-                        <span>24x7 Support</span>
-                      </li>
-                    </ul>
-
-                    <button
-                      onClick={onOpenEnquiry}
-                      className="w-full border-2 border-[#f0c85a] text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-2"
-                    >
-                      Enquire Now
-                    </button>
-                  </div>
-
-                </div>
-              </LuxuryPackageCard>
-            </div>
+            {/* Right 3 Columns spacer on desktop to balance left center title */}
+            <div className="hidden lg:block lg:col-span-3 xl:col-span-3 h-full" />
 
           </div>
 
@@ -303,138 +160,6 @@ export default function ReferencePosterHeader({ itinerary, onOpenEnquiry }) {
         </div>
 
       </section>
-
-      {/* Mobile-only "OUR PACKAGES" Card rendered below 80vh hero section */}
-      <div className="block lg:hidden pt-10 sm:pt-14 px-2 sm:px-4 w-full max-w-2xl mx-auto">
-        <LuxuryPackageCard className="w-full">
-          {/* Packages Title */}
-          <div className="text-center pb-3 border-b border-white/20">
-            <h2 className="font-serif-display text-base sm:text-lg font-bold uppercase tracking-[0.2em] text-white">
-              Our Packages
-            </h2>
-          </div>
-
-          {/* Package Blocks Spaced Between */}
-          <div className="py-3 space-y-4">
-
-            {/* 1. Premium Package */}
-            <div className="space-y-2 pb-3 border-b border-white/20">
-              <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
-                Premium Package
-              </div>
-
-              {/* 4 Mini Gold Icons */}
-              <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
-                <div className="flex flex-col items-center">
-                  <BedDouble className="w-4 h-4 text-[#f0c85a] mb-1" />
-                  <span>4★ Hotels</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Utensils className="w-4 h-4 text-[#f0c85a] mb-1" />
-                  <span>Breakfast</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Car className="w-4 h-4 text-[#f0c85a] mb-1" />
-                  <span>Private Cab</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Camera className="w-4 h-4 text-[#f0c85a] mb-1" />
-                  <span>All Sightseeing</span>
-                </div>
-              </div>
-
-              <div className="text-center pt-1.5">
-                <div className="font-poppins text-2xl font-black text-white leading-none">
-                  {formattedStartingPrice}/-
-                </div>
-                <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">1-2 guest</div>
-              </div>
-
-              <button
-                onClick={onOpenEnquiry}
-                className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
-              >
-                Book Now
-              </button>
-            </div>
-
-            {/* 2. Luxury Package */}
-            <div className="space-y-2 pb-3 border-b border-white/20">
-              <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
-                Luxury Package
-              </div>
-
-              {/* 4 Mini Gold Icons */}
-              <div className="grid grid-cols-4 gap-1 text-center text-[9px] text-stone-300 pt-1">
-                <div className="flex flex-col items-center">
-                  <BedDouble className="w-4 h-4 text-[#f0c85a] mb-1" />
-                  <span>5★ Hotels</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Utensils className="w-4 h-4 text-[#f0c85a] mb-1" />
-                  <span>All Meals</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Car className="w-4 h-4 text-[#f0c85a] mb-1" />
-                  <span>Private Cab</span>
-                </div>
-                <div className="flex flex-col items-center">
-                  <Camera className="w-4 h-4 text-[#f0c85a] mb-1" />
-                  <span>All Sightseeing</span>
-                </div>
-              </div>
-
-              <div className="text-center pt-1.5">
-                <div className="font-poppins text-2xl font-black text-white leading-none">
-                  {formattedLuxuryPrice}/-
-                </div>
-                <div className="font-poppins text-[9px] sm:text-[10px] text-stone-300 font-medium">1-2 guest</div>
-              </div>
-
-              <button
-                onClick={onOpenEnquiry}
-                className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1"
-              >
-                Book Now
-              </button>
-            </div>
-
-            {/* 3. Custom Package */}
-            <div className="space-y-2">
-              <div className="text-xs font-bold uppercase tracking-widest text-[#f0c85a] text-center">
-                Custom Package
-              </div>
-
-              <ul className="space-y-1.5 text-[11px] text-stone-200">
-                <li className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
-                  <span>Tailor Made Itinerary</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
-                  <span>Personalized Experiences</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
-                  <span>Flexible Plans</span>
-                </li>
-                <li className="flex items-center gap-2">
-                  <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
-                  <span>24x7 Support</span>
-                </li>
-              </ul>
-
-              <button
-                onClick={onOpenEnquiry}
-                className="w-full border-2 border-[#f0c85a] text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green font-black text-xs uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-2"
-              >
-                Enquire Now
-              </button>
-            </div>
-
-          </div>
-        </LuxuryPackageCard>
-      </div>
 
     </div>
   );

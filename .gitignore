@@ -41,5 +41,6 @@ src/components/itinerary/ApiDebugViewer.js
 *.tsbuildinfo
 next-env.d.ts
 
-#agents
+# agents
+.agents/
 .agents

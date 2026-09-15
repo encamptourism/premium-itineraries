@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import PackageBookingCard from "./PackageBookingCard";
+import CarbonTraceWalletModal from "@/components/checkout/CarbonTraceWalletModal";
 import {
   Check,
   X,
@@ -157,6 +159,23 @@ function DayImageSlider({ images, alt, className = "" }) {
 export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
   const [showAllInclusions, setShowAllInclusions] = useState(false);
   const [showAllExclusions, setShowAllExclusions] = useState(false);
+  const [isCtModalOpen, setIsCtModalOpen] = useState(false);
+  const [initialPackage, setInitialPackage] = useState("premium");
+
+  const openRedeemModal = (pkg = "premium") => {
+    setInitialPackage(pkg);
+    setIsCtModalOpen(true);
+  };
+
+  const startingPrice =
+    itinerary?.packagePricing?.premiumPackagePrice ||
+    itinerary?.startingFrom?.[0]?.totalPricePerPerson ||
+    itinerary?.startingFrom?.[0]?.pricePerPerson ||
+    0;
+
+  const luxuryPrice =
+    itinerary?.packagePricing?.luxuryPackagePrice ||
+    (startingPrice ? Math.round(startingPrice * 1.37) : 0);
 
   const days = itinerary?.duration?.days || 7;
   const nights = itinerary?.duration?.nights || 6;
@@ -778,11 +797,19 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
           </div>
 
           {/* ========================================================================= */}
-          {/* COLUMN 3 (RIGHT): INCLUSIONS, EXCLUSIONS, FLIGHT/VISA, WHY TRAVEL */}
+          {/* COLUMN 3 (RIGHT): OUR PACKAGES, INCLUSIONS, EXCLUSIONS, FLIGHT/VISA, WHY TRAVEL */}
           {/* ========================================================================= */}
-          <div className="lg:col-span-3 space-y-4 mt-[10px] pt-8 sm:pt-14 lg:pt-48 w-full max-w-2xl lg:max-w-[300px] mx-auto lg:ml-auto transform lg:translate-x-6">
+          <div className="lg:col-span-3 space-y-4 lg:-mt-[440px] xl:-mt-[480px] z-30 w-full max-w-[340px] lg:max-w-[360px] xl:max-w-[380px] mx-auto lg:ml-auto">
+            {/* Package Booking Card */}
+            <PackageBookingCard
+              itinerary={itinerary}
+              itineraryId={itinerary?._id || itinerary?.id || itinerary?.itineraryId || itinerary?.commondetails?._id}
+              onOpenEnquiry={onOpenEnquiry}
+              openRedeemModal={openRedeemModal}
+            />
+
             {/* Unified Inclusions & Exclusions Card */}
-            <div className="rounded-2xl overflow-hidden border border-[#e2d8c3] font-poppins">
+            <div className="rounded-2xl overflow-hidden border border-[#e2d8c3] font-poppins bg-[#fbf9f4]">
               {/* Dark Forest Green Header Bar for Inclusions */}
               <div className="bg-primary-green text-white py-2.5 px-4 text-center border-b border-[#f0c85a]/40">
                 <h2 className="font-serif-display text-sm sm:text-base font-black uppercase tracking-[0.2em] text-white">
@@ -942,6 +969,16 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
         </div>
       </div>
+
+      {/* CarbonTrace SDK Wallet & Redemption Modal */}
+      <CarbonTraceWalletModal
+        isOpen={isCtModalOpen}
+        onClose={() => setIsCtModalOpen(false)}
+        premiumPrice={startingPrice}
+        luxuryPrice={luxuryPrice}
+        carbonFootprint={itinerary?.carbonFootprint || itinerary?.carbon_footprint || 12.8}
+        initialPackage={initialPackage}
+      />
     </div>
   );
 }

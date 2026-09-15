@@ -18,8 +18,9 @@ export default async function Home() {
 
   return (
     <div className="min-h-screen bg-white text-black flex flex-col">
+
       {/* Hero Showcase */}
-      <section className="relative w-full min-h-[55vh] lg:min-h-[60vh] bg-forest-dark flex items-center justify-center overflow-hidden">
+      <section className="relative w-full min-h-[80vh] h-[80vh] bg-forest-dark flex items-center justify-center overflow-hidden">
         <Image
           src="https://encamp-s3b.s3.ap-south-1.amazonaws.com/1787245472531_Encamp%20terra%20meghalaya.png.jpg"
           alt="Encamp Privé Expeditions"
@@ -29,6 +30,8 @@ export default async function Home() {
           className="object-cover object-center scale-105"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/25 to-black/40" />
+
+
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-5 py-12 sm:py-16">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gold-light text-xs font-semibold uppercase tracking-widest">
@@ -85,7 +88,7 @@ export default async function Home() {
               const slug = item.slug || item._id;
               const title = item.title || item.name || "Luxury Expedition";
               const subtitle = item.subtitle || item.description || item.overview || "";
-              
+
               // Image extraction
               const bgImage = item.bannerImage ||
                 item.heroImage ||

@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Coins, TrendingUp, ArrowUpRight, ArrowDownRight, Award, Shield, Crown, Gem } from 'lucide-react';
+import { Coins, TrendingUp, ArrowUpRight, ArrowDownRight, Award, Shield, Crown, Gem, Wallet, CheckCircle, ShieldAlert, RefreshCw } from 'lucide-react';
+import { useCarbonTrace } from '@/context/CarbonTraceContext';
 
 const TIER_ICONS = {
   Award,
@@ -11,41 +12,48 @@ const TIER_ICONS = {
 };
 
 export default function CTCoinsCard({ ctCoins }) {
+  const ctContext = useCarbonTrace();
+  const connected = ctContext?.connected || false;
+  const address = ctContext?.address || null;
+  const optedIn = ctContext?.optedIn || false;
+  const isConnecting = ctContext?.isConnecting || false;
+  const isOptingIn = ctContext?.isOptingIn || false;
+  const error = ctContext?.error || null;
+  const connectWallet = ctContext?.connectWallet;
+  const disconnectWallet = ctContext?.disconnectWallet;
+  const optInCTCoins = ctContext?.optInCTCoins;
+  const getCTCoinBalance = ctContext?.getCTCoinBalance;
+
+  const targetBalance = connected && typeof getCTCoinBalance === 'function'
+    ? getCTCoinBalance()
+    : (ctCoins?.balance || 0);
+
   const [displayBalance, setDisplayBalance] = useState(0);
   const animRef = useRef(null);
 
   useEffect(() => {
-    if (!ctCoins?.balance) return;
-    const target = ctCoins.balance;
-    const duration = 1200;
+    const duration = 1000;
     const start = performance.now();
 
     const tick = (now) => {
       const elapsed = now - start;
       const progress = Math.min(elapsed / duration, 1);
       const eased = 1 - Math.pow(1 - progress, 3);
-      setDisplayBalance(Math.round(eased * target));
+      setDisplayBalance(Math.round(eased * targetBalance));
       if (progress < 1) animRef.current = requestAnimationFrame(tick);
     };
 
     animRef.current = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(animRef.current);
-  }, [ctCoins?.balance]);
+  }, [targetBalance]);
 
-  if (!ctCoins) {
-    return (
-      <div className="animate-pulse space-y-4">
-        <div className="h-32 bg-stone-100 rounded-3xl" />
-      </div>
-    );
-  }
-
-  const { balance = 0, tierInfo, nextTier, progress = 0, transactions = [] } = ctCoins;
+  const { balance = 0, tierInfo, nextTier, progress = 0, transactions = [] } = ctCoins || {};
   const TierIcon = tierInfo?.icon ? TIER_ICONS[tierInfo.icon] || Award : Award;
   const NextTierIcon = nextTier?.icon ? TIER_ICONS[nextTier.icon] || Shield : Shield;
 
   return (
     <div className="space-y-5">
+      {/* Primary Balance Card */}
       <div className="bg-white border border-stone-200 rounded-3xl p-5 sm:p-6 shadow-sm space-y-5">
         <div className="flex items-center justify-between flex-wrap gap-4 pb-4 border-b border-stone-100">
           <div className="space-y-1">
@@ -56,20 +64,85 @@ export default function CTCoinsCard({ ctCoins }) {
               <span className="text-stone-500 text-xs font-bold uppercase tracking-widest">CT Coins Balance</span>
             </div>
             <div className="text-3xl sm:text-4xl font-bold text-[#dfa62f] tabular-nums pt-1">
-              {displayBalance.toLocaleString()}
+              {displayBalance.toLocaleString()} <span className="text-xs font-normal text-stone-500">CTCoin</span>
             </div>
-            <p className="text-stone-400 text-[11px]">Powered by Carbon Trace 3rd-Party API</p>
+            <p className="text-stone-400 text-[11px]">Powered by Carbon Trace Production SDK</p>
           </div>
 
-          {tierInfo?.name && (
-            <div className="flex flex-col items-end gap-2">
+          <div className="flex flex-col items-end gap-2">
+            {tierInfo?.name && (
               <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full text-xs font-bold bg-primary-green/5 text-primary-green border border-primary-green/15 shadow-2xs">
                 <TierIcon className="w-4 h-4 text-[#dfa62f]" />
                 {tierInfo.name} Tier Member
               </span>
+            )}
+
+            {/* Wallet Connect / Disconnect Action */}
+            <div className="pt-1">
+              {!connected ? (
+                <button
+                  type="button"
+                  onClick={connectWallet}
+                  disabled={isConnecting}
+                  className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-forest text-ivory text-xs font-bold hover:bg-forest-light transition-all disabled:opacity-50 cursor-pointer shadow-xs"
+                >
+                  {isConnecting ? (
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin text-gold" />
+                  ) : (
+                    <Wallet className="w-3.5 h-3.5 text-gold" />
+                  )}
+                  <span>{isConnecting ? 'Connecting...' : 'Connect CarbonTrace Wallet'}</span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <span className="text-xs font-mono bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-lg text-stone-700">
+                    {address ? `${address.substring(0, 6)}...${address.substring(address.length - 4)}` : 'Connected'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={disconnectWallet}
+                    className="text-xs font-semibold text-rose-600 hover:underline cursor-pointer"
+                  >
+                    Disconnect
+                  </button>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
+
+        {error && (
+          <div className="p-3 rounded-2xl bg-rose-50 border border-rose-200 text-rose-700 text-xs flex items-center gap-2">
+            <ShieldAlert className="w-4 h-4 shrink-0 text-rose-600" />
+            <span>{error}</span>
+          </div>
+        )}
+
+        {/* Opt-in banner if wallet connected */}
+        {connected && (
+          <div className="p-3 rounded-2xl bg-amber-50/70 border border-amber-200/80 flex items-center justify-between flex-wrap gap-2 text-xs">
+            <div className="flex items-center gap-2">
+              {optedIn ? (
+                <CheckCircle className="w-4 h-4 text-emerald-600 shrink-0" />
+              ) : (
+                <ShieldAlert className="w-4 h-4 text-amber-600 shrink-0" />
+              )}
+              <span className="font-semibold text-stone-700">
+                {optedIn ? 'Wallet opted into CTCoin asset' : 'Wallet requires CTCoin opt-in'}
+              </span>
+            </div>
+            {!optedIn && (
+              <button
+                type="button"
+                onClick={optInCTCoins}
+                disabled={isOptingIn}
+                className="px-3 py-1 rounded-lg bg-amber-600 text-white text-xs font-bold hover:bg-amber-700 transition-all disabled:opacity-50 cursor-pointer"
+              >
+                {isOptingIn ? 'Opting in...' : 'Opt-In Now'}
+              </button>
+            )}
+          </div>
+        )}
 
         {tierInfo && nextTier ? (
           <div className="space-y-2 pt-1">
@@ -95,10 +168,10 @@ export default function CTCoinsCard({ ctCoins }) {
             </div>
 
             <div className="flex items-center justify-between text-[11px] text-stone-500">
-              <span>{balance.toLocaleString()} coins</span>
+              <span>{targetBalance.toLocaleString()} coins</span>
               {nextTier?.min && (
                 <span className="font-semibold text-primary-green">
-                  {(nextTier.min - balance).toLocaleString()} coins to {nextTier.name}
+                  {Math.max(0, nextTier.min - targetBalance).toLocaleString()} coins to {nextTier.name}
                 </span>
               )}
             </div>
