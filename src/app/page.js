@@ -16,6 +16,9 @@ export default async function Home() {
     itineraries = apiResponse.itineraries;
   }
 
+  // Filter home page itineraries to show ONLY items where isclientvisible === true
+  itineraries = itineraries.filter((item) => item?.isclientvisible === true);
+
   return (
     <div className="min-h-screen bg-white text-black flex flex-col">
 

@@ -1,10 +1,17 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { createPortal } from 'react-dom';
 import { X, Coins, Wallet, ShieldCheck, RefreshCw, CheckCircle2, Tag } from 'lucide-react';
 import { useCarbonTrace } from '@/context/CarbonTraceContext';
 
 export default function CarbonTraceWalletModal({ isOpen, onClose, premiumPrice = 151000, luxuryPrice = 185000, carbonFootprint = 12.8, initialPackage = 'premium' }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   const {
     connected,
     address,
@@ -43,7 +50,7 @@ export default function CarbonTraceWalletModal({ isOpen, onClose, premiumPrice =
     }
   }, [isOpen, selectedPackage, activePrice, carbonFootprint, setCheckoutData]);
 
-  if (!isOpen) return null;
+  if (!isOpen || !mounted) return null;
 
   const handleApplyRedemption = () => {
     const coinsToRedeem = Math.min(Math.max(0, Number(requestedCoins) || 0), maxRedeemable);
@@ -56,8 +63,8 @@ export default function CarbonTraceWalletModal({ isOpen, onClose, premiumPrice =
   const currentApplied = appliedRedemption?.amount || 0;
   const netPackagePrice = Math.max(0, activePrice - currentApplied);
 
-  return (
-    <div className={`fixed inset-0 z-[99999] items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto ${isOpen ? 'flex' : 'hidden'}`}>
+  return createPortal(
+    <div className="fixed inset-0 z-[999999] flex items-center justify-center p-3 sm:p-4 bg-black/80 backdrop-blur-md animate-in fade-in duration-200 overflow-y-auto">
       <div className="relative w-full max-w-2xl bg-white rounded-3xl p-5 sm:p-7 shadow-2xl border border-stone-200 overflow-hidden flex flex-col my-auto max-h-[92vh]">
         {/* Header */}
         <div className="flex items-center justify-between pb-4 mb-3 border-b border-stone-100">
@@ -243,6 +250,7 @@ export default function CarbonTraceWalletModal({ isOpen, onClose, premiumPrice =
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 }

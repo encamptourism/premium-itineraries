@@ -28,14 +28,8 @@ function OverviewTab({ user, ctCoins, bookings }) {
   return (
     <div className="space-y-6">
       {/* Quick stats - Clean White Cards */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         {[
-          {
-            label: 'CT Coins',
-            value: ctCoins?.balance?.toLocaleString() ?? '—',
-            icon: <Coins className="w-5 h-5 text-[#dfa62f]" />,
-            valColor: 'text-[#dfa62f]',
-          },
           {
             label: 'Trips Taken',
             value: completed.length,
@@ -172,10 +166,9 @@ function PreferencesTab({ preferences }) {
   };
 
   const chipClass = (active) =>
-    `px-4 py-2.5 rounded-2xl text-xs font-semibold border transition-all cursor-pointer ${
-      active
-        ? 'bg-primary-green text-white border-primary-green font-bold shadow-sm'
-        : 'bg-stone-50 text-stone-700 border-stone-200 hover:border-[#dfa62f] hover:text-primary-green'
+    `px-4 py-2.5 rounded-2xl text-xs font-semibold border transition-all cursor-pointer ${active
+      ? 'bg-primary-green text-white border-primary-green font-bold shadow-sm'
+      : 'bg-stone-50 text-stone-700 border-stone-200 hover:border-[#dfa62f] hover:text-primary-green'
     }`;
 
   return (
@@ -622,12 +615,12 @@ function ProfilePageContent() {
   const tabParam = searchParams.get('tab');
 
   const TAB_LABELS = {
-    overview:    'Overview',
-    journeys:    'My Journeys',
-    ctcoins:     'CT Coins',
+    overview: 'Overview',
+    journeys: 'My Journeys',
+    ctcoins: 'CT Coins',
     preferences: 'Preferences',
-    documents:   'Documents',
-    settings:    'Account Settings',
+    documents: 'Documents',
+    settings: 'Account Settings',
   };
 
   const [activeTab, setActiveTab] = useState(() => {
@@ -673,11 +666,10 @@ function ProfilePageContent() {
               <button
                 key={id}
                 onClick={() => handleTabChange(id)}
-                className={`flex-shrink-0 px-4 py-2.5 rounded-full text-xs font-bold transition-all ${
-                  activeTab === id
+                className={`flex-shrink-0 px-4 py-2.5 rounded-full text-xs font-bold transition-all ${activeTab === id
                     ? 'bg-primary-green text-white shadow-md'
                     : 'bg-white text-stone-600 border border-stone-200 hover:border-[#dfa62f]'
-                }`}
+                  }`}
               >
                 {label}
               </button>

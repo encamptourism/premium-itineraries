@@ -450,7 +450,7 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
                   <div className="text-xs line-through text-stone-300 font-medium font-poppins">
                     {formattedStartingPrice}/-
                   </div>
-                  <div className="font-poppins text-2xl sm:text-3xl font-extrabold text-emerald-400 leading-none">
+                  <div className="font-poppins text-xl sm:text-2xl font-extrabold text-emerald-400 leading-none">
                     {formattedNetStartingPrice}/-
                   </div>
                   <div className="text-[10px] sm:text-xs text-emerald-300 font-bold mt-0.5 font-poppins">
@@ -458,7 +458,7 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
                   </div>
                 </div>
               ) : (
-                <div className="font-poppins text-2xl sm:text-3xl font-extrabold text-white leading-none">
+                <div className="font-poppins text-xl sm:text-2xl font-extrabold text-white leading-none">
                   {formattedStartingPrice}/-
                 </div>
               )}
@@ -534,7 +534,7 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
                   <div className="text-xs line-through text-stone-300 font-medium font-poppins">
                     {formattedLuxuryPrice}/-
                   </div>
-                  <div className="font-poppins text-2xl sm:text-3xl font-extrabold text-emerald-400 leading-none">
+                  <div className="font-poppins text-xl sm:text-2xl font-extrabold text-emerald-400 leading-none">
                     {formattedNetLuxuryPrice}/-
                   </div>
                   <div className="text-[10px] sm:text-xs text-emerald-300 font-bold mt-0.5 font-poppins">
@@ -542,7 +542,7 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
                   </div>
                 </div>
               ) : (
-                <div className="font-poppins text-2xl sm:text-3xl font-extrabold text-white leading-none">
+                <div className="font-poppins text-xl sm:text-2xl font-extrabold text-white leading-none">
                   {formattedLuxuryPrice}/-
                 </div>
               )}

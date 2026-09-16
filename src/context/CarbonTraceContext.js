@@ -2,11 +2,13 @@
 
 import { createContext, useContext, useState, useEffect, useCallback, useRef } from 'react';
 import Script from 'next/script';
+import { usePathname } from 'next/navigation';
 import { useAuth } from './AuthContext';
 
 export const CarbonTraceContext = createContext(null);
 
 const CLIENT_ACCESS_TOKEN = process.env.NEXT_PUBLIC_CARBONTRACE_CLIENT_ACCESS_TOKEN || '';
+const AUTH_PATHS = ['/login', '/register', '/verify-otp', '/forgot-password'];
 
 export function getStoredSenderId(user) {
   if (user?.senderId) return user.senderId;
@@ -37,6 +39,9 @@ function extractOptInStatus(snapshot, walletState) {
 }
 
 export function CarbonTraceProvider({ children }) {
+  const pathname = usePathname() || '';
+  const isAuthPage = AUTH_PATHS.some((p) => pathname.startsWith(p));
+
   const auth = useAuth();
   const user = auth?.user || null;
   const isInitializedRef = useRef(false);
@@ -60,9 +65,19 @@ export function CarbonTraceProvider({ children }) {
     setWalletState((prev) => (prev.senderId === currentSenderId ? prev : { ...prev, senderId: currentSenderId }));
   }, [user]);
 
-  // Relocate any fallback element inserted above header by SDK to below footer
+  // Clean up or hide any floating SDK elements when on auth pages
   useEffect(() => {
     if (typeof window === 'undefined') return;
+
+    if (isAuthPage) {
+      const residualElements = document.querySelectorAll('[id^="ct_"], [id*="carbontrace"], iframe[src*="carbontrace"]');
+      residualElements.forEach((el) => {
+        if (el && el.parentElement && !el.closest('#ct_wallet') && !el.closest('#ct_onboarding')) {
+          el.style.display = 'none';
+        }
+      });
+      return;
+    }
 
     const relocateTopFallbackElements = () => {
       const body = document.body;
@@ -73,12 +88,9 @@ export function CarbonTraceProvider({ children }) {
 
       const children = Array.from(body.children);
       children.forEach((child) => {
-        // Skip header or containers that enclose header or footer
         if (child === header || child.contains(header) || child.tagName === 'SCRIPT') return;
 
-        // Check if child appears BEFORE header in DOM order
         if (child.compareDocumentPosition(header) & Node.DOCUMENT_POSITION_FOLLOWING) {
-          // Relocate child to bottom of body (below footer)
           body.appendChild(child);
         }
       });
@@ -90,10 +102,10 @@ export function CarbonTraceProvider({ children }) {
       relocateTopFallbackElements();
     });
 
-    observer.observe(document.body, { childList: true });
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
 
     return () => observer.disconnect();
-  }, []);
+  }, [isAuthPage]);
 
   const updateWalletSnapshotState = useCallback((address, snapshot) => {
     const ctInstance = typeof window !== 'undefined' ? window.CarbontraceWallet : null;
@@ -113,7 +125,7 @@ export function CarbonTraceProvider({ children }) {
   }, []);
 
   const initializeSdk = useCallback(async () => {
-    if (typeof window === 'undefined' || !window.CarbontraceWallet) return false;
+    if (typeof window === 'undefined' || !window.CarbontraceWallet || isAuthPage) return false;
 
     try {
       await window.CarbontraceWallet.init({
@@ -156,7 +168,7 @@ export function CarbonTraceProvider({ children }) {
       console.warn('[CarbonTrace SDK Init Notice]:', err?.message || err);
       return false;
     }
-  }, [updateWalletSnapshotState]);
+  }, [updateWalletSnapshotState, isAuthPage]);
 
   const handleScriptLoad = () => {
     setSdkLoaded(true);
@@ -313,12 +325,14 @@ export function CarbonTraceProvider({ children }) {
 
   return (
     <CarbonTraceContext.Provider value={value}>
-      <Script
-        src="https://admin.carbontrace.in/js/carbon-sdk-bundle.js"
-        strategy="afterInteractive"
-        onLoad={handleScriptLoad}
-        onError={(e) => console.warn('[CarbonTrace SDK Load Error]:', e)}
-      />
+      {!isAuthPage && (
+        <Script
+          src="https://admin.carbontrace.in/js/carbon-sdk-bundle.js"
+          strategy="afterInteractive"
+          onLoad={handleScriptLoad}
+          onError={(e) => console.warn('[CarbonTrace SDK Load Error]:', e)}
+        />
+      )}
       {children}
     </CarbonTraceContext.Provider>
   );

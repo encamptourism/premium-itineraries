@@ -45,7 +45,8 @@
   --color-border: var(--border);
 }
 
-html, body {
+html,
+body {
   margin-top: 0 !important;
   padding-top: 0 !important;
   top: 0 !important;
@@ -60,10 +61,15 @@ body {
 }
 
 /* Prevent external SDK fallback elements from showing above header */
-body > iframe[src*="carbontrace"],
-body > div[id*="ct_header"],
-body > div[class*="ct_header"] {
+body>iframe[src*="carbontrace"],
+body>div[id*="ct_header"],
+body>div[class*="ct_header"] {
   display: none !important;
+}
+
+/* CarbonTrace Floating Action Button Z-Index */
+[id*="ct_"], [class*="ct_"], [id*="carbontrace"], iframe[src*="carbontrace"] {
+  z-index: 999999 !important;
 }
 
 /* Typography Token Utilities */
@@ -117,13 +123,13 @@ body > div[class*="ct_header"] {
 
 .heading-xl {
   font-family: var(--font-display-serif), Georgia, serif;
-  font-size: clamp(1.75rem, 2.5vw, 2.5rem);
+  font-size: clamp(1.5rem, 2vw, 2.25rem);
   line-height: 1.2;
 }
 
 .heading-lg {
   font-family: var(--font-display-serif), Georgia, serif;
-  font-size: clamp(1.5rem, 2vw, 2rem);
+  font-size: clamp(1.25rem, 1.75vw, 1.75rem);
   line-height: 1.25;
 }
 
@@ -177,10 +183,50 @@ body > div[class*="ct_header"] {
   font-weight: 600;
 }
 
-/* Fix browser autofill blue background to match luxury package theme */
+/* Production Animations & Keyframes */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  20%,
+  60% {
+    transform: translateX(-4px);
+  }
+
+  40%,
+  80% {
+    transform: translateX(4px);
+  }
+}
+
+.animate-fadeIn,
+.animate-fade-in {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.animate-shake {
+  animation: shake 0.35s ease-in-out;
+}
+
+/* Fix browser autofill background to match luxury package theme */
 input:-webkit-autofill,
-input:-webkit-autofill:hover, 
-input:-webkit-autofill:focus, 
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
   -webkit-box-shadow: 0 0 0 40px #fdfbf7 inset !important;
   -webkit-text-fill-color: #14281e !important;

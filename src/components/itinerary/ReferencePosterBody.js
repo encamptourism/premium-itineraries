@@ -130,9 +130,8 @@ function DayImageSlider({ images, alt, className = "" }) {
           alt={alt}
           fill
           sizes="(max-width: 640px) 100vw, 140px"
-          className={`object-cover transition-opacity duration-1000 ease-in-out ${
-            idx === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
-          }`}
+          className={`object-cover transition-opacity duration-1000 ease-in-out ${idx === currentIndex ? "opacity-100 z-10" : "opacity-0 z-0"
+            }`}
           priority={idx === 0}
         />
       ))}
@@ -143,11 +142,10 @@ function DayImageSlider({ images, alt, className = "" }) {
           {images.map((_, idx) => (
             <span
               key={idx}
-              className={`h-1.5 rounded-full transition-all duration-500 ${
-                idx === currentIndex
+              className={`h-1.5 rounded-full transition-all duration-500 ${idx === currentIndex
                   ? "w-3.5 bg-white shadow-xs opacity-100"
                   : "w-1.5 bg-white/60 drop-shadow-xs"
-              }`}
+                }`}
             />
           ))}
         </div>
@@ -243,8 +241,8 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
   const shortVideoItems = Array.isArray(rawShortData)
     ? rawShortData
     : rawShortData && typeof rawShortData === "object"
-    ? [rawShortData]
-    : [];
+      ? [rawShortData]
+      : [];
 
   const galleryImages = Array.isArray(itinerary?.gallery) ? itinerary.gallery.map((g) => g.url) : [];
   const dayImages = dayWise.flatMap((d) => getDayImages(d)).filter(Boolean);
@@ -279,7 +277,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
     <div className="w-full bg-[#fbf9f4] font-poppins pt-3 sm:pt-10 lg:pt-14 pb-6 sm:pb-8">
       <div className="w-[96%] sm:w-[94%] lg:w-[94%] xl:w-[95%] max-w-[1920px] mx-auto px-2 sm:px-4 lg:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
-          
+
           {/* ========================================================================= */}
           {/* COLUMN 1 (LEFT): DAY WISE ITINERARY */}
           {/* ========================================================================= */}
@@ -488,7 +486,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                       1
                     </div>
                     <div className="font-poppins text-[7.5px] sm:text-[8.5px] md:text-[9.5px] font-medium uppercase tracking-tight text-stone-700 mt-1 leading-tight">
-                      UNFORGETTABLE<br/>JOURNEY
+                      UNFORGETTABLE<br />JOURNEY
                     </div>
                   </div>
 
@@ -524,7 +522,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
                 {/* Top Two Cards in 2 Columns */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                  
+
                   {/* Card 1: Best Time to Visit (Dark Green Hero Card) */}
                   <div className="relative bg-primary-green border-2 border-[#f0c85a]/70 rounded-2xl rounded-tl-none rounded-br-none p-2.5 sm:p-3 text-white shadow-md flex flex-col justify-between">
                     <div>
@@ -839,9 +837,8 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                     >
                       <span>{showAllInclusions ? "Show Less" : `View More (${inclusions.length - 5} more)`}</span>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 text-[#b38320] transition-transform duration-300 ${
-                          showAllInclusions ? "rotate-180" : ""
-                        }`}
+                        className={`w-3.5 h-3.5 text-[#b38320] transition-transform duration-300 ${showAllInclusions ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
                   </div>
@@ -878,9 +875,8 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                     >
                       <span>{showAllExclusions ? "Show Less" : `View More (${exclusions.length - 4} more)`}</span>
                       <ChevronDown
-                        className={`w-3.5 h-3.5 text-primary-green transition-transform duration-300 ${
-                          showAllExclusions ? "rotate-180" : ""
-                        }`}
+                        className={`w-3.5 h-3.5 text-primary-green transition-transform duration-300 ${showAllExclusions ? "rotate-180" : ""
+                          }`}
                       />
                     </button>
                   </div>

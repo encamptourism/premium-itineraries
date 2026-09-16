@@ -29,7 +29,7 @@ export default function ProfileHeaderCard({ user, ctCoins }) {
   return (
     <div className="w-full bg-white border border-stone-200/90 rounded-2xl p-3.5 sm:p-5 overflow-hidden text-stone-900 mb-5 shadow-xs">
       <div className="flex flex-col md:flex-row items-center justify-between gap-4 sm:gap-6">
-        
+
         {/* Left Side: Compact Avatar & User Details */}
         <div className="flex flex-col sm:flex-row items-center text-center sm:text-left gap-4 w-full md:w-auto">
           {/* Avatar Box */}
@@ -58,9 +58,9 @@ export default function ProfileHeaderCard({ user, ctCoins }) {
                 </span>
               )}
             </div>
-            
+
             <p className="text-stone-500 text-xs sm:text-sm font-medium">{user?.email}</p>
-            
+
             {/* Phone & Role */}
             <div className="flex items-center justify-center sm:justify-start gap-4 text-xs text-stone-400 pt-0.5">
               {(user?.mobile || user?.phone) && (

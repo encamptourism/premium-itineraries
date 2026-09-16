@@ -536,7 +536,7 @@ export default function LoginPage() {
 
       {/* ── Name Popup Modal for New / First-Time Accounts ── */}
       {showNameModal && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-xs animate-fadeIn">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm animate-fadeIn">
           <div className="bg-white max-w-md w-full rounded-3xl p-8 shadow-2xl space-y-6 text-center border border-stone-200">
             <div className="w-14 h-14 bg-[#dfa62f]/10 border border-[#dfa62f]/20 rounded-2xl flex items-center justify-center mx-auto text-[#dfa62f]">
               <Sparkles className="w-7 h-7" />

@@ -4,10 +4,9 @@ import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { Phone, Mail, User, LogOut, ChevronDown, Settings, Coins, Wallet } from 'lucide-react';
+import { Phone, Mail, User, LogOut, ChevronDown, Settings, Coins } from 'lucide-react';
 import { useAuth } from '@/context/AuthContext';
 import { useCarbonTrace } from '@/context/CarbonTraceContext';
-import CarbonTraceWalletModal from '@/components/checkout/CarbonTraceWalletModal';
 
 export default function Navbar() {
   const { user, ctCoins, isAuthenticated, isLoading, logout } = useAuth();
@@ -21,7 +20,6 @@ export default function Navbar() {
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [contactOpen, setContactOpen] = useState(false);
-  const [isCtModalOpen, setIsCtModalOpen] = useState(false);
   const dropdownRef = useRef(null);
   const contactRef = useRef(null);
 
@@ -183,37 +181,21 @@ export default function Navbar() {
                       <p className="text-stone-500 text-xs truncate mt-0.5">{user?.email}</p>
                       
                       {/* CT Coins Summary in Menu */}
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setOpen(false);
-                          setIsCtModalOpen(true);
-                        }}
-                        className="w-full mt-2.5 p-2 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center justify-between hover:bg-amber-100/70 transition-colors cursor-pointer text-left"
+                      <div
+                        className="w-full mt-2.5 p-2 rounded-xl bg-amber-50 border border-amber-200/80 flex items-center justify-between text-left"
                       >
                         <div className="flex items-center gap-1.5">
                           <Coins className="w-3.5 h-3.5 text-[#dfa62f]" />
                           <span className="text-xs font-bold text-stone-800">{activeCtcoins.toLocaleString()} CTCoin</span>
                         </div>
                         <span className="text-[10px] font-bold px-2 py-0.5 rounded-md bg-white border border-amber-200 text-stone-700">
-                          Wallet & Redeem
+                          Balance
                         </span>
-                      </button>
+                      </div>
                     </div>
 
                     {/* Nav items */}
                     <div className="py-1.5">
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setOpen(false);
-                          setIsCtModalOpen(true);
-                        }}
-                        className="w-full flex items-center gap-3 px-4 py-2.5 text-sm text-stone-700 hover:text-primary-green hover:bg-stone-50 font-semibold transition-colors text-left cursor-pointer"
-                      >
-                        <Wallet className="w-4 h-4 text-[#dfa62f]" />
-                        CarbonTrace Wallet & Redeem
-                      </button>
                       <Link
                         href="/profile"
                         id="navbar-profile-link"
@@ -221,7 +203,7 @@ export default function Navbar() {
                         className="flex items-center gap-3 px-4 py-2.5 text-sm text-stone-700 hover:text-primary-green hover:bg-stone-50 font-semibold transition-colors"
                       >
                         <User className="w-4 h-4 text-stone-400" />
-                        My Profile
+                        My Profile & Wallet
                       </Link>
                       <Link
                         href="/profile?tab=settings"
@@ -260,12 +242,6 @@ export default function Navbar() {
           )}
         </div>
       </div>
-
-      {/* CarbonTrace SDK Wallet & Redemption Modal */}
-      <CarbonTraceWalletModal
-        isOpen={isCtModalOpen}
-        onClose={() => setIsCtModalOpen(false)}
-      />
     </header>
   );
 }

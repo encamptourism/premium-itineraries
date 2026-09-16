@@ -41,18 +41,18 @@ export default function PricingSection({ itinerary }) {
 
   const formattedPrice = rawPrice
     ? new Intl.NumberFormat("en-IN", {
-        style: "currency",
-        currency: "INR",
-        maximumFractionDigits: 0,
-      }).format(rawPrice)
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(rawPrice)
     : null;
 
   const advanceVal = itinerary?.advancePayment?.isAvailable && itinerary.advancePayment.value
     ? new Intl.NumberFormat("en-IN", {
-        style: "currency",
-        currency: "INR",
-        maximumFractionDigits: 0,
-      }).format(itinerary.advancePayment.value)
+      style: "currency",
+      currency: "INR",
+      maximumFractionDigits: 0,
+    }).format(itinerary.advancePayment.value)
     : null;
 
   const estimatedCtCoinsEarned = rawPrice ? Math.round(rawPrice * 0.01) : 0;
@@ -112,7 +112,7 @@ export default function PricingSection({ itinerary }) {
                   </span>
                 )}
                 {title && (
-                  <h3 className="font-serif-display text-3xl sm:text-4xl font-bold uppercase tracking-wider text-white mt-1">
+                  <h3 className="font-serif-display text-2xl sm:text-3xl font-bold uppercase tracking-wider text-white mt-1">
                     {title}
                   </h3>
                 )}
@@ -130,13 +130,13 @@ export default function PricingSection({ itinerary }) {
                     {discountAmount > 0 ? (
                       <div className="flex flex-col">
                         <div className="flex items-baseline gap-2">
-                          <span className="line-through text-stone-400 text-lg font-semibold">{formattedPrice}</span>
-                          <span className="font-poppins text-4xl sm:text-5xl font-bold text-gold">{formattedNetPrice}</span>
+                          <span className="line-through text-stone-400 text-base sm:text-lg font-semibold">{formattedPrice}</span>
+                          <span className="font-poppins text-3xl sm:text-4xl font-bold text-gold">{formattedNetPrice}</span>
                         </div>
                         <span className="text-xs text-emerald-300 font-bold mt-0.5">-₹{discountAmount.toLocaleString()} CTCoin Discount Applied</span>
                       </div>
                     ) : (
-                      <span className="font-poppins text-4xl sm:text-5xl font-bold text-gold">
+                      <span className="font-poppins text-3xl sm:text-4xl font-bold text-gold">
                         {formattedPrice}
                       </span>
                     )}

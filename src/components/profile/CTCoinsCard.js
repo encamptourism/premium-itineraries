@@ -199,9 +199,8 @@ export default function CTCoinsCard({ ctCoins }) {
             {transactions.map((txn) => (
               <div key={txn.id} className="flex items-center justify-between px-5 py-3.5 hover:bg-stone-50 transition-colors">
                 <div className="flex items-center gap-3 min-w-0">
-                  <div className={`w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 ${
-                    txn.type === 'earned' ? 'bg-emerald-50 border border-emerald-200' : 'bg-rose-50 border border-rose-200'
-                  }`}>
+                  <div className={`w-7 h-7 rounded-xl flex items-center justify-center flex-shrink-0 ${txn.type === 'earned' ? 'bg-emerald-50 border border-emerald-200' : 'bg-rose-50 border border-rose-200'
+                    }`}>
                     {txn.type === 'earned'
                       ? <ArrowUpRight className="w-3.5 h-3.5 text-emerald-600" />
                       : <ArrowDownRight className="w-3.5 h-3.5 text-rose-600" />}
@@ -213,9 +212,8 @@ export default function CTCoinsCard({ ctCoins }) {
                     </p>
                   </div>
                 </div>
-                <span className={`text-xs font-bold flex-shrink-0 ml-2 ${
-                  txn.type === 'earned' ? 'text-emerald-600' : 'text-rose-600'
-                }`}>
+                <span className={`text-xs font-bold flex-shrink-0 ml-2 ${txn.type === 'earned' ? 'text-emerald-600' : 'text-rose-600'
+                  }`}>
                   {txn.type === 'earned' ? '+' : '-'}{txn.amount.toLocaleString()}
                 </span>
               </div>

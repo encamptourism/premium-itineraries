@@ -4,6 +4,7 @@ import ReferencePosterHeader from "@/components/itinerary/ReferencePosterHeader"
 import ReferencePosterBody from "@/components/itinerary/ReferencePosterBody";
 import ReferencePosterFaqFooter from "@/components/itinerary/ReferencePosterFaqFooter";
 import MobileStickyCTA from "@/components/itinerary/MobileStickyCTA";
+import BackgroundMusicPlayer from "@/components/itinerary/BackgroundMusicPlayer";
 // import DebugPreview from "@/components/itinerary/DebugPreview";
 
 /**
@@ -129,7 +130,10 @@ export default async function ItineraryPage({ params }) {
         {/* 4. Mobile Sticky CTA Bottom Bar */}
         <MobileStickyCTA itinerary={itinerary} />
 
-        {/* 5. Isolated Debug Preview Component (Disabled for production) */}
+        {/* 5. Floating Background Music Player */}
+        <BackgroundMusicPlayer itinerary={itinerary} />
+
+        {/* 6. Isolated Debug Preview Component (Disabled for production) */}
         {/* <DebugPreview itinerary={itinerary} apiUrl={apiUrl} /> */}
       </main>
     </>
