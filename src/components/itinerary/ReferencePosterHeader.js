@@ -41,7 +41,7 @@ export default function ReferencePosterHeader({ itinerary }) {
     <div className="w-full bg-[#fbf9f4] font-poppins pb-2 sm:pb-8 lg:pb-10">
 
       {/* 100% Full Screen Width Hero Section */}
-      <section className="relative w-full bg-primary-green overflow-visible pt-3 sm:pt-6 pb-8 sm:pb-14 h-[80vh] min-h-[560px] lg:min-h-[640px] lg:h-[80vh] flex flex-col justify-between shadow-none sm:shadow-2xl">
+      <section className="relative w-full bg-primary-green overflow-visible pt-3 sm:pt-6 pb-8 sm:pb-14 h-[80vh] min-h-[400px] sm:min-h-[560px] lg:min-h-[640px] lg:h-[80vh] flex flex-col justify-between shadow-none sm:shadow-2xl">
 
         {/* Full Viewport Screen Width API Hero Background Image */}
         {bannerImage && (

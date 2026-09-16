@@ -274,7 +274,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
   );
 
   return (
-    <div className="w-full bg-[#fbf9f4] font-poppins pt-3 sm:pt-10 lg:pt-14 pb-6 sm:pb-8">
+    <div className="w-full bg-[#fbf9f4] font-poppins pt-7 sm:pt-10 lg:pt-14 pb-6 sm:pb-8">
       <div className="w-[96%] sm:w-[94%] lg:w-[94%] xl:w-[95%] max-w-[1920px] mx-auto px-2 sm:px-4 lg:px-6">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-start">
 
@@ -282,6 +282,16 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
           {/* COLUMN 1 (LEFT): DAY WISE ITINERARY */}
           {/* ========================================================================= */}
           <div className="lg:col-span-5 space-y-4">
+            {/* Mobile-Only Our Packages Card (Shows above Daywise Itinerary on phone view) */}
+            <div className="block lg:hidden mb-4">
+              <PackageBookingCard
+                itinerary={itinerary}
+                itineraryId={itinerary?._id || itinerary?.id || itinerary?.itineraryId || itinerary?.commondetails?._id}
+                onOpenEnquiry={onOpenEnquiry}
+                openRedeemModal={openRedeemModal}
+              />
+            </div>
+
             {/* Header with horizontal lines */}
             <div className="flex items-center justify-center gap-3 pb-3 border-b border-[#e2d8c3]">
               <span className="h-[1px] w-12 sm:w-16 bg-[#c8b79b]" />
@@ -798,13 +808,15 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
           {/* COLUMN 3 (RIGHT): OUR PACKAGES, INCLUSIONS, EXCLUSIONS, FLIGHT/VISA, WHY TRAVEL */}
           {/* ========================================================================= */}
           <div className="lg:col-span-3 space-y-4 lg:-mt-[440px] xl:-mt-[480px] z-30 w-full max-w-[340px] lg:max-w-[360px] xl:max-w-[380px] mx-auto lg:ml-auto">
-            {/* Package Booking Card */}
-            <PackageBookingCard
-              itinerary={itinerary}
-              itineraryId={itinerary?._id || itinerary?.id || itinerary?.itineraryId || itinerary?.commondetails?._id}
-              onOpenEnquiry={onOpenEnquiry}
-              openRedeemModal={openRedeemModal}
-            />
+            {/* Package Booking Card (Desktop view in Column 3) */}
+            <div className="hidden lg:block">
+              <PackageBookingCard
+                itinerary={itinerary}
+                itineraryId={itinerary?._id || itinerary?.id || itinerary?.itineraryId || itinerary?.commondetails?._id}
+                onOpenEnquiry={onOpenEnquiry}
+                openRedeemModal={openRedeemModal}
+              />
+            </div>
 
             {/* Unified Inclusions & Exclusions Card */}
             <div className="rounded-2xl overflow-hidden border border-[#e2d8c3] font-poppins bg-[#fbf9f4]">
