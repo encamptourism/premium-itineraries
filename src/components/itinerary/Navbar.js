@@ -205,14 +205,6 @@ export default function Navbar() {
                         <User className="w-4 h-4 text-stone-400" />
                         My Profile & Wallet
                       </Link>
-                      <Link
-                        href="/profile?tab=settings"
-                        onClick={() => setOpen(false)}
-                        className="flex items-center gap-3 px-4 py-2.5 text-sm text-stone-700 hover:text-primary-green hover:bg-stone-50 font-semibold transition-colors"
-                      >
-                        <Settings className="w-4 h-4 text-stone-400" />
-                        Account Settings
-                      </Link>
                     </div>
 
                     {/* Logout */}

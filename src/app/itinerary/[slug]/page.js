@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import { getPremiumItinerary, getItineraryApiUrl } from "@/lib/api";
-import ReferencePosterHeader from "@/components/itinerary/ReferencePosterHeader";
+import ItineraryHeroSection from "@/components/itinerary/ItineraryHeroSection";
 import ReferencePosterBody from "@/components/itinerary/ReferencePosterBody";
 import ReferencePosterFaqFooter from "@/components/itinerary/ReferencePosterFaqFooter";
 import MobileStickyCTA from "@/components/itinerary/MobileStickyCTA";
@@ -119,7 +119,7 @@ export default async function ItineraryPage({ params }) {
 
       <main className="min-h-screen bg-[#fbf9f4] text-black flex flex-col selection:bg-gold/20 selection:text-forest">
         {/* 1. Header with Logo, Hero Title, API Hero Image, Packages & 5-Pillars Bar */}
-        <ReferencePosterHeader itinerary={itinerary} />
+        <ItineraryHeroSection itinerary={itinerary} />
 
         {/* 2. Main 3-Column Poster Layout (Days, Overview/Route/Video, Inclusions/Exclusions) */}
         <ReferencePosterBody itinerary={itinerary} />

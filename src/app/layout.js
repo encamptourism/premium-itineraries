@@ -1,9 +1,10 @@
-import { Alex_Brush, Cormorant_Garamond, Plus_Jakarta_Sans, Poppins } from "next/font/google";
+import { Alex_Brush, Cormorant_Garamond, Plus_Jakarta_Sans, Poppins, Luxurious_Roman } from "next/font/google";
 import { headers } from "next/headers";
 import Navbar from "@/components/itinerary/Navbar";
 import Footer from "@/components/common/Footer";
 import AuthProvider from "@/context/AuthProvider";
 import { CarbonTraceProvider } from "@/context/CarbonTraceContext";
+import { getAllPremiumItineraries } from "@/lib/api";
 import "./globals.css";
 
 const alexBrush = Alex_Brush({
@@ -18,6 +19,13 @@ const cormorantGaramond = Cormorant_Garamond({
   style: ["normal", "italic"],
   subsets: ["latin"],
   variable: "--font-display-serif",
+  display: "swap",
+});
+
+const luxuriousRoman = Luxurious_Roman({
+  weight: "400",
+  subsets: ["latin"],
+  variable: "--font-luxurious-roman",
   display: "swap",
 });
 
@@ -55,11 +63,20 @@ export default async function RootLayout({ children }) {
   const pathname = headersList.get("x-pathname") || "";
   const isAuthPage = AUTH_PATHS.some((p) => pathname.startsWith(p));
 
+  // Fetch all itineraries for footer destinations
+  let allItineraries = [];
+  try {
+    const apiResponse = await getAllPremiumItineraries();
+    if (Array.isArray(apiResponse)) allItineraries = apiResponse;
+    else if (apiResponse?.data && Array.isArray(apiResponse.data)) allItineraries = apiResponse.data;
+    else if (apiResponse?.itineraries && Array.isArray(apiResponse.itineraries)) allItineraries = apiResponse.itineraries;
+  } catch (e) { /* silently fail */ }
+
   return (
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${alexBrush.variable} ${cormorantGaramond.variable} ${plusJakartaSans.variable} ${poppins.variable} h-full antialiased`}
+      className={`${alexBrush.variable} ${cormorantGaramond.variable} ${luxuriousRoman.variable} ${plusJakartaSans.variable} ${poppins.variable} h-full antialiased`}
     >
       <body
         suppressHydrationWarning
@@ -68,8 +85,8 @@ export default async function RootLayout({ children }) {
         <AuthProvider>
           <CarbonTraceProvider>
             {!isAuthPage && <Navbar />}
-            <main className="flex-1">{children}</main>
-            {!isAuthPage && <Footer />}
+            <main className="flex-1 min-h-screen">{children}</main>
+            {!isAuthPage && <Footer itineraries={allItineraries} />}
           </CarbonTraceProvider>
         </AuthProvider>
       </body>

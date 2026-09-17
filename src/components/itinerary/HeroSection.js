@@ -2,7 +2,16 @@ import Image from "next/image";
 import { Calendar, Users, MapPin, Sparkles, ShieldCheck } from "lucide-react";
 
 export default function HeroSection({ itinerary }) {
+  const heroMedia = itinerary?.heroMedia;
+  const isCustomLogo = Boolean(heroMedia?.logoUrl);
+  const hindiLogoUrl = heroMedia?.logoUrl || heroMedia?.hindiLogoUrl || null;
+  const isCustomEnglishLogo = Boolean(heroMedia?.englishLogoUrl || heroMedia?.logoUrlEnglish);
+  const englishLogoUrl =
+    heroMedia?.englishLogoUrl ||
+    heroMedia?.logoUrlEnglish ||
+    "/images/tag_logo.png";
   const bannerImage =
+    (heroMedia?.url && heroMedia.url.trim() !== "" && heroMedia.url) ||
     itinerary?.gallery?.find((g) => g.tag === "banner")?.url ||
     itinerary?.gallery?.[0]?.url ||
     null;
@@ -27,29 +36,85 @@ export default function HeroSection({ itinerary }) {
           />
         )}
 
+        {/* SVG Filter to make white background transparent without multiplying or black borders */}
+        <svg className="absolute w-0 h-0 overflow-hidden pointer-events-none" aria-hidden="true">
+          <defs>
+            <filter id="remove-white" x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
+              <feColorMatrix
+                type="matrix"
+                values="
+                  1 0 0 0 0
+                  0 1 0 0 0
+                  0 0 1 0 0
+                  -2.5 -2.5 -2.5 0 6.5
+                "
+                result="masked"
+              />
+              <feComposite in="masked" in2="SourceGraphic" operator="in" />
+            </filter>
+          </defs>
+        </svg>
+
+        {/* Top Right: English Logo */}
+        {englishLogoUrl && (
+          <div className="absolute right-4 sm:right-8 top-3 sm:top-5 z-30 w-36 sm:w-44 lg:w-52 h-12 sm:h-15 lg:h-18 shrink-0 bg-transparent pointer-events-none overflow-hidden">
+            <Image
+              src={englishLogoUrl}
+              alt="Encamp Privé Logo"
+              fill
+              className="object-contain object-right bg-transparent drop-shadow-md"
+              style={isCustomEnglishLogo ? { filter: "url(#remove-white)" } : undefined}
+              priority
+            />
+          </div>
+        )}
+
         {/* Gradient Scrims */}
         <div className="absolute inset-0 bg-gradient-to-t from-forest-dark via-forest-dark/45 to-forest-dark/70" />
         <div className="absolute inset-0 bg-black/25 mix-blend-multiply" />
 
-        {/* Hero Content Container */}
-        <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-end pb-12 sm:pb-16 md:pb-20">
-          <div className="max-w-3xl flex flex-col items-start space-y-3 sm:space-y-4">
-            {/* 1. Decorative Script Accent */}
-            <div className="inline-flex items-center gap-2">
-              <span className="font-script text-3xl sm:text-4xl md:text-5xl text-gold-light tracking-wide drop-shadow-sm">
-                Explore the Best of
-              </span>
-            </div>
+        {/* Hero Content Container - Centered */}
+        <div className="relative z-10 h-full max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-center items-center text-center my-auto pb-8 sm:pb-12">
+          <div className="w-full flex flex-col items-center justify-center space-y-3 sm:space-y-4">
+            {/* Logo on Top of Subtitle - Responsive & Enlarged */}
+            {hindiLogoUrl && (
+              <div className="relative w-full max-w-[300px] sm:max-w-[420px] md:max-w-[540px] lg:max-w-[660px] xl:max-w-[760px] h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 shrink-0 mx-auto pointer-events-none mb-1 sm:mb-2">
+                {/* Backdrop Overlay directly below/behind logo image */}
+                <div className="absolute -inset-x-8 sm:-inset-x-14 -inset-y-6 sm:-inset-y-10 bg-black/60 rounded-full blur-3xl -z-10 pointer-events-none" />
+                <Image
+                  src={hindiLogoUrl}
+                  alt={itinerary?.title ? `${itinerary.title} Logo` : "Logo"}
+                  fill
+                  sizes="(max-width: 640px) 300px, (max-width: 768px) 420px, (max-width: 1024px) 540px, (max-width: 1280px) 660px, 760px"
+                  className="object-contain object-center bg-transparent"
+                  style={isCustomLogo ? { filter: "url(#remove-white)" } : undefined}
+                  priority
+                />
+              </div>
+            )}
 
-            {/* 2. Primary Display Title */}
-            {itinerary?.title && (
+            {/* 1. Decorative Script Accent / Subtitle */}
+            {itinerary?.subtitle ? (
+              <span className="font-script text-2xl sm:text-3xl md:text-4xl text-gold-light tracking-wide drop-shadow-sm">
+                {itinerary.subtitle}
+              </span>
+            ) : (
+              <div className="inline-flex items-center gap-2">
+                <span className="font-script text-3xl sm:text-4xl md:text-5xl text-gold-light tracking-wide drop-shadow-sm">
+                  Explore the Best of
+                </span>
+              </div>
+            )}
+
+            {/* 2. Primary Display Title: Only show if logoUrl does NOT exist */}
+            {!isCustomLogo && itinerary?.title && (
               <h1 className="font-serif-display text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold uppercase tracking-wider text-white drop-shadow-md leading-[1.05]">
                 {itinerary.title}
               </h1>
             )}
 
             {/* 3. Duration & Tags */}
-            <div className="flex flex-wrap items-center gap-2 sm:gap-3 pt-1">
+            <div className="flex flex-wrap items-center justify-center gap-2 sm:gap-3 pt-1">
               {durationText && (
                 <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-gold/90 text-forest-dark text-xs sm:text-sm font-bold uppercase tracking-wider shadow-sm">
                   <Calendar className="w-3.5 h-3.5" />

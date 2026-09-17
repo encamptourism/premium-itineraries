@@ -133,8 +133,8 @@ export function CarbonTraceProvider({ children }) {
         walletContainer: 'ct_wallet',
         onboardingContainer: 'ct_onboarding',
         embedWallet: false,
-        autoManageUi: false,
-        isMandatory: false,
+        autoManageUi: true,
+        isMandatory: true,
         onConnect: (address, snapshot) => {
           updateWalletSnapshotState(address, snapshot);
         },
@@ -326,12 +326,26 @@ export function CarbonTraceProvider({ children }) {
   return (
     <CarbonTraceContext.Provider value={value}>
       {!isAuthPage && (
-        <Script
-          src="https://admin.carbontrace.in/js/carbon-sdk-bundle.js"
-          strategy="afterInteractive"
-          onLoad={handleScriptLoad}
-          onError={(e) => console.warn('[CarbonTrace SDK Load Error]:', e)}
-        />
+        <>
+          <Script
+            src="https://admin.carbontrace.in/js/carbon-sdk-bundle.js"
+            strategy="afterInteractive"
+            onLoad={handleScriptLoad}
+            onError={(e) => console.warn('[CarbonTrace SDK Load Error]:', e)}
+          />
+          <div
+            id="ct_wallet"
+            style={{
+              position: 'fixed',
+              bottom: '80px',
+              right: '20px',
+              zIndex: 99999,
+              maxWidth: '420px',
+              width: 'auto',
+            }}
+          />
+          <div id="ct_onboarding" />
+        </>
       )}
       {children}
     </CarbonTraceContext.Provider>

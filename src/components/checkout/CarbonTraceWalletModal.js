@@ -230,8 +230,6 @@ export default function CarbonTraceWalletModal({ isOpen, onClose, premiumPrice =
 
           {/* Invisible SDK Target Containers for CarbonTrace integration */}
           <div className="hidden" aria-hidden="true">
-            <div id="ct_wallet" />
-            <div id="ct_onboarding" />
             <div id="checkoutdata" />
           </div>
         </div>

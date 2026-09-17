@@ -11,7 +11,7 @@ import CTCoinsCard from '@/components/profile/CTCoinsCard';
 import {
   TrendingUp, Plane, Coins, MapPin, Calendar, FileText,
   Camera, Save, Lock, Trash2, AlertTriangle, Sparkles,
-  CreditCard, Compass, CheckCircle2, Loader2
+  CreditCard, Compass, CheckCircle2, Loader2, ArrowLeft
 } from 'lucide-react';
 
 // ─── Tab: Overview ─────────────────────────────────────────────────────────────
@@ -620,7 +620,8 @@ function ProfilePageContent() {
     ctcoins: 'CT Coins',
     preferences: 'Preferences',
     documents: 'Documents',
-    settings: 'Account Settings',
+    settings: 'Profile',
+    profile: 'Profile',
   };
 
   const [activeTab, setActiveTab] = useState(() => {
@@ -655,7 +656,22 @@ function ProfilePageContent() {
 
   return (
     <div className="min-h-screen bg-white text-stone-900">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-10">
+        {/* Back Button */}
+        <button
+          onClick={() => {
+            if (typeof window !== 'undefined' && window.history.length > 1) {
+              router.back();
+            } else {
+              router.push('/');
+            }
+          }}
+          className="inline-flex items-center gap-2 mb-5 px-4 py-2 rounded-full border border-stone-200 bg-stone-50 hover:bg-stone-100 text-stone-700 text-xs font-semibold transition-all group shadow-sm active:scale-95 cursor-pointer"
+        >
+          <ArrowLeft className="w-4 h-4 text-stone-500 group-hover:-translate-x-0.5 transition-transform" />
+          <span>Back</span>
+        </button>
+
         {/* Full-Width Landscape Member Profile Header Card at the VERY TOP */}
         <ProfileHeaderCard user={user} ctCoins={ctCoins} />
 
@@ -705,7 +721,7 @@ function ProfilePageContent() {
             {activeTab === 'ctcoins' && <CTCoinsCard ctCoins={ctCoins} />}
             {activeTab === 'preferences' && <PreferencesTab preferences={preferences} />}
             {activeTab === 'documents' && <DocumentsTab />}
-            {activeTab === 'settings' && <SettingsTab user={user} logout={logout} refreshUser={refreshUser} />}
+            {(activeTab === 'settings' || activeTab === 'profile') && <SettingsTab user={user} logout={logout} refreshUser={refreshUser} />}
           </div>
         </div>
       </div>

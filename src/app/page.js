@@ -16,8 +16,9 @@ export default async function Home() {
     itineraries = apiResponse.itineraries;
   }
 
-  // Filter home page itineraries to show ONLY items where isclientvisible === true
-  itineraries = itineraries.filter((item) => item?.isclientvisible === true);
+  // Filter home page itineraries: visible ones are clickable, rest are "Coming Soon"
+  const visibleItineraries = itineraries.filter((item) => item?.isclientvisible === true);
+  const comingSoonItineraries = itineraries.filter((item) => item?.isclientvisible !== true);
 
   return (
     <div className="min-h-screen bg-white text-black flex flex-col">
@@ -57,10 +58,10 @@ export default async function Home() {
 
           <div className="pt-4 flex flex-col sm:flex-row items-center justify-center gap-4">
             <Link
-              href={itineraries.length > 0 ? `/itinerary/${itineraries[0].slug || itineraries[0]._id}` : "#itineraries"}
+              href={visibleItineraries.length > 0 ? `/itinerary/${visibleItineraries[0].slug || visibleItineraries[0]._id}` : "#itineraries"}
               className="w-full sm:w-auto inline-flex items-center justify-center gap-2.5 px-8 py-4 rounded-full bg-gold text-forest-dark font-bold text-sm uppercase tracking-wider hover:bg-gold-light shadow-xl transition-all active:scale-95"
             >
-              <span>{itineraries.length > 0 ? `Explore ${itineraries[0].title || "Expedition"}` : "Explore Journeys"}</span>
+              <span>{visibleItineraries.length > 0 ? `Explore ${visibleItineraries[0].title || "Expedition"}` : "Explore Journeys"}</span>
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -81,30 +82,28 @@ export default async function Home() {
           </p>
         </div>
 
-        {itineraries.length === 0 ? (
+        {visibleItineraries.length === 0 && comingSoonItineraries.length === 0 ? (
           <div className="text-center py-12 text-stone-500 font-sans text-sm">
             No expeditions currently published. Please check back soon.
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {itineraries.map((item, index) => {
+            {/* Visible / Active Itineraries */}
+            {visibleItineraries.map((item, index) => {
               const slug = item.slug || item._id;
               const title = item.title || item.name || "Luxury Expedition";
               const subtitle = item.subtitle || item.description || item.overview || "";
 
-              // Image extraction
               const bgImage = item.bannerImage ||
                 item.heroImage ||
                 item.image ||
                 (Array.isArray(item.gallery) ? (item.gallery.find(g => g.tag === 'banner')?.url || item.gallery[0]?.url) : null) ||
                 "https://encamp-s3b.s3.ap-south-1.amazonaws.com/1787245472531_Encamp%20terra%20meghalaya.png.jpg";
 
-              // Duration
               const days = item.duration?.days || item.days;
               const nights = item.duration?.nights || item.nights;
               const durationText = days && nights ? `${days} Days · ${nights} Nights` : days ? `${days} Days` : "Custom Journey";
 
-              // Price
               const price = item.startingFrom?.[0]?.pricePerPerson || item.startingFrom?.pricePerPerson || item.price || item.startingPrice;
               const formattedPrice = price ? `₹${Number(price).toLocaleString('en-IN')}` : null;
 
@@ -162,6 +161,69 @@ export default async function Home() {
                     </div>
                   </div>
                 </Link>
+              );
+            })}
+
+            {/* Coming Soon Itineraries (isClientVisible !== true) */}
+            {comingSoonItineraries.map((item, index) => {
+              const title = item.title || item.name || "Luxury Expedition";
+              const subtitle = item.subtitle || item.description || item.overview || "";
+
+              const bgImage = item.bannerImage ||
+                item.heroImage ||
+                item.image ||
+                (Array.isArray(item.gallery) ? (item.gallery.find(g => g.tag === 'banner')?.url || item.gallery[0]?.url) : null) ||
+                "https://encamp-s3b.s3.ap-south-1.amazonaws.com/1787245472531_Encamp%20terra%20meghalaya.png.jpg";
+
+              const days = item.duration?.days || item.days;
+              const nights = item.duration?.nights || item.nights;
+              const durationText = days && nights ? `${days} Days · ${nights} Nights` : days ? `${days} Days` : "Custom Journey";
+
+              return (
+                <div
+                  key={item._id || `coming-soon-${index}`}
+                  className="relative bg-white rounded-3xl border border-stone-200 overflow-hidden shadow-sm flex flex-col justify-between opacity-80"
+                >
+                  <div className="relative w-full h-64 overflow-hidden">
+                    <Image
+                      src={bgImage}
+                      alt={title}
+                      fill
+                      sizes="(max-width: 768px) 100vw, 400px"
+                      className="object-cover grayscale-[40%]"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
+                    <div className="absolute top-4 left-4">
+                      <span className="bg-amber-600/90 text-white text-[10px] font-bold uppercase tracking-widest px-3 py-1 rounded-full border border-amber-400/40">
+                        Coming Soon
+                      </span>
+                    </div>
+                    <div className="absolute bottom-4 left-4 right-4 text-white">
+                      {durationText && (
+                        <div className="flex items-center gap-2 text-xs text-stone-200 mb-1">
+                          <Calendar className="w-3.5 h-3.5 text-gold" />
+                          <span>{durationText}</span>
+                        </div>
+                      )}
+                      <h3 className="font-serif-display text-2xl font-bold uppercase tracking-wide">
+                        {title}
+                      </h3>
+                    </div>
+                  </div>
+
+                  <div className="p-6 space-y-4 flex-1 flex flex-col justify-between">
+                    <p className="text-xs sm:text-sm text-stone-600 leading-relaxed line-clamp-3">
+                      {subtitle}
+                    </p>
+
+                    <div className="pt-4 border-t border-stone-100 flex items-center justify-between">
+                      <span className="text-xs font-semibold text-amber-700 uppercase tracking-wider">Coming Soon</span>
+                      <div className="w-9 h-9 rounded-full bg-stone-100 text-stone-400 flex items-center justify-center">
+                        <Compass className="w-4 h-4" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
               );
             })}
           </div>

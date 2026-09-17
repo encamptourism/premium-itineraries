@@ -26,6 +26,7 @@
 @theme {
   --font-display-script: var(--font-display-script), cursive;
   --font-display-serif: var(--font-display-serif), Georgia, serif;
+  --font-roman: var(--font-luxurious-roman), Georgia, serif;
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --font-poppins: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
 
@@ -80,6 +81,10 @@ body>div[class*="ct_header"] {
 
 .font-serif-display {
   font-family: var(--font-display-serif), Georgia, serif;
+}
+
+.font-roman {
+  font-family: var(--font-luxurious-roman), Georgia, serif;
 }
 
 .font-sans-ui {

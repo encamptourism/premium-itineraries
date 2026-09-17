@@ -318,12 +318,12 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                       <div className="flex flex-col items-center shrink-0">
                         {/* Round Circle with Day Number inside */}
                         <div className="w-10 sm:w-12 h-10 sm:h-12 rounded-full bg-primary-green text-white flex items-center justify-center shrink-0 border border-primary-green shadow-xs p-1">
-                          <span className="font-serif-display text-base sm:text-lg font-black leading-none text-white">
+                          <span className="font-roman text-lg sm:text-xl font-normal leading-none text-white">
                             {dayNum}
                           </span>
                         </div>
                         {/* DAY Font below the round circle */}
-                        <span className="text-[10px] sm:text-xs uppercase tracking-[0.18em] font-bold text-[#c29b4e] leading-none mt-1.5 font-sans">
+                        <span className="text-[10px] sm:text-xs uppercase tracking-[0.18em] font-bold text-[#c29b4e] leading-none mt-1.5 font-roman">
                           DAY
                         </span>
                       </div>

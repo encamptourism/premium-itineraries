@@ -102,7 +102,13 @@ function ShieldCheckIcon() {
   );
 }
 
-export default function Footer() {
+export default function Footer({ itineraries = [] }) {
+  const visibleItineraries = itineraries.filter((item) => item?.isclientvisible === true);
+  const comingSoonItineraries = itineraries.filter((item) => item?.isclientvisible !== true);
+
+  // Icon pool for coming-soon items
+  const comingSoonIcons = [HutIcon, TribalPatternIcon, SafariCompassIcon, MountainIcon];
+
   return (
     <footer className="w-full bg-primary-green text-[#E2DDD3] relative overflow-hidden font-poppins pt-6 pb-3 border-t border-[#f0c85a]/30 selection:bg-[#f0c85a]/30 selection:text-white">
 
@@ -153,7 +159,7 @@ export default function Footer() {
 
               {/* Italic Callout Tagline */}
               <div className="font-serif-display italic text-[#f0c85a] text-base sm:text-lg leading-tight tracking-wide font-normal max-w-xs">
-                From Where Every Moment Becomes a Cherished Memory. to The Future of Luxury Travel, Thoughtfully Designed with Puspose.
+                The Future of Luxury Travel, Thoughtfully Designed with Puspose.
               </div>
             </div>
 
@@ -242,46 +248,48 @@ export default function Footer() {
                 <div className="w-6 h-[1.5px] bg-[#f0c85a] mt-1" />
               </div>
 
-              {/* Destination Items */}
+              {/* Destination Items - Dynamically from API */}
               <ul className="space-y-2 text-[11px] sm:text-xs">
-                <li className="flex items-center gap-2.5 group">
-                  <div className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center shrink-0 group-hover:border-[#f0c85a] group-hover:bg-[#f0c85a]/10 transition-all">
-                    <MountainIcon />
-                  </div>
-                  <Link href="/itinerary/meghalaya-private-luxury-tour" className="text-[#E2DDD3] hover:text-[#f0c85a] transition-colors font-medium">
-                    Meghalaya Grandeur (7D / 6N)
-                  </Link>
-                </li>
+                {/* Visible / Active Itineraries */}
+                {visibleItineraries.map((item) => {
+                  const slug = item.slug || item._id;
+                  const title = item.title || item.name || "Expedition";
+                  const days = item.duration?.days;
+                  const nights = item.duration?.nights;
+                  const durationLabel = days && nights ? `(${days}D / ${nights}N)` : days ? `(${days}D)` : "";
 
-                <li className="flex items-center gap-2.5 group">
-                  <div className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center shrink-0 group-hover:border-[#f0c85a] group-hover:bg-[#f0c85a]/10 transition-all">
-                    <HutIcon />
-                  </div>
-                  <div className="text-[#C8D2C6]">
-                    <span>Arunachal High Monasteries</span>
-                    <span className="text-[#8FA38D] text-[10px] font-normal block sm:inline sm:ml-1">(Coming Soon)</span>
-                  </div>
-                </li>
+                  return (
+                    <li key={item._id || slug} className="flex items-center gap-2.5 group">
+                      <div className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center shrink-0 group-hover:border-[#f0c85a] group-hover:bg-[#f0c85a]/10 transition-all">
+                        <MountainIcon />
+                      </div>
+                      <Link href={`/itinerary/${slug}`} className="text-[#E2DDD3] hover:text-[#f0c85a] transition-colors font-medium">
+                        {title} {durationLabel}
+                      </Link>
+                    </li>
+                  );
+                })}
 
-                <li className="flex items-center gap-2.5 group">
-                  <div className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center shrink-0 group-hover:border-[#f0c85a] group-hover:bg-[#f0c85a]/10 transition-all">
-                    <TribalPatternIcon />
-                  </div>
-                  <div className="text-[#C8D2C6]">
-                    <span>Nagaland Tribal Conclave</span>
-                    <span className="text-[#8FA38D] text-[10px] font-normal block sm:inline sm:ml-1">(Coming Soon)</span>
-                  </div>
-                </li>
+                {/* Coming Soon Itineraries */}
+                {comingSoonItineraries.map((item, index) => {
+                  const title = item.title || item.name || "Expedition";
+                  const days = item.duration?.days;
+                  const nights = item.duration?.nights;
+                  const durationLabel = days && nights ? `(${days}D / ${nights}N)` : days ? `(${days}D)` : "";
+                  const IconComp = comingSoonIcons[index % comingSoonIcons.length];
 
-                <li className="flex items-center gap-2.5 group">
-                  <div className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center shrink-0 group-hover:border-[#f0c85a] group-hover:bg-[#f0c85a]/10 transition-all">
-                    <SafariCompassIcon />
-                  </div>
-                  <div className="text-[#C8D2C6]">
-                    <span>Kaziranga Private Safari</span>
-                    <span className="text-[#8FA38D] text-[10px] font-normal block sm:inline sm:ml-1">(Coming Soon)</span>
-                  </div>
-                </li>
+                  return (
+                    <li key={item._id || `cs-${index}`} className="flex items-center gap-2.5 group">
+                      <div className="w-7 h-7 rounded-full border border-[#f0c85a]/50 flex items-center justify-center shrink-0">
+                        <IconComp />
+                      </div>
+                      <div className="text-[#C8D2C6]">
+                        <span>{title} {durationLabel}</span>
+                        <span className="text-[#8FA38D] text-[10px] font-normal block sm:inline sm:ml-1">(Coming Soon)</span>
+                      </div>
+                    </li>
+                  );
+                })}
               </ul>
             </div>
 

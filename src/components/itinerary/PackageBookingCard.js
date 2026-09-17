@@ -189,6 +189,17 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
     }
   };
 
+  const handleFieldChange = (field, value) => {
+    setBookingState((prev) => ({ ...prev, [field]: value }));
+    if (bookingErrors[field]) {
+      setBookingErrors((prev) => {
+        const next = { ...prev };
+        delete next[field];
+        return next;
+      });
+    }
+  };
+
   const handleCheckout = async (e, packageType = "premium") => {
     if (e) e.preventDefault();
     setBookingErrors({});
@@ -267,7 +278,7 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
     <LuxuryPackageFrame className="w-full">
       {/* Packages Title */}
       <div className="text-center pb-3 border-b border-white/20">
-        <h2 className="font-poppins text-lg sm:text-xl font-bold uppercase tracking-[0.18em] text-[#f0c85a] drop-shadow-xs">
+        <h2 className="font-poppins text-[17px] sm:text-[19px] font-bold uppercase tracking-[0.18em] text-[#f0c85a] drop-shadow-xs">
           Our Packages
         </h2>
       </div>
@@ -280,24 +291,22 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
         >
           {/* TRAVEL DATE */}
           <div>
-            <label className="block text-[12px] font-semibold text-[#f0c85a] uppercase tracking-[0.14em] mb-1 font-poppins">
+            <label className="block text-[11px] font-semibold text-[#f0c85a] uppercase tracking-[0.14em] mb-1 font-poppins">
               TRAVEL DATE <span className="text-amber-400">*</span>
             </label>
             <div className="relative">
               <input
                 type="date"
                 value={bookingState.date}
-                onChange={(e) =>
-                  setBookingState({ ...bookingState, date: e.target.value })
-                }
-                className={`w-full px-3.5 py-2.5 bg-white text-[#123B2A] text-[14px] font-medium rounded-md border transition-all ${bookingErrors.date
+                onChange={(e) => handleFieldChange("date", e.target.value)}
+                className={`w-full px-3.5 py-2 bg-white text-[#123B2A] text-[13px] font-medium rounded-md border transition-all ${bookingErrors.date
                   ? "border-rose-400 ring-1 ring-rose-400"
                   : "border-[#d8caa5] hover:border-[#f0c85a]"
                   } focus:outline-none focus:border-[#f0c85a] focus:ring-2 focus:ring-[#f0c85a]/50 shadow-2xs font-poppins`}
               />
             </div>
             {bookingErrors.date && (
-              <p className="text-[11px] text-rose-300 font-semibold mt-0.5 font-poppins">
+              <p className="text-[10px] text-rose-300 font-semibold mt-0.5 font-poppins">
                 {bookingErrors.date}
               </p>
             )}
@@ -305,23 +314,21 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
 
           {/* FULL NAME */}
           <div>
-            <label className="block text-[12px] font-semibold text-[#f0c85a] uppercase tracking-[0.14em] mb-1 font-poppins">
+            <label className="block text-[11px] font-semibold text-[#f0c85a] uppercase tracking-[0.14em] mb-1 font-poppins">
               FULL NAME <span className="text-amber-400">*</span>
             </label>
             <input
               type="text"
               placeholder="Enter your name"
               value={bookingState.name}
-              onChange={(e) =>
-                setBookingState({ ...bookingState, name: e.target.value })
-              }
-              className={`w-full px-3.5 py-2.5 bg-white text-[#123B2A] text-[14px] font-medium rounded-md border transition-all ${bookingErrors.name
+              onChange={(e) => handleFieldChange("name", e.target.value)}
+              className={`w-full px-3.5 py-2 bg-white text-[#123B2A] text-[13px] font-medium rounded-md border transition-all ${bookingErrors.name
                 ? "border-rose-400 ring-1 ring-rose-400"
                 : "border-[#d8caa5] hover:border-[#f0c85a]"
-                } focus:outline-none focus:border-[#f0c85a] focus:ring-2 focus:ring-[#f0c85a]/50 shadow-2xs placeholder:text-stone-400 font-poppins`}
+                } focus:outline-none focus:border-[#f0c85a] focus:ring-2 focus:ring-[#f0c85a]/50 shadow-2xs placeholder:text-stone-400 placeholder:font-normal font-poppins`}
             />
             {bookingErrors.name && (
-              <p className="text-[11px] text-rose-300 font-semibold mt-0.5 font-poppins">
+              <p className="text-[10px] text-rose-300 font-semibold mt-0.5 font-poppins">
                 {bookingErrors.name}
               </p>
             )}
@@ -329,23 +336,21 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
 
           {/* PHONE NUMBER */}
           <div>
-            <label className="block text-[12px] font-semibold text-[#f0c85a] uppercase tracking-[0.14em] mb-1 font-poppins">
+            <label className="block text-[11px] font-semibold text-[#f0c85a] uppercase tracking-[0.14em] mb-1 font-poppins">
               PHONE NUMBER <span className="text-amber-400">*</span>
             </label>
             <input
               type="tel"
               placeholder="Enter your phone number"
               value={bookingState.phone}
-              onChange={(e) =>
-                setBookingState({ ...bookingState, phone: e.target.value })
-              }
-              className={`w-full px-3.5 py-2.5 bg-white text-[#123B2A] text-[14px] font-medium rounded-md border transition-all ${bookingErrors.phone
+              onChange={(e) => handleFieldChange("phone", e.target.value)}
+              className={`w-full px-3.5 py-2 bg-white text-[#123B2A] text-[13px] font-medium rounded-md border transition-all ${bookingErrors.phone
                 ? "border-rose-400 ring-1 ring-rose-400"
                 : "border-[#d8caa5] hover:border-[#f0c85a]"
-                } focus:outline-none focus:border-[#f0c85a] focus:ring-2 focus:ring-[#f0c85a]/50 shadow-2xs placeholder:text-stone-400 font-poppins`}
+                } focus:outline-none focus:border-[#f0c85a] focus:ring-2 focus:ring-[#f0c85a]/50 shadow-2xs placeholder:text-stone-400 placeholder:font-normal font-poppins`}
             />
             {bookingErrors.phone && (
-              <p className="text-[11px] text-rose-300 font-semibold mt-0.5 font-poppins">
+              <p className="text-[10px] text-rose-300 font-semibold mt-0.5 font-poppins">
                 {bookingErrors.phone}
               </p>
             )}
@@ -353,23 +358,21 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
 
           {/* EMAIL ADDRESS */}
           <div>
-            <label className="block text-[12px] font-semibold text-[#f0c85a] uppercase tracking-[0.14em] mb-1 font-poppins">
+            <label className="block text-[11px] font-semibold text-[#f0c85a] uppercase tracking-[0.14em] mb-1 font-poppins">
               EMAIL ADDRESS <span className="text-amber-400">*</span>
             </label>
             <input
               type="email"
               placeholder="Enter your email address"
               value={bookingState.email}
-              onChange={(e) =>
-                setBookingState({ ...bookingState, email: e.target.value })
-              }
-              className={`w-full px-3.5 py-2.5 bg-white text-[#123B2A] text-[14px] font-medium rounded-md border transition-all ${bookingErrors.email
+              onChange={(e) => handleFieldChange("email", e.target.value)}
+              className={`w-full px-3.5 py-2 bg-white text-[#123B2A] text-[13px] font-medium rounded-md border transition-all ${bookingErrors.email
                 ? "border-rose-400 ring-1 ring-rose-400"
                 : "border-[#d8caa5] hover:border-[#f0c85a]"
-                } focus:outline-none focus:border-[#f0c85a] focus:ring-2 focus:ring-[#f0c85a]/50 shadow-2xs placeholder:text-stone-400 font-poppins`}
+                } focus:outline-none focus:border-[#f0c85a] focus:ring-2 focus:ring-[#f0c85a]/50 shadow-2xs placeholder:text-stone-400 placeholder:font-normal font-poppins`}
             />
             {bookingErrors.email && (
-              <p className="text-[11px] text-rose-300 font-semibold mt-0.5 font-poppins">
+              <p className="text-[10px] text-rose-300 font-semibold mt-0.5 font-poppins">
                 {bookingErrors.email}
               </p>
             )}
@@ -377,7 +380,7 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
 
           {/* NUMBER OF TRAVELERS */}
           <div>
-            <label className="block text-[12px] font-semibold text-[#f0c85a] uppercase tracking-[0.14em] mb-1 font-poppins">
+            <label className="block text-[11px] font-semibold text-[#f0c85a] uppercase tracking-[0.14em] mb-1 font-poppins">
               NUMBER OF TRAVELERS
             </label>
             <div className="flex items-center w-full rounded-md border border-[#d8caa5] overflow-hidden bg-white shadow-2xs font-poppins">
@@ -389,11 +392,11 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
                     qty: Math.max(1, prev.qty - 1),
                   }))
                 }
-                className="w-11 py-2 text-[#123B2A] hover:bg-[#f2ebd9] transition-colors font-bold text-base cursor-pointer border-r border-[#d8caa5] select-none flex items-center justify-center font-poppins"
+                className="w-10 py-1.5 text-[#123B2A] hover:bg-[#f2ebd9] transition-colors font-bold text-[15px] cursor-pointer border-r border-[#d8caa5] select-none flex items-center justify-center font-poppins"
               >
                 -
               </button>
-              <div className="flex-1 py-2 bg-white text-center font-bold text-[14px] sm:text-[16px] text-[#123B2A] select-none font-poppins tracking-wide">
+              <div className="flex-1 py-1.5 bg-white text-center font-bold text-[13px] sm:text-[15px] text-[#123B2A] select-none font-poppins tracking-wide">
                 {bookingState.qty}{" "}
                 {bookingState.qty === 1 ? "Traveler" : "Travelers"}
               </div>
@@ -402,7 +405,7 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
                 onClick={() =>
                   setBookingState((prev) => ({ ...prev, qty: prev.qty + 1 }))
                 }
-                className="w-11 py-2 text-[#123B2A] hover:bg-[#f2ebd9] transition-colors font-bold text-base cursor-pointer border-l border-[#d8caa5] select-none flex items-center justify-center font-poppins"
+                className="w-10 py-1.5 text-[#123B2A] hover:bg-[#f2ebd9] transition-colors font-bold text-[15px] cursor-pointer border-l border-[#d8caa5] select-none flex items-center justify-center font-poppins"
               >
                 +
               </button>
@@ -410,7 +413,7 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
           </div>
 
           {bookingErrors.api && (
-            <div className="p-2.5 rounded-md bg-rose-950/80 border border-rose-500/50 text-rose-200 text-[11px] font-semibold flex items-center gap-1.5 font-poppins">
+            <div className="p-2 rounded-md bg-rose-950/80 border border-rose-500/50 text-rose-200 text-[10px] font-semibold flex items-center gap-1.5 font-poppins">
               <AlertCircle className="w-3.5 h-3.5 shrink-0 text-rose-400" />
               <span>{bookingErrors.api}</span>
             </div>
@@ -418,56 +421,56 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
         </div>
 
         {/* 1. Premium Package */}
-        <div className="space-y-2.5 pb-3.5 border-b border-white/20 font-poppins">
-          <div className="text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-[#f0c85a] text-center font-poppins">
+        <div className="space-y-2 pb-3 border-b border-white/20 font-poppins">
+          <div className="text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.16em] text-[#f0c85a] text-center font-poppins">
             Premium Package
           </div>
 
           {/* 4 Mini Gold Icons */}
-          <div className="grid grid-cols-4 gap-2 text-center text-[10px] sm:text-xs text-stone-300 pt-1 font-poppins">
+          <div className="grid grid-cols-4 gap-2 text-center text-[9px] sm:text-[11px] text-stone-300 pt-1 font-poppins">
             <div className="flex flex-col items-center">
-              <BedDouble className="w-4 h-4 sm:w-5 sm:h-5 text-[#f0c85a] mb-1" />
+              <BedDouble className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] mb-0.5" />
               <span>4★ Hotels</span>
             </div>
             <div className="flex flex-col items-center">
-              <Utensils className="w-4 h-4 sm:w-5 sm:h-5 text-[#f0c85a] mb-1" />
+              <Utensils className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] mb-0.5" />
               <span>Breakfast</span>
             </div>
             <div className="flex flex-col items-center">
-              <Car className="w-4 h-4 sm:w-5 sm:h-5 text-[#f0c85a] mb-1" />
+              <Car className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] mb-0.5" />
               <span>Private Cab</span>
             </div>
             <div className="flex flex-col items-center">
-              <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-[#f0c85a] mb-1" />
+              <Camera className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] mb-0.5" />
               <span>All Sightseeing</span>
             </div>
           </div>
 
           {formattedStartingPrice && (
-            <div className="text-center pt-1.5 font-poppins">
+            <div className="text-center pt-1 font-poppins">
               {premiumDiscount > 0 ? (
                 <div>
-                  <div className="text-xs line-through text-stone-300 font-medium font-poppins">
+                  <div className="text-[11px] line-through text-stone-300 font-medium font-poppins">
                     {formattedStartingPrice}/-
                   </div>
-                  <div className="font-poppins text-xl sm:text-2xl font-extrabold text-emerald-400 leading-none">
+                  <div className="font-poppins text-[19px] sm:text-[23px] font-extrabold text-emerald-400 leading-none">
                     {formattedNetStartingPrice}/-
                   </div>
-                  <div className="text-[10px] sm:text-xs text-emerald-300 font-bold mt-0.5 font-poppins">
+                  <div className="text-[9px] sm:text-[11px] text-emerald-300 font-bold mt-0.5 font-poppins">
                     -₹{premiumDiscount.toLocaleString()} CTCoin Discount
                   </div>
                 </div>
               ) : (
-                <div className="font-poppins text-xl sm:text-2xl font-extrabold text-white leading-none">
+                <div className="font-poppins text-[19px] sm:text-[23px] font-extrabold text-white leading-none">
                   {formattedStartingPrice}/-
                 </div>
               )}
-              <div className="font-poppins text-xs text-stone-300 font-medium mt-1">
+              <div className="font-poppins text-[11px] text-stone-300 font-medium mt-0.5">
                 For {bookingState.qty} {bookingState.qty === 1 ? "guest" : "guests"}
               </div>
               {premiumCoins > 0 && (
-                <div className="mt-1 inline-flex items-center justify-center gap-1 px-2.5 py-0.5 rounded-full bg-[#f0c85a]/15 text-[#f0c85a] text-[10px] font-bold font-poppins">
-                  <Coins className="w-3.5 h-3.5 text-[#f0c85a]" />
+                <div className="mt-1 inline-flex items-center justify-center gap-1 px-2 py-0.5 rounded-full bg-[#f0c85a]/15 text-[#f0c85a] text-[9px] font-bold font-poppins">
+                  <Coins className="w-3 h-3 text-[#f0c85a]" />
                   <span>+{premiumCoins} CTCoin Reward</span>
                 </div>
               )}
@@ -475,9 +478,9 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
                 <button
                   type="button"
                   onClick={() => openRedeemModal("premium")}
-                  className="w-full mt-2 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#f0c85a]/20 border border-[#f0c85a]/50 text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green text-xs font-bold transition-all cursor-pointer shadow-xs font-poppins"
+                  className="w-full mt-1.5 inline-flex items-center justify-center gap-1 px-2.5 py-1 rounded-lg bg-[#f0c85a]/20 border border-[#f0c85a]/50 text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green text-[11px] font-bold transition-all cursor-pointer shadow-xs font-poppins"
                 >
-                  <Coins className="w-3.5 h-3.5 text-[#f0c85a]" />
+                  <Coins className="w-3 h-3 text-[#f0c85a]" />
                   <span>
                     {premiumDiscount > 0
                       ? `Redeemed (-₹${premiumDiscount.toLocaleString()})`
@@ -492,66 +495,66 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
             type="button"
             onClick={(e) => handleCheckout(e, "premium")}
             disabled={bookingLoading}
-            className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-bold text-xs sm:text-sm uppercase tracking-[0.1em] py-2.5 rounded-lg shadow-md transition-all cursor-pointer mt-1.5 flex items-center justify-center gap-2 disabled:opacity-75 font-poppins"
+            className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-bold text-[11px] sm:text-[13px] uppercase tracking-[0.1em] py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1 flex items-center justify-center gap-2 disabled:opacity-75 font-poppins"
           >
             {bookingLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin text-primary-green" />
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-primary-green" />
             ) : null}
             <span>{bookingLoading ? "Processing..." : "Book Now"}</span>
           </button>
         </div>
 
         {/* 2. Luxury Package */}
-        <div className="space-y-2.5 pb-3.5 border-b border-white/20 font-poppins">
-          <div className="text-xs sm:text-sm font-bold uppercase tracking-[0.16em] text-[#f0c85a] text-center font-poppins">
+        <div className="space-y-2 pb-3 border-b border-white/20 font-poppins">
+          <div className="text-[11px] sm:text-[13px] font-bold uppercase tracking-[0.16em] text-[#f0c85a] text-center font-poppins">
             Luxury Package
           </div>
 
           {/* 4 Mini Gold Icons */}
-          <div className="grid grid-cols-4 gap-2 text-center text-[10px] sm:text-xs text-stone-300 pt-1 font-poppins">
+          <div className="grid grid-cols-4 gap-2 text-center text-[9px] sm:text-[11px] text-stone-300 pt-1 font-poppins">
             <div className="flex flex-col items-center">
-              <BedDouble className="w-4 h-4 sm:w-5 sm:h-5 text-[#f0c85a] mb-1" />
+              <BedDouble className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] mb-0.5" />
               <span>5★ Hotels</span>
             </div>
             <div className="flex flex-col items-center">
-              <Utensils className="w-4 h-4 sm:w-5 sm:h-5 text-[#f0c85a] mb-1" />
+              <Utensils className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] mb-0.5" />
               <span>All Meals</span>
             </div>
             <div className="flex flex-col items-center">
-              <Car className="w-4 h-4 sm:w-5 sm:h-5 text-[#f0c85a] mb-1" />
+              <Car className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] mb-0.5" />
               <span>Private Cab</span>
             </div>
             <div className="flex flex-col items-center">
-              <Camera className="w-4 h-4 sm:w-5 sm:h-5 text-[#f0c85a] mb-1" />
+              <Camera className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] mb-0.5" />
               <span>All Sightseeing</span>
             </div>
           </div>
 
           {formattedLuxuryPrice && (
-            <div className="text-center pt-1.5 font-poppins">
+            <div className="text-center pt-1 font-poppins">
               {luxuryDiscount > 0 ? (
                 <div>
-                  <div className="text-xs line-through text-stone-300 font-medium font-poppins">
+                  <div className="text-[11px] line-through text-stone-300 font-medium font-poppins">
                     {formattedLuxuryPrice}/-
                   </div>
-                  <div className="font-poppins text-xl sm:text-2xl font-extrabold text-emerald-400 leading-none">
+                  <div className="font-poppins text-[19px] sm:text-[23px] font-extrabold text-emerald-400 leading-none">
                     {formattedNetLuxuryPrice}/-
                   </div>
-                  <div className="text-[10px] sm:text-xs text-emerald-300 font-bold mt-0.5 font-poppins">
+                  <div className="text-[9px] sm:text-[11px] text-emerald-300 font-bold mt-0.5 font-poppins">
                     -₹{luxuryDiscount.toLocaleString()} CTCoin Discount
                   </div>
                 </div>
               ) : (
-                <div className="font-poppins text-xl sm:text-2xl font-extrabold text-white leading-none">
+                <div className="font-poppins text-[19px] sm:text-[23px] font-extrabold text-white leading-none">
                   {formattedLuxuryPrice}/-
                 </div>
               )}
-              <div className="font-poppins text-xs text-stone-300 font-medium mt-1">
+              <div className="font-poppins text-[11px] text-stone-300 font-medium mt-0.5">
                 For {bookingState.qty} {bookingState.qty === 1 ? "guest" : "guests"}
               </div>
               {luxuryCoins > 0 && (
-                <div className="mt-1 inline-flex items-center justify-center gap-1 px-2.5 py-0.5 rounded-full bg-[#f0c85a]/15 text-[#f0c85a] text-[10px] font-bold font-poppins">
-                  <Coins className="w-3.5 h-3.5 text-[#f0c85a]" />
+                <div className="mt-1 inline-flex items-center justify-center gap-1 px-2 py-0.5 rounded-full bg-[#f0c85a]/15 text-[#f0c85a] text-[9px] font-bold font-poppins">
+                  <Coins className="w-3 h-3 text-[#f0c85a]" />
                   <span>+{luxuryCoins} CTCoin Reward</span>
                 </div>
               )}
@@ -559,9 +562,9 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
                 <button
                   type="button"
                   onClick={() => openRedeemModal("luxury")}
-                  className="w-full mt-2 inline-flex items-center justify-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#f0c85a]/20 border border-[#f0c85a]/50 text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green text-xs font-bold transition-all cursor-pointer shadow-xs font-poppins"
+                  className="w-full mt-1.5 inline-flex items-center justify-center gap-1 px-2.5 py-1 rounded-lg bg-[#f0c85a]/20 border border-[#f0c85a]/50 text-[#f0c85a] hover:bg-[#f0c85a] hover:text-primary-green text-[11px] font-bold transition-all cursor-pointer shadow-xs font-poppins"
                 >
-                  <Coins className="w-3.5 h-3.5 text-[#f0c85a]" />
+                  <Coins className="w-3 h-3 text-[#f0c85a]" />
                   <span>
                     {luxuryDiscount > 0
                       ? `Redeemed (-₹${luxuryDiscount.toLocaleString()})`
@@ -576,32 +579,32 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
             type="button"
             onClick={(e) => handleCheckout(e, "luxury")}
             disabled={bookingLoading}
-            className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-bold text-xs sm:text-sm uppercase tracking-[0.1em] py-2.5 rounded-lg shadow-md transition-all cursor-pointer mt-1.5 flex items-center justify-center gap-2 disabled:opacity-75 font-poppins"
+            className="w-full bg-gradient-to-r from-[#e5a823] to-[#cf8f15] hover:brightness-110 text-primary-green font-bold text-[11px] sm:text-[13px] uppercase tracking-[0.1em] py-2 rounded-lg shadow-md transition-all cursor-pointer mt-1 flex items-center justify-center gap-2 disabled:opacity-75 font-poppins"
           >
             {bookingLoading ? (
-              <Loader2 className="w-4 h-4 animate-spin text-primary-green" />
+              <Loader2 className="w-3.5 h-3.5 animate-spin text-primary-green" />
             ) : null}
             <span>{bookingLoading ? "Processing..." : "Book Now"}</span>
           </button>
         </div>
 
         {/* 3. Custom Package */}
-        <div className="space-y-2.5">
-          <div className="text-xs sm:text-sm font-bold uppercase tracking-widest text-[#f0c85a] text-center">
+        <div className="space-y-2 font-poppins">
+          <div className="text-[11px] sm:text-[13px] font-bold uppercase tracking-widest text-[#f0c85a] text-center font-poppins">
             Custom Package
           </div>
 
-          <ul className="space-y-2 text-xs text-stone-200">
+          <ul className="space-y-1.5 text-[11px] text-stone-200 font-poppins">
             <li className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-[#f0c85a] shrink-0" />
+              <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
               <span>Tailor Made Itinerary</span>
             </li>
             <li className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-[#f0c85a] shrink-0" />
+              <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
               <span>Personalized Experiences</span>
             </li>
             <li className="flex items-center gap-2">
-              <Check className="w-4 h-4 text-[#f0c85a] shrink-0" />
+              <Check className="w-3.5 h-3.5 text-[#f0c85a] shrink-0" />
               <span>24x7 Support</span>
             </li>
           </ul>
@@ -609,7 +612,7 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
           <button
             type="button"
             onClick={onOpenEnquiry}
-            className="w-full border-2 border-[#f0c85a]/40 text-stone-200 hover:bg-white/10 font-bold text-xs sm:text-sm uppercase tracking-wider py-2 rounded-lg transition-all cursor-pointer mt-1"
+            className="w-full border-2 border-[#f0c85a]/40 text-stone-200 hover:bg-white/10 font-bold text-[11px] sm:text-[13px] uppercase tracking-wider py-1.5 rounded-lg transition-all cursor-pointer mt-1 font-poppins"
           >
             Enquire Now
           </button>

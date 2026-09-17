@@ -1,7 +1,7 @@
 'use client';
 
 import {
-  LogOut, ChevronRight, Home, Compass, Coins, Settings, FileText, Lock
+  LogOut, ChevronRight, Home, Compass, Coins, Settings, FileText, User
 } from 'lucide-react';
 
 const TABS = [
@@ -10,7 +10,7 @@ const TABS = [
   { id: 'ctcoins',    label: 'CT Coins',     icon: Coins },
   { id: 'preferences',label: 'Preferences',  icon: Settings },
   { id: 'documents',  label: 'Documents',    icon: FileText },
-  { id: 'settings',   label: 'Settings',     icon: Lock },
+  { id: 'settings',   label: 'Profile',      icon: User },
 ];
 
 /**

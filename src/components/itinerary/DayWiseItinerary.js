@@ -159,10 +159,10 @@ export default function DayWiseItinerary({ dayWiseItinerary = [] }) {
                 {/* 1. Day Badge (Mobile & Desktop) */}
                 <div className="flex items-center gap-3 lg:flex-col lg:items-center shrink-0 z-10">
                   <div className="w-14 h-14 sm:w-20 sm:h-20 rounded-2xl bg-forest text-ivory flex flex-col items-center justify-center shadow-md border-2 border-forest-light group-hover:scale-105 transition-transform duration-300">
-                    <span className="text-xs sm:text-sm font-semibold uppercase tracking-wider text-gold">
+                    <span className="text-xs sm:text-sm font-medium uppercase tracking-wider text-gold font-roman">
                       Day
                     </span>
-                    <span className="font-serif-display text-xl sm:text-3xl font-bold leading-none mt-0.5">
+                    <span className="font-roman text-xl sm:text-3xl font-normal leading-none mt-0.5">
                       {String(dayNum).padStart(2, "0")}
                     </span>
                   </div>
