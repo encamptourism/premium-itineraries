@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useRef } from "react";
 import Image from "next/image";
+import RouteMapCanvas from "./RouteMapCanvas";
 import PackageBookingCard from "./PackageBookingCard";
 import CarbonTraceWalletModal from "@/components/checkout/CarbonTraceWalletModal";
 import {
@@ -28,6 +29,9 @@ import {
   Moon,
   Mountain,
   Gem,
+  ExternalLink,
+  Volume2,
+  VolumeX,
 } from "lucide-react";
 
 /**
@@ -143,8 +147,8 @@ function DayImageSlider({ images, alt, className = "" }) {
             <span
               key={idx}
               className={`h-1.5 rounded-full transition-all duration-500 ${idx === currentIndex
-                  ? "w-3.5 bg-white shadow-xs opacity-100"
-                  : "w-1.5 bg-white/60 drop-shadow-xs"
+                ? "w-3.5 bg-white shadow-xs opacity-100"
+                : "w-1.5 bg-white/60 drop-shadow-xs"
                 }`}
             />
           ))}
@@ -195,21 +199,48 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
     itinerary?.gallery?.[1]?.url ||
     "https://encamp-s3b.s3.ap-south-1.amazonaws.com/1787245472531_Encamp%20terra%20meghalaya.png.jpg";
 
-  // Safely extract YouTube video ID
-  const ytUrl = itinerary?.premiumMedia?.youtubeVideo?.url || "";
+  // 1. YouTube Videos parsing (supports new youtubeVideos array, as well as legacy structures)
+  const rawYtVideos =
+    itinerary?.youtubeVideos ||
+    itinerary?.premiumMedia?.youtubeVideos ||
+    itinerary?.premiumMedia?.youtubeVideo ||
+    itinerary?.youtubeVideo ||
+    [];
+
+  const youtubeVideosList = (
+    Array.isArray(rawYtVideos)
+      ? rawYtVideos
+      : rawYtVideos && typeof rawYtVideos === "object"
+        ? [rawYtVideos]
+        : []
+  ).filter((v) => v && (v.url || typeof v === "string"));
+
+  const [activeYtIndex, setActiveYtIndex] = useState(0);
+  const activeYtVideo =
+    youtubeVideosList[activeYtIndex] ||
+    youtubeVideosList[0] ||
+    null;
+
+  const ytUrl = typeof activeYtVideo === "string" ? activeYtVideo : (activeYtVideo?.url || "");
+  const ytVideoTitle = activeYtVideo?.title || `Watch ${itinerary?.state || "Expedition"} Experience`;
+
+  // Safely extract YouTube video ID from any format: watch?v=, youtu.be/, /shorts/, /embed/
   const getYouTubeId = (url) => {
-    if (!url) return null;
-    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-    const match = url.match(regExp);
-    return match && match[2].length === 11 ? match[2] : null;
+    if (!url || typeof url !== "string") return null;
+    const match = url.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|shorts\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+    if (match && match[1]) return match[1];
+    const fallbackMatch = url.match(/([a-zA-Z0-9_-]{11})/);
+    return fallbackMatch ? fallbackMatch[1] : null;
   };
+
   const ytVideoId = getYouTubeId(ytUrl);
   const ytThumbnail = ytVideoId
     ? `https://img.youtube.com/vi/${ytVideoId}/hqdefault.jpg`
     : overviewImage;
 
-  // Auto-play YouTube video when scrolled into view
-  const [isYtInView, setIsYtInView] = useState(false);
+  // Auto-play YouTube video when in view (muted for browser compliance with interactive sound toggle)
+  const [isYtInView, setIsYtInView] = useState(true);
+  const [isMuted, setIsMuted] = useState(true);
   const ytContainerRef = useRef(null);
 
   useEffect(() => {
@@ -222,7 +253,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
           setIsYtInView(true);
         }
       },
-      { threshold: 0.25 }
+      { threshold: 0.15, rootMargin: "100px" }
     );
 
     observer.observe(node);
@@ -231,42 +262,72 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
     };
   }, []);
 
-  // Short videos data parsing
-  const rawShortData =
+  // 2. Reels / Shorts data parsing (supports new reels array, as well as shortVideo/shortVideos/shorts)
+  const rawReelsData =
+    itinerary?.reels ||
+    itinerary?.premiumMedia?.reels ||
     itinerary?.premiumMedia?.shortVideo ||
     itinerary?.premiumMedia?.shortVideos ||
     itinerary?.shortVideos ||
-    itinerary?.shorts;
+    itinerary?.shorts ||
+    [];
 
-  const shortVideoItems = Array.isArray(rawShortData)
-    ? rawShortData
-    : rawShortData && typeof rawShortData === "object"
-      ? [rawShortData]
-      : [];
+  const reelsItems = (
+    Array.isArray(rawReelsData)
+      ? rawReelsData
+      : rawReelsData && typeof rawReelsData === "object"
+        ? [rawReelsData]
+        : []
+  ).filter(Boolean);
 
   const galleryImages = Array.isArray(itinerary?.gallery) ? itinerary.gallery.map((g) => g.url) : [];
   const dayImages = dayWise.flatMap((d) => getDayImages(d)).filter(Boolean);
   const uniqueImagesPool = [...new Set([...galleryImages, ...dayImages, overviewImage])];
 
-  const shortsToRender = (locations.length > 0 ? locations.slice(0, 4) : ["Shillong", "Cherrapunji", "Dawki", "Meghalaya"]).map((loc, idx) => {
-    const apiShort = shortVideoItems[idx] || shortVideoItems[0];
-    const thumb =
-      apiShort?.thumbnail ||
-      apiShort?.coverImage ||
-      apiShort?.image ||
-      uniqueImagesPool[idx % uniqueImagesPool.length] ||
-      overviewImage;
+  const shortsToRender = reelsItems.length > 0
+    ? reelsItems.map((reel, idx) => {
+      const link = reel?.url || reel?.link || "";
+      const reelYtId = getYouTubeId(link);
+      const thumb =
+        reel?.thumbnail ||
+        reel?.coverImage ||
+        reel?.image ||
+        (reelYtId ? `https://img.youtube.com/vi/${reelYtId}/hqdefault.jpg` : null) ||
+        uniqueImagesPool[idx % uniqueImagesPool.length] ||
+        overviewImage;
 
-    const title = apiShort?.title || loc;
-    const link = apiShort?.url || apiShort?.link || (ytUrl || "https://www.youtube.com");
+      const title = reel?.title || `Short ${idx + 1}`;
+      const platform = reel?.platform || (link.includes("instagram") ? "instagram" : "youtube_short");
 
-    return {
-      title,
-      thumbnail: thumb,
-      url: link,
-      platform: apiShort?.platform || (link.includes("instagram") ? "instagram" : "youtube"),
-    };
-  });
+      return {
+        id: reel?._id || `reel-${idx}`,
+        title,
+        thumbnail: thumb,
+        url: link,
+        platform,
+        videoId: reelYtId,
+        description: reel?.description || "",
+      };
+    })
+    : (locations.length > 0 ? locations.slice(0, 4) : ["Shillong", "Cherrapunji", "Dawki", "Meghalaya"]).map((loc, idx) => {
+      return {
+        id: `default-${idx}`,
+        title: loc,
+        thumbnail: uniqueImagesPool[idx % uniqueImagesPool.length] || overviewImage,
+        url: ytUrl || "https://www.youtube.com",
+        platform: "youtube_short",
+        videoId: null,
+        description: "",
+      };
+    });
+
+  const [activeReelModal, setActiveReelModal] = useState(null);
+
+  const destinationName =
+    itinerary?.state ||
+    itinerary?.destination ||
+    (itinerary?.title ? itinerary.title.replace(/itinerary|tour|expedition|trip/gi, "").trim().split(" ")[0] : "") ||
+    "Nepal";
 
   const totalActivities = dayWise.reduce(
     (acc, d) => acc + (Array.isArray(d?.activities) ? d.activities.length : 0),
@@ -505,7 +566,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
               {/* ROUTE MAP Container */}
               {(itinerary?.sitemapImage || itinerary?.mapImage) && (
-                <div className="space-y-2 py-1">
+                <div className="space-y-1 my-[10px]">
                   <div className="flex items-center justify-center gap-2">
                     <span className="h-[1px] w-8 sm:w-12 bg-[#c8b79b]" />
                     <h3 className="font-serif-display text-xs sm:text-sm font-bold uppercase tracking-[0.2em] text-primary-green">
@@ -514,14 +575,12 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                     <span className="h-[1px] w-8 sm:w-12 bg-[#c8b79b]" />
                   </div>
 
-                  {/* Map Graphic Image */}
-                  <div className="relative w-full h-44 sm:h-52 rounded-lg overflow-hidden flex items-center justify-center p-1">
-                    <Image
+                  {/* Map Graphic Image with background removed via Canvas */}
+                  <div className="relative w-full rounded-xl flex items-center justify-center px-[10px] my-[10px]">
+                    <RouteMapCanvas
                       src={typeof itinerary?.sitemapImage === "string" ? itinerary.sitemapImage : itinerary?.sitemapImage?.url || itinerary?.mapImage}
                       alt="Route Map"
-                      width={500}
-                      height={300}
-                      className="w-full h-auto object-contain max-h-52"
+                      className="w-full h-auto object-contain max-h-[400px] drop-shadow-md"
                     />
                   </div>
                 </div>
@@ -537,7 +596,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                   <div className="relative bg-primary-green border-2 border-[#f0c85a]/70 rounded-2xl rounded-tl-none rounded-br-none p-2.5 sm:p-3 text-white shadow-md flex flex-col justify-between">
                     <div>
                       {/* Top Header Row */}
-                      <div className="flex items-center gap-2 pr-3">
+                      <div className="flex items-center gap-2">
                         <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary-green border-2 border-[#f0c85a] flex items-center justify-center shrink-0 shadow-inner">
                           <Sun className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] stroke-[1.8]" />
                         </div>
@@ -553,13 +612,9 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                       </div>
 
                       {/* Description Below Utilizing Left Space & Full Card Width */}
-                      <div className="text-[9.5px] sm:text-[10.5px] text-stone-300 leading-snug mt-1.5 pr-4">
+                      <div className="text-[9.5px] sm:text-[10.5px] text-stone-300 leading-snug mt-1.5">
                         Ideal weather for sightseeing and outdoor experiences.
                       </div>
-                    </div>
-
-                    <div className="absolute bottom-1.5 right-1.5 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#f0c85a] text-primary-green flex items-center justify-center shadow-xs">
-                      <span className="text-[8.5px] sm:text-[9.5px] font-black leading-none">→</span>
                     </div>
                   </div>
 
@@ -567,7 +622,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                   <div className="relative bg-[#faf7f0] border border-[#d9caad] rounded-2xl rounded-tl-none rounded-br-none p-2.5 sm:p-3 text-stone-900 shadow-2xs flex flex-col justify-between">
                     <div>
                       {/* Top Header Row */}
-                      <div className="flex items-center gap-2 pr-3">
+                      <div className="flex items-center gap-2">
                         <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary-green border-2 border-[#f0c85a] flex items-center justify-center shrink-0 shadow-inner">
                           <Compass className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] stroke-[1.8]" />
                         </div>
@@ -583,13 +638,9 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                       </div>
 
                       {/* Description Below Utilizing Left Space & Full Card Width */}
-                      <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-snug mt-1.5 pr-4">
+                      <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-snug mt-1.5">
                         Perfect blend of relaxation and exploration.
                       </div>
-                    </div>
-
-                    <div className="absolute bottom-1.5 right-1.5 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#f0c85a] text-primary-green flex items-center justify-center shadow-xs">
-                      <span className="text-[8.5px] sm:text-[9.5px] font-black leading-none">→</span>
                     </div>
                   </div>
 
@@ -599,7 +650,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                 <div className="relative w-full bg-[#faf7f0] border border-[#d9caad] rounded-2xl rounded-tl-[24px] p-2.5 sm:p-3 text-stone-900 shadow-2xs flex flex-col justify-between">
                   <div>
                     {/* Top Header Row */}
-                    <div className="flex items-center gap-2 pr-3">
+                    <div className="flex items-center gap-2">
                       <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary-green border-2 border-[#f0c85a] flex items-center justify-center shrink-0 shadow-inner">
                         <Plane className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] stroke-[1.8]" />
                       </div>
@@ -615,13 +666,9 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                     </div>
 
                     {/* Description Below Utilizing Left Space & Full Card Width */}
-                    <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-snug mt-1.5 pr-5">
+                    <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-snug mt-1.5">
                       Road transfer included.
                     </div>
-                  </div>
-
-                  <div className="absolute bottom-1.5 right-2 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#f0c85a] text-primary-green flex items-center justify-center shadow-xs">
-                    <span className="text-[8.5px] sm:text-[9.5px] font-black leading-none">→</span>
                   </div>
                 </div>
 
@@ -629,7 +676,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                 <div className="relative w-full bg-[#faf7f0] border border-[#d9caad] rounded-2xl rounded-tr-[24px] p-2.5 sm:p-3 text-stone-900 shadow-2xs flex flex-col justify-between">
                   <div>
                     {/* Top Header Row */}
-                    <div className="flex items-center gap-2 pr-3">
+                    <div className="flex items-center gap-2">
                       <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary-green border-2 border-[#f0c85a] flex items-center justify-center shrink-0 shadow-inner">
                         <Trees className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] stroke-[1.8]" />
                       </div>
@@ -642,13 +689,9 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                     </div>
 
                     {/* Description Below Utilizing Left Space & Full Card Width */}
-                    <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-snug mt-1.5 pr-5">
+                    <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-snug mt-1.5">
                       We promote sustainable tourism and support local communities for a better tomorrow.
                     </div>
-                  </div>
-
-                  <div className="absolute bottom-1.5 right-2 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#f0c85a] text-primary-green flex items-center justify-center shadow-xs">
-                    <span className="text-[8.5px] sm:text-[9.5px] font-black leading-none">→</span>
                   </div>
                 </div>
 
@@ -656,7 +699,7 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                 <div className="relative w-full bg-[#faf7f0] border border-[#d9caad] rounded-2xl rounded-tl-[24px] p-2.5 sm:p-3 text-stone-900 shadow-2xs flex flex-col justify-between">
                   <div>
                     {/* Top Header Row */}
-                    <div className="flex items-center gap-2 pr-3">
+                    <div className="flex items-center gap-2">
                       <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-primary-green border-2 border-[#f0c85a] flex items-center justify-center shrink-0 shadow-inner">
                         <Users className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#f0c85a] stroke-[1.8]" />
                       </div>
@@ -672,13 +715,9 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
                     </div>
 
                     {/* Description Below Utilizing Left Space & Full Card Width */}
-                    <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-snug mt-1.5 pr-5">
+                    <div className="text-[9.5px] sm:text-[10.5px] text-stone-600 leading-snug mt-1.5">
                       Directly supporting local homestays, indigenous guides, and community-led initiatives.
                     </div>
-                  </div>
-
-                  <div className="absolute bottom-1.5 right-2 w-3.5 h-3.5 sm:w-4 sm:h-4 rounded-full bg-[#f0c85a] text-primary-green flex items-center justify-center shadow-xs">
-                    <span className="text-[8.5px] sm:text-[9.5px] font-black leading-none">→</span>
                   </div>
                 </div>
 
@@ -711,93 +750,132 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
             </div>
 
             {/* Watch The Experience (Video & Shorts Block) */}
-            <div className="rounded-2xl p-4 sm:p-5 border border-[#e2d8c3] space-y-3 font-poppins">
+            <div className="rounded-2xl p-4 sm:p-5 border border-[#e2d8c3] space-y-3 font-poppins bg-[#fbf9f4]">
               <div className="text-center pb-1">
                 <h2 className="font-serif-display text-sm sm:text-base font-black uppercase tracking-[0.2em] text-primary-green">
-                  Watch The {itinerary?.state || "Meghalaya"} Experience
+                  WATCH THE {destinationName.toUpperCase()} EXPERIENCE
                 </h2>
               </div>
 
-              {/* Full Video Main Player (Plays YouTube video automatically when scrolled into view) */}
+              {/* Full Video Main Player (Autoplays with mute=1, tap for sound) */}
               <div
                 ref={ytContainerRef}
-                className="relative w-full h-48 sm:h-56 rounded-xl overflow-hidden border border-stone-200 shadow-sm bg-black"
+                className="relative w-full aspect-video rounded-2xl overflow-hidden border border-stone-200 shadow-sm bg-black group"
               >
                 {ytVideoId && isYtInView ? (
-                  <iframe
-                    src={`https://www.youtube.com/embed/${ytVideoId}?autoplay=1&mute=1&playsinline=1&rel=0`}
-                    title={itinerary?.premiumMedia?.youtubeVideo?.title || "Watch Experience"}
-                    className="w-full h-full rounded-xl border-0"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  />
+                  <div className="relative w-full h-full">
+                    <iframe
+                      key={`${ytVideoId}-${isMuted}`}
+                      src={`https://www.youtube.com/embed/${ytVideoId}?autoplay=1&mute=${isMuted ? 1 : 0}&playsinline=1&rel=0&loop=1&playlist=${ytVideoId}`}
+                      title={ytVideoTitle}
+                      className="w-full h-full rounded-2xl border-0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                    />
+
+                    {/* FULL VIDEO Badge */}
+                    <div className="absolute top-3 left-3 z-10 pointer-events-none">
+                      <span className="inline-flex items-center px-3 py-1 rounded-md bg-[#f4c430] text-[#1b3d2f] text-[11px] sm:text-xs font-black uppercase tracking-wider shadow-md">
+                        FULL VIDEO
+                      </span>
+                    </div>
+
+                    {/* Tap for Sound / Unmute toggle button */}
+                    <button
+                      onClick={() => setIsMuted((prev) => !prev)}
+                      className="absolute bottom-3 right-3 z-20 flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-black/75 hover:bg-black text-white text-[11px] font-semibold backdrop-blur-md transition-all shadow-lg cursor-pointer border border-white/20"
+                      title={isMuted ? "Click for Sound" : "Mute Sound"}
+                    >
+                      {isMuted ? (
+                        <>
+                          <VolumeX className="w-3.5 h-3.5 text-amber-400" />
+                          <span>Tap for Sound</span>
+                        </>
+                      ) : (
+                        <>
+                          <Volume2 className="w-3.5 h-3.5 text-green-400" />
+                          <span>Sound On</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
                 ) : (
-                  <a
-                    href={ytUrl || "#"}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={(e) => {
-                      if (ytVideoId) {
-                        e.preventDefault();
-                        setIsYtInView(true);
-                      }
-                    }}
-                    className="block relative w-full h-full group cursor-pointer"
-                  >
+                  <div className="relative w-full h-full">
                     <Image
                       src={ytThumbnail}
-                      alt={itinerary?.premiumMedia?.youtubeVideo?.title || "Watch Full Video"}
+                      alt={ytVideoTitle}
                       fill
-                      sizes="600px"
-                      className="object-cover group-hover:scale-105 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, 600px"
+                      className="object-cover"
                     />
-                    <div className="absolute inset-0 bg-black/35 flex items-center justify-center">
-                      <div className="w-12 h-12 rounded-full bg-[#f8f5ed]/95 text-primary-green flex items-center justify-center pl-1 group-hover:scale-110 transition-transform shadow-lg">
-                        <Play className="w-5 h-5 fill-current" />
-                      </div>
+                    <div className="absolute top-3 left-3 z-10">
+                      <span className="inline-flex items-center px-3 py-1 rounded-md bg-[#f4c430] text-[#1b3d2f] text-[11px] sm:text-xs font-black uppercase tracking-wider shadow-md">
+                        FULL VIDEO
+                      </span>
                     </div>
-                    <div className="absolute top-2.5 left-2.5 bg-[#f0c85a] text-primary-green text-[10px] sm:text-xs font-bold uppercase tracking-wider px-2.5 py-1 rounded-md truncate max-w-[85%] shadow-md">
-                      {itinerary?.premiumMedia?.youtubeVideo?.title || "Full Video"}
-                    </div>
-                  </a>
+                  </div>
                 )}
               </div>
 
+              {/* Multiple YouTube Videos Selector if available */}
+              {youtubeVideosList.length > 1 && (
+                <div className="flex items-center gap-1.5 overflow-x-auto no-scrollbar py-1">
+                  {youtubeVideosList.map((vid, idx) => (
+                    <button
+                      key={vid._id || idx}
+                      onClick={() => {
+                        setActiveYtIndex(idx);
+                      }}
+                      className={`px-3 py-1 rounded-full text-[11px] font-semibold whitespace-nowrap transition-all cursor-pointer ${activeYtIndex === idx
+                        ? "bg-primary-green text-white shadow-xs"
+                        : "bg-[#f0ebe1] text-stone-700 hover:bg-[#e6e0d4]"
+                        }`}
+                    >
+                      {vid.title || `Video ${idx + 1}`}
+                    </button>
+                  ))}
+                </div>
+              )}
+
               {/* Shorts Row */}
               <div className="pt-2">
-                <div className="text-xs font-bold uppercase tracking-wider text-stone-600 mb-2 font-poppins flex items-center justify-between">
-                  <span>Shorts</span>
-                  {shortVideoItems[0]?.platform && (
-                    <span className="text-[10px] text-[#f0c85a] font-semibold lowercase font-sans">
-                      @{shortVideoItems[0]?.platform}
+                <div className="text-xs font-extrabold uppercase tracking-wider text-stone-700 mb-2 font-poppins flex items-center justify-between">
+                  <span>SHORTS</span>
+                  {shortsToRender[0]?.platform && (
+                    <span className="text-xs text-[#caa154] font-semibold lowercase font-sans">
+                      @{shortsToRender[0]?.platform}
                     </span>
                   )}
                 </div>
                 <div className="grid grid-cols-4 gap-2">
-                  {shortsToRender.map((short, i) => (
-                    <a
-                      key={i}
-                      href={short.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="relative h-20 sm:h-24 rounded-xl overflow-hidden border border-stone-200 group cursor-pointer block shadow-xs"
+                  {shortsToRender.slice(0, 4).map((short, i) => (
+                    <div
+                      key={short.id || i}
+                      onClick={() => {
+                        if (short.videoId) {
+                          setActiveReelModal(short);
+                        } else if (short.url) {
+                          window.open(short.url, "_blank", "noopener,noreferrer");
+                        }
+                      }}
+                      className="relative aspect-square rounded-xl sm:rounded-2xl overflow-hidden border border-stone-200 group cursor-pointer block shadow-xs bg-stone-900"
                     >
                       <Image
                         src={short.thumbnail}
                         alt={short.title}
                         fill
-                        sizes="120px"
+                        sizes="(max-width: 768px) 25vw, 150px"
                         className="object-cover group-hover:scale-110 transition-transform duration-300"
                       />
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent flex flex-col items-center justify-between p-1.5 text-center">
-                        <div className="w-5 h-5 rounded-full bg-white/90 text-primary-green flex items-center justify-center pl-0.5 mt-1 shadow-sm group-hover:bg-[#f0c85a] transition-colors">
-                          <Play className="w-2.5 h-2.5 fill-current" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-black/25 to-transparent flex flex-col items-center justify-between p-1.5 text-center pointer-events-none">
+                        <div className="w-6 h-6 sm:w-7 sm:h-7 rounded-full bg-white/90 text-primary-green flex items-center justify-center pl-0.5 mt-1 shadow-sm group-hover:scale-110 group-hover:bg-[#f4c430] transition-all">
+                          <Play className="w-2.5 h-2.5 sm:w-3 sm:h-3 fill-current" />
                         </div>
-                        <span className="text-[11px] text-white font-bold tracking-tight line-clamp-1 font-poppins">
+                        <span className="text-[10.5px] sm:text-xs text-white font-bold tracking-tight truncate w-full font-poppins drop-shadow-sm">
                           {short.title}
                         </span>
                       </div>
-                    </a>
+                    </div>
                   ))}
                 </div>
               </div>
@@ -945,21 +1023,27 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
               </div>
               <div className="grid grid-cols-3 divide-x divide-[#e2d8c3] py-3.5 px-1.5 text-center items-start">
                 <div className="flex flex-col items-center px-1">
-                  <Tag className="w-8 h-8 sm:w-9 sm:h-9 text-[#f0c85a] mb-1.5 stroke-[1.4]" />
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#fdf9f0] border border-[#e8d7b5] flex items-center justify-center mb-1.5 shadow-2xs">
+                    <Tag className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-[#b88c3a] stroke-[1.7]" />
+                  </div>
                   <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-primary-green leading-tight">
                     Best Price Guarantee
                   </span>
                 </div>
 
                 <div className="flex flex-col items-center px-1">
-                  <ClipboardCheck className="w-8 h-8 sm:w-9 sm:h-9 text-[#f0c85a] mb-1.5 stroke-[1.4]" />
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#fdf9f0] border border-[#e8d7b5] flex items-center justify-center mb-1.5 shadow-2xs">
+                    <ClipboardCheck className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-[#b88c3a] stroke-[1.7]" />
+                  </div>
                   <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-primary-green leading-tight">
                     Easy &amp; Secure Booking
                   </span>
                 </div>
 
                 <div className="flex flex-col items-center px-1">
-                  <Compass className="w-8 h-8 sm:w-9 sm:h-9 text-[#f0c85a] mb-1.5 stroke-[1.4]" />
+                  <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-[#fdf9f0] border border-[#e8d7b5] flex items-center justify-center mb-1.5 shadow-2xs">
+                    <Compass className="w-4.5 h-4.5 sm:w-5 sm:h-5 text-[#b88c3a] stroke-[1.7]" />
+                  </div>
                   <span className="text-[9px] sm:text-[10px] font-extrabold uppercase text-primary-green leading-tight">
                     24x7 Customer Support
                   </span>
@@ -967,8 +1051,28 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
               </div>
 
               {itinerary?.whyWithEncamp?.content && (
-                <div className="p-3 bg-[#f3eddf] text-[10.5px] sm:text-xs text-stone-700 leading-relaxed border-t border-[#e2d8c3]">
-                  {itinerary.whyWithEncamp.content}
+                <div className="p-2 sm:p-2.5 bg-gradient-to-b from-[#faf5ea] via-[#f5ede0] to-[#eee2cc] border-t border-[#dfcfb0] relative overflow-hidden">
+                  {/* Subtle ambient luxury corner glows */}
+                  <div className="absolute top-0 left-0 w-16 h-16 bg-radial from-[#f0c85a]/15 to-transparent pointer-events-none" />
+                  <div className="absolute bottom-0 right-0 w-16 h-16 bg-radial from-[#c29b4e]/15 to-transparent pointer-events-none" />
+
+                  {/* Refined Inset Parchment Card */}
+                  <div className="relative w-full rounded-xl border border-[#d8c7a6]/70 bg-white/75 backdrop-blur-xs p-3 sm:p-3.5 shadow-2xs">
+                    {/* Top Ornamental Gold Divider */}
+                    <div className="flex items-center justify-center gap-2 mb-2">
+                      <span className="h-[1px] w-10 sm:w-16 bg-gradient-to-r from-transparent to-[#c29b4e]/70" />
+                      <span className="text-[#c29b4e] text-xs select-none">✦</span>
+                      <span className="h-[1px] w-10 sm:w-16 bg-gradient-to-l from-transparent to-[#c29b4e]/70" />
+                    </div>
+
+                    {/* Destination Description Text */}
+                    <p className="font-roman text-sm text-stone-700 leading-relaxed tracking-normal whitespace-pre-line text-center w-full">
+                      {itinerary.whyWithEncamp.content}
+                    </p>
+
+                    {/* Subtle Accent Bottom Line */}
+                    <div className="w-10 h-[1.5px] bg-[#c29b4e]/35 mx-auto mt-2.5 rounded-full" />
+                  </div>
                 </div>
               )}
             </div>
@@ -977,6 +1081,79 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
         </div>
       </div>
+
+      {/* Interactive Reel/Short Modal */}
+      {activeReelModal && (
+        <div
+          className="fixed inset-0 z-[9999] bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
+          onClick={() => setActiveReelModal(null)}
+        >
+          <div
+            className="relative w-full max-w-[340px] sm:max-w-[360px] bg-stone-950 rounded-3xl overflow-hidden shadow-2xl border border-stone-800 flex flex-col"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-4 py-3 border-b border-stone-800 bg-stone-900/80">
+              <div className="flex items-center gap-2">
+                <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+                <span className="text-xs font-bold text-stone-200 uppercase tracking-wider font-poppins truncate max-w-[200px]">
+                  {activeReelModal.title}
+                </span>
+              </div>
+              <button
+                onClick={() => setActiveReelModal(null)}
+                className="w-8 h-8 rounded-full bg-stone-800 hover:bg-stone-700 text-stone-300 flex items-center justify-center transition-colors cursor-pointer"
+                aria-label="Close"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+
+            {/* Reel Embed Player (Vertical 9:16) */}
+            <div className="relative w-full aspect-[9/16] bg-black">
+              {activeReelModal.videoId ? (
+                <iframe
+                  src={`https://www.youtube.com/embed/${activeReelModal.videoId}?autoplay=1&playsinline=1&rel=0`}
+                  title={activeReelModal.title}
+                  className="w-full h-full border-0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                />
+              ) : (
+                <div className="w-full h-full flex flex-col items-center justify-center p-6 text-center text-stone-400">
+                  <p className="text-sm mb-4">Preview not available in embed mode.</p>
+                  <a
+                    href={activeReelModal.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-primary-green text-white text-xs font-bold rounded-full hover:opacity-90"
+                  >
+                    Open Link <ExternalLink className="w-3.5 h-3.5" />
+                  </a>
+                </div>
+              )}
+            </div>
+
+            {/* Modal Footer with Direct YouTube Link */}
+            <div className="p-3 bg-stone-900 flex items-center justify-between gap-2 border-t border-stone-800">
+              <span className="text-[11px] text-stone-400 font-medium truncate">
+                {activeReelModal.description || activeReelModal.title}
+              </span>
+              {activeReelModal.url && (
+                <a
+                  href={activeReelModal.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="shrink-0 inline-flex items-center gap-1 text-[11px] font-bold text-[#f4c430] hover:underline"
+                >
+                  Watch on YouTube
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* CarbonTrace SDK Wallet & Redemption Modal */}
       <CarbonTraceWalletModal

@@ -1,4 +1,7 @@
+'use client';
+
 import Image from "next/image";
+import TransparentImageCanvas from "./TransparentImageCanvas";
 import { Calendar, Users, MapPin, Sparkles, ShieldCheck } from "lucide-react";
 
 export default function HeroSection({ itinerary }) {
@@ -36,35 +39,14 @@ export default function HeroSection({ itinerary }) {
           />
         )}
 
-        {/* SVG Filter to make white background transparent without multiplying or black borders */}
-        <svg className="absolute w-0 h-0 overflow-hidden pointer-events-none" aria-hidden="true">
-          <defs>
-            <filter id="remove-white" x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
-              <feColorMatrix
-                type="matrix"
-                values="
-                  1 0 0 0 0
-                  0 1 0 0 0
-                  0 0 1 0 0
-                  -2.5 -2.5 -2.5 0 6.5
-                "
-                result="masked"
-              />
-              <feComposite in="masked" in2="SourceGraphic" operator="in" />
-            </filter>
-          </defs>
-        </svg>
-
         {/* Top Right: English Logo */}
         {englishLogoUrl && (
           <div className="absolute right-4 sm:right-8 top-3 sm:top-5 z-30 w-36 sm:w-44 lg:w-52 h-12 sm:h-15 lg:h-18 shrink-0 bg-transparent pointer-events-none overflow-hidden">
-            <Image
+            <TransparentImageCanvas
               src={englishLogoUrl}
               alt="Encamp Privé Logo"
               fill
-              className="object-contain object-right bg-transparent drop-shadow-md"
-              style={isCustomEnglishLogo ? { filter: "url(#remove-white)" } : undefined}
-              priority
+              className="object-contain object-right drop-shadow-md"
             />
           </div>
         )}
@@ -81,14 +63,11 @@ export default function HeroSection({ itinerary }) {
               <div className="relative w-full max-w-[300px] sm:max-w-[420px] md:max-w-[540px] lg:max-w-[660px] xl:max-w-[760px] h-28 sm:h-36 md:h-44 lg:h-52 xl:h-60 shrink-0 mx-auto pointer-events-none mb-1 sm:mb-2">
                 {/* Backdrop Overlay directly below/behind logo image */}
                 <div className="absolute -inset-x-8 sm:-inset-x-14 -inset-y-6 sm:-inset-y-10 bg-black/60 rounded-full blur-3xl -z-10 pointer-events-none" />
-                <Image
+                <TransparentImageCanvas
                   src={hindiLogoUrl}
                   alt={itinerary?.title ? `${itinerary.title} Logo` : "Logo"}
                   fill
-                  sizes="(max-width: 640px) 300px, (max-width: 768px) 420px, (max-width: 1024px) 540px, (max-width: 1280px) 660px, 760px"
-                  className="object-contain object-center bg-transparent"
-                  style={isCustomLogo ? { filter: "url(#remove-white)" } : undefined}
-                  priority
+                  className="object-contain object-center drop-shadow-md"
                 />
               </div>
             )}
