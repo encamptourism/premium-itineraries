@@ -4,6 +4,7 @@ import ItineraryHeroSection from "@/components/itinerary/ItineraryHeroSection";
 import ReferencePosterBody from "@/components/itinerary/ReferencePosterBody";
 import ReferencePosterFaqFooter from "@/components/itinerary/ReferencePosterFaqFooter";
 import MobileStickyCTA from "@/components/itinerary/MobileStickyCTA";
+import LuxuryExperiences from "@/components/itinerary/LuxuryExperiences";
 import BackgroundMusicPlayer from "@/components/itinerary/BackgroundMusicPlayer";
 // import DebugPreview from "@/components/itinerary/DebugPreview";
 
@@ -124,7 +125,10 @@ export default async function ItineraryPage({ params }) {
         {/* 2. Main 3-Column Poster Layout (Days, Overview/Route/Video, Inclusions/Exclusions) */}
         <ReferencePosterBody itinerary={itinerary} />
 
-        {/* 3. 5-Column FAQ Section & Dark Contact Footer */}
+        {/* 3. Luxury Experiences Section */}
+        <LuxuryExperiences experiences={itinerary?.luxuryExperiences} itinerary={itinerary} />
+
+        {/* 4. 5-Column FAQ Section & Dark Contact Footer */}
         <ReferencePosterFaqFooter itinerary={itinerary} />
 
         {/* 4. Mobile Sticky CTA Bottom Bar */}

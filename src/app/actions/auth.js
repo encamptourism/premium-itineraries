@@ -7,6 +7,7 @@ import {
   verifyOtp,
   logoutUser,
   updateProfileUser,
+  fetchUserProfile,
   setAuthCookies,
   getAuthCookies,
   clearAuthCookies,
@@ -33,13 +34,21 @@ export async function loginAction(data) {
   const result = await loginUser({ email, mobile, password });
   if (!result.success) return { success: false, error: result.error };
 
-  await setAuthCookies({
-    accessToken: result.accessToken || result.token,
-    refreshToken: result.refreshToken,
-    user: result.user,
-  });
+  const accessToken = result.accessToken || result.token || result.data?.accessToken || result.data?.token;
+  const refreshToken = result.refreshToken || result.data?.refreshToken || null;
+  const user = result.user || result.data?.user || result.customer || null;
 
-  return { success: true, message: result.message, user: result.user };
+  await setAuthCookies({ accessToken, refreshToken, user });
+
+  const rawName = String(user?.name || '').trim();
+  const rawEmail = String(user?.email || '').trim();
+  const rawMobile = String(user?.mobile || '').trim();
+
+  const needsName = !rawName || rawName === 'Customer' || rawName === rawMobile;
+  const needsEmail = !rawEmail || rawEmail.endsWith('@customer.encamp.com');
+  const needsMobile = !rawMobile;
+
+  return { success: true, message: result.message, user, needsName, needsEmail, needsMobile };
 }
 
 export async function registerAction(data) {
@@ -73,13 +82,12 @@ export async function registerAction(data) {
   const result = await registerUser({ name, email, mobile, password });
   if (!result.success) return { success: false, error: result.error };
 
-  await setAuthCookies({
-    accessToken: result.accessToken || result.token,
-    refreshToken: result.refreshToken,
-    user: result.user,
-  });
+  const accessToken = result.accessToken || result.token || result.data?.accessToken || result.data?.token;
+  const refreshToken = result.refreshToken || result.data?.refreshToken || null;
+  const user = result.user || result.data?.user || result.customer || null;
 
-  return { success: true, message: result.message, user: result.user };
+  await setAuthCookies({ accessToken, refreshToken, user });
+  return { success: true, message: result.message, user };
 }
 
 export async function sendOtpAction(identifier, channel = 'email') {
@@ -93,57 +101,108 @@ export async function verifyOtpAction(identifier, otp, redirectUrl = '/') {
   const result = await verifyOtp(identifier, otp);
   if (!result.success) return result;
 
-  const existingAuth = await getAuthCookies();
-  let sessionUser = result.user || result.data?.user || existingAuth.user || null;
-  const tokenToUse =
-    result.accessToken ||
-    result.token ||
-    result.data?.accessToken ||
-    result.data?.token ||
-    result.access_token ||
-    result.data?.access_token ||
-    existingAuth.accessToken ||
-    '';
+  const accessToken = result.accessToken || result.token || result.data?.accessToken || result.data?.token;
+  const refreshToken = result.refreshToken || result.data?.refreshToken || null;
+  const user = result.user || result.data?.user || result.customer || null;
 
-  if (!sessionUser) {
-    const isEmail = String(identifier).includes('@');
-    sessionUser = {
-      id: identifier,
-      _id: identifier,
-      name: isEmail ? identifier.split('@')[0] : identifier,
-      email: isEmail ? identifier : '',
-      mobile: isEmail ? '' : identifier,
-      role: 'customer',
-    };
-  }
+  await setAuthCookies({ accessToken, refreshToken, user });
 
-  await setAuthCookies({
-    accessToken: tokenToUse,
-    refreshToken: result.refreshToken || result.data?.refreshToken || existingAuth.refreshToken || '',
-    user: sessionUser,
-  });
+  const rawName = String(user?.name || '').trim();
+  const rawEmail = String(user?.email || '').trim();
+  const rawMobile = String(user?.mobile || '').trim();
 
-  const rawName = sessionUser?.name || '';
-  const isNameMissing = !rawName || rawName.trim() === '' || rawName === identifier || rawName === identifier.split('@')[0];
+  const needsName = !rawName || rawName === 'Customer' || rawName === rawMobile;
+  const needsEmail = !rawEmail || rawEmail.endsWith('@customer.encamp.com');
+  const needsMobile = !rawMobile;
 
-  return { success: true, needsName: isNameMissing, redirectUrl, user: sessionUser };
+  return { success: true, needsName, needsEmail, needsMobile, redirectUrl, user };
 }
 
 export async function updateNameAction(name) {
   if (!name || !name.trim()) return { success: false, error: 'Please enter your full name.' };
 
   const { accessToken, refreshToken, user } = await getAuthCookies();
-  if (!user) return { success: false, error: 'Session expired. Please log in again.' };
+  let updatedUser = user ? { ...user, name: name.trim() } : { name: name.trim() };
 
-  const updatedUser = { ...user, name: name.trim() };
+  if (accessToken) {
+    try {
+      const fd = new FormData();
+      fd.append('name', name.trim());
+      fd.append('email', user?.email || '');
+      fd.append('mobile', user?.mobile || '');
+      const apiRes = await updateProfileUser(fd, accessToken);
+      if (apiRes.success && apiRes.user) {
+        updatedUser = { ...updatedUser, ...apiRes.user };
+      }
+    } catch (e) {
+      console.error('[updateNameAction] API update warning:', e.message);
+    }
+  }
+
   await setAuthCookies({ accessToken, refreshToken, user: updatedUser });
+  return { success: true, user: updatedUser };
+}
 
+export async function updateEmailAction(email) {
+  if (!email || !email.trim() || !email.includes('@')) {
+    return { success: false, error: 'Please enter a valid email address.' };
+  }
+  if (email.trim().endsWith('@customer.encamp.com')) {
+    return { success: false, error: 'Please enter your real personal/work email address.' };
+  }
+
+  const { accessToken, refreshToken, user } = await getAuthCookies();
+  let updatedUser = user ? { ...user, email: email.trim() } : { email: email.trim() };
+
+  if (accessToken) {
+    try {
+      const fd = new FormData();
+      fd.append('name', user?.name || '');
+      fd.append('email', email.trim());
+      fd.append('mobile', user?.mobile || '');
+      const apiRes = await updateProfileUser(fd, accessToken);
+      if (apiRes.success && apiRes.user) {
+        updatedUser = { ...updatedUser, ...apiRes.user };
+      }
+    } catch (e) {
+      console.error('[updateEmailAction] API update warning:', e.message);
+    }
+  }
+
+  await setAuthCookies({ accessToken, refreshToken, user: updatedUser });
+  return { success: true, user: updatedUser };
+}
+
+export async function updateMobileAction(mobile) {
+  if (!mobile || !mobile.trim()) {
+    return { success: false, error: 'Please enter a valid mobile number.' };
+  }
+
+  const { accessToken, refreshToken, user } = await getAuthCookies();
+  let updatedUser = user ? { ...user, mobile: mobile.trim() } : { mobile: mobile.trim() };
+
+  if (accessToken) {
+    try {
+      const fd = new FormData();
+      fd.append('name', user?.name || '');
+      fd.append('email', user?.email || '');
+      fd.append('mobile', mobile.trim());
+      const apiRes = await updateProfileUser(fd, accessToken);
+      if (apiRes.success && apiRes.user) {
+        updatedUser = { ...updatedUser, ...apiRes.user };
+      }
+    } catch (e) {
+      console.error('[updateMobileAction] API update warning:', e.message);
+    }
+  }
+
+  await setAuthCookies({ accessToken, refreshToken, user: updatedUser });
   return { success: true, user: updatedUser };
 }
 
 export async function updateProfileAction(formDataInput) {
   const { accessToken, refreshToken, user: currentUser } = await getAuthCookies();
-  if (!accessToken && !currentUser) {
+  if (!accessToken) {
     return { success: false, error: 'Session expired. Please log in again.' };
   }
 
@@ -161,37 +220,22 @@ export async function updateProfileAction(formDataInput) {
     formData.append('mobile', mobileVal !== null ? String(mobileVal).trim() : '');
     formData.append('profileBio', bioVal !== null ? String(bioVal) : '');
 
-    if (avatarVal && typeof avatarVal === 'object' && typeof avatarVal.arrayBuffer === 'function' && avatarVal.size > 0) {
-      const filename = avatarVal.name || 'avatar.jpg';
-      const type = avatarVal.type || 'image/jpeg';
-      const arrayBuffer = await avatarVal.arrayBuffer();
-      const fileObj = new File([arrayBuffer], filename, { type });
-      formData.append('avatar', fileObj);
-    } else {
-      formData.append('avatar', '');
+    // Forward the avatar File/Blob directly — no reconstruction needed
+    if (avatarVal && typeof avatarVal === 'object' && avatarVal.size > 0) {
+      formData.append('avatar', avatarVal, avatarVal.name || 'avatar.jpg');
     }
+    // If no avatar file selected, simply don't append the field — avoids clearing existing avatar
   } else if (typeof formDataInput === 'object' && formDataInput !== null) {
     formData.append('name', formDataInput.name !== undefined ? String(formDataInput.name) : '');
     formData.append('email', formDataInput.email !== undefined ? String(formDataInput.email) : '');
     formData.append('mobile', formDataInput.mobile !== undefined ? String(formDataInput.mobile) : '');
     formData.append('profileBio', formDataInput.profileBio !== undefined ? String(formDataInput.profileBio) : '');
 
-    if (formDataInput.avatar && typeof formDataInput.avatar === 'object' && typeof formDataInput.avatar.arrayBuffer === 'function' && formDataInput.avatar.size > 0) {
-      const filename = formDataInput.avatar.name || 'avatar.jpg';
-      const type = formDataInput.avatar.type || 'image/jpeg';
-      const arrayBuffer = await formDataInput.avatar.arrayBuffer();
-      const fileObj = new File([arrayBuffer], filename, { type });
-      formData.append('avatar', fileObj);
-    } else {
-      formData.append('avatar', '');
+    if (formDataInput.avatar && typeof formDataInput.avatar === 'object' && formDataInput.avatar.size > 0) {
+      formData.append('avatar', formDataInput.avatar, formDataInput.avatar.name || 'avatar.jpg');
     }
   } else {
     return { success: false, error: 'Invalid form data.' };
-  }
-
-  console.log('[SERVER ACTION] Profile Update FormData fields:');
-  for (const [key, val] of formData.entries()) {
-    console.log(`  ${key}:`, typeof val === 'object' && val !== null ? `{ File: name="${val.name}", type="${val.type}", size=${val.size} }` : val);
   }
 
   const result = await updateProfileUser(formData, accessToken);
@@ -200,25 +244,15 @@ export async function updateProfileAction(formDataInput) {
   }
 
   const backendUser = result.user || {};
-  const newAvatar =
-    backendUser.avatar ||
-    backendUser.photo ||
-    backendUser.photoUrl ||
-    backendUser.avatarUrl ||
-    backendUser.profileImage ||
-    backendUser.profile_image ||
-    backendUser.image ||
-    currentUser?.avatar ||
-    currentUser?.photo;
+  const avatarUrl =
+    (typeof backendUser.avatar === 'string' ? backendUser.avatar : backendUser.avatar?.secure_url) ||
+    (typeof backendUser.photo === 'string' ? backendUser.photo : backendUser.photo?.secure_url) ||
+    (typeof backendUser.photoUrl === 'string' ? backendUser.photoUrl : null);
 
   const updatedUser = {
     ...(currentUser || {}),
     ...backendUser,
-    name: formData.get('name') !== null && String(formData.get('name')).trim() !== '' ? String(formData.get('name')) : (backendUser.name || currentUser?.name),
-    email: formData.get('email') !== null && String(formData.get('email')).trim() !== '' ? String(formData.get('email')) : (backendUser.email || currentUser?.email),
-    mobile: formData.get('mobile') !== null && String(formData.get('mobile')).trim() !== '' ? String(formData.get('mobile')) : (backendUser.mobile || currentUser?.mobile),
-    profileBio: formData.get('profileBio') !== null ? String(formData.get('profileBio')) : (backendUser.profileBio || currentUser?.profileBio),
-    avatar: newAvatar,
+    ...(avatarUrl ? { avatar: avatarUrl } : {}),
   };
 
   await setAuthCookies({
@@ -231,13 +265,45 @@ export async function updateProfileAction(formDataInput) {
 }
 
 export async function logoutAction() {
-  try {
-    const { accessToken } = await getAuthCookies();
-    if (accessToken) await logoutUser(accessToken);
-  } catch (err) {
-    console.error(err);
-  } finally {
-    await clearAuthCookies();
+  const { accessToken } = await getAuthCookies();
+  if (accessToken) {
+    await logoutUser(accessToken);
   }
+  await clearAuthCookies();
   return { success: true };
+}
+
+export async function getMeAction() {
+  const { accessToken, refreshToken, user } = await getAuthCookies();
+
+  const token = accessToken || refreshToken;
+  if (!token) {
+    return { success: false, error: 'No active authentication session' };
+  }
+
+  // If user object is cached in cookie, use it; otherwise fetch live profile from backend API
+  let activeUser = user;
+  if (!activeUser && accessToken) {
+    const liveProfile = await fetchUserProfile(accessToken);
+    if (liveProfile.success && liveProfile.user) {
+      activeUser = liveProfile.user;
+      await setAuthCookies({ accessToken, refreshToken, user: activeUser });
+    }
+  }
+
+  return {
+    success: true,
+    user: activeUser || null,
+    carbontraceToken: activeUser?.ptoken || null,
+    ctCoins: activeUser?.carbontraceSession
+      ? {
+          balance: activeUser.carbontraceSession.ctcoinsBalance ?? 0,
+          totalOffset: activeUser.carbontraceSession.totalCarbonOffset ?? 0,
+          isConnected: Boolean(activeUser.carbontraceSession.isConnected),
+        }
+      : null,
+    bookings: activeUser?.bookings || [],
+    preferences: activeUser?.preferences || null,
+    documents: activeUser?.documents || [],
+  };
 }

@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 400" preserveAspectRatio="none">
+  <defs>
+    <linearGradient id="actGoldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFEAA8"/>
+      <stop offset="20%" stop-color="#E5B942"/>
+      <stop offset="45%" stop-color="#FDF1BF"/>
+      <stop offset="70%" stop-color="#C59328"/>
+      <stop offset="90%" stop-color="#E7BA4B"/>
+      <stop offset="100%" stop-color="#A57319"/>
+    </linearGradient>
+
+    <linearGradient id="actGoldInner" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#F9E2A0" stop-opacity="0.9"/>
+      <stop offset="35%" stop-color="#E0B13D" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#C4922A" stop-opacity="0.85"/>
+    </linearGradient>
+
+    <radialGradient id="actEmeraldBg" cx="50%" cy="30%" r="75%">
+      <stop offset="0%" stop-color="#0f4836"/>
+      <stop offset="45%" stop-color="#083326"/>
+      <stop offset="85%" stop-color="#052219"/>
+      <stop offset="100%" stop-color="#03160f"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Deep Emerald Base Fill with Royal Top Arch Crest -->
+  <path
+    d="M 24,14 L 105,14 Q 122,14 130,8 Q 135,4 140,2 Q 145,4 150,8 Q 158,14 175,14 L 256,14 Q 274,14 274,32 L 274,372 Q 274,390 256,390 L 24,390 Q 6,390 6,372 L 6,32 Q 6,14 24,14 Z"
+    fill="url(#actEmeraldBg)"
+  />
+
+  <!-- Outer Metallic Gold Border -->
+  <path
+    d="M 24,14 L 105,14 Q 122,14 130,8 Q 135,4 140,2 Q 145,4 150,8 Q 158,14 175,14 L 256,14 Q 274,14 274,32 L 274,372 Q 274,390 256,390 L 24,390 Q 6,390 6,372 L 6,32 Q 6,14 24,14 Z"
+    fill="none"
+    stroke="url(#actGoldGrad)"
+    stroke-width="1.8"
+  />
+
+  <!-- Top Center Golden Finial Crest -->
+  <polygon points="140,0 144,4 140,8 136,4" fill="url(#actGoldGrad)"/>
+
+  <!-- Inner Inset Parallel Gold Border with Notched Corners -->
+  <path
+    d="M 28,21 L 107,21 Q 123,21 131,15 Q 136,11 140,9 Q 144,11 149,15 Q 157,21 173,21 L 252,21 A 5,5 0 0 1 257,26 L 257,30 A 4,4 0 0 0 261,34 L 265,34 A 5,5 0 0 1 270,39 L 270,367 A 5,5 0 0 1 265,372 L 261,372 A 4,4 0 0 0 257,376 L 257,380 A 5,5 0 0 1 252,385 L 28,385 A 5,5 0 0 1 23,380 L 23,376 A 4,4 0 0 0 19,372 L 15,372 A 5,5 0 0 1 10,367 L 10,39 A 5,5 0 0 1 15,34 L 19,34 A 4,4 0 0 0 23,30 L 23,26 A 5,5 0 0 1 28,21 Z"
+    fill="none"
+    stroke="url(#actGoldInner)"
+    stroke-width="0.85"
+  />
+
+  <!-- Corner Flourish Accents in Gold -->
+  <g fill="none" stroke="url(#actGoldGrad)" stroke-width="0.9" stroke-linecap="round">
+    <path d="M 16,27 Q 21,27 21,22"/>
+    <path d="M 264,27 Q 259,27 259,22"/>
+    <path d="M 16,379 Q 21,379 21,384"/>
+    <path d="M 264,379 Q 259,379 259,384"/>
+  </g>
+
+  <!-- Corner Accent Dots -->
+  <g fill="url(#actGoldGrad)">
+    <circle cx="21" cy="27" r="1.2"/>
+    <circle cx="259" cy="27" r="1.2"/>
+    <circle cx="21" cy="379" r="1.2"/>
+    <circle cx="259" cy="379" r="1.2"/>
+  </g>
+</svg>

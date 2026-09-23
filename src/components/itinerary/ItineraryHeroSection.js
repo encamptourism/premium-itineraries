@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Image from "next/image";
+import TransparentImageCanvas from "./TransparentImageCanvas";
 import {
   Compass,
   Home,
@@ -103,40 +104,20 @@ export default function ItineraryHeroSection({ itinerary }) {
               }}
               className="object-cover object-center transform scale-102 transition-transform duration-1000"
             />
-            {/* Rich Scrim Overlays */}
-            <div className="absolute inset-0 bg-gradient-to-b from-black/45 via-black/20 to-black/60" />
+            {/* Light Overlay */}
+            <div className="absolute inset-0 bg-black/10" />
           </div>
         )}
 
-        {/* SVG Filter to make white background transparent without multiplying or black borders */}
-        <svg className="absolute w-0 h-0 overflow-hidden pointer-events-none" aria-hidden="true">
-          <defs>
-            <filter id="remove-white" x="0%" y="0%" width="100%" height="100%" colorInterpolationFilters="sRGB">
-              <feColorMatrix
-                type="matrix"
-                values="
-                  1 0 0 0 0
-                  0 1 0 0 0
-                  0 0 1 0 0
-                  -2.5 -2.5 -2.5 0 6.5
-                "
-                result="masked"
-              />
-              <feComposite in="masked" in2="SourceGraphic" operator="in" />
-            </filter>
-          </defs>
-        </svg>
 
         {/* Top Right: English Logo */}
         {englishLogoUrl && (
           <div className="absolute right-3 sm:right-6 lg:right-8 top-3 sm:top-5 z-30 w-36 sm:w-44 lg:w-52 h-12 sm:h-15 lg:h-18 shrink-0 bg-transparent pointer-events-none overflow-hidden">
-            <Image
+            <TransparentImageCanvas
               src={englishLogoUrl}
               alt="Encamp Privé Logo"
               fill
-              className="object-contain object-right bg-transparent drop-shadow-md"
-              style={isCustomEnglishLogo ? { filter: "url(#remove-white)" } : undefined}
-              priority
+              className="object-contain object-right drop-shadow-md"
             />
           </div>
         )}
@@ -146,17 +127,12 @@ export default function ItineraryHeroSection({ itinerary }) {
           <div className="w-full flex flex-col items-center justify-center text-center px-2 sm:px-4 text-white my-auto z-10 space-y-2 sm:space-y-3">
             {/* Logo on Top of Subtitle - Nudged slightly left & top */}
             {hindiLogoUrl && (
-              <div className="relative w-full max-w-[440px] sm:max-w-[420px] md:max-w-[540px] lg:max-w-[660px] xl:max-w-[760px] h-48 sm:h-36 md:h-44 lg:h-52 xl:h-60 shrink-0 mx-auto pointer-events-none mb-1 sm:mb-2 -translate-x-0 sm:-translate-x-16 md:-translate-x-24 lg:-translate-x-36 -translate-y-0 sm:-translate-y-3 md:-translate-y-4">
-                {/* Backdrop Overlay directly below/behind logo image */}
-                <div className="absolute -inset-x-8 sm:-inset-x-14 -inset-y-6 sm:-inset-y-10 bg-black/60 rounded-full blur-3xl -z-10 pointer-events-none" />
-                <Image
+              <div className="relative w-full max-w-[520px] sm:max-w-[520px] md:max-w-[660px] lg:max-w-[800px] xl:max-w-[920px] h-56 sm:h-44 md:h-56 lg:h-64 xl:h-72 shrink-0 mx-auto pointer-events-none mb-1 sm:mb-2 -translate-x-0 sm:-translate-x-16 md:-translate-x-24 lg:-translate-x-36 -translate-y-0 sm:-translate-y-3 md:-translate-y-4">
+                <TransparentImageCanvas
                   src={hindiLogoUrl}
                   alt={itinerary?.title ? `${itinerary.title} Logo` : "Logo"}
                   fill
-                  sizes="(max-width: 640px) 300px, (max-width: 768px) 420px, (max-width: 1024px) 540px, (max-width: 1280px) 660px, 760px"
-                  className="object-contain object-center bg-transparent"
-                  style={isCustomLogo ? { filter: "url(#remove-white)" } : undefined}
-                  priority
+                  className="object-contain object-center drop-shadow-md"
                 />
               </div>
             )}
@@ -178,15 +154,15 @@ export default function ItineraryHeroSection({ itinerary }) {
             {durationText && (
               <div className="flex items-center justify-center gap-0 my-1.5 sm:my-2 w-full">
                 {/* Left Attached Gold Accent Line */}
-                <span className="h-[1.5px] w-6 sm:w-14 md:w-20 lg:w-24 bg-[#d4a853] opacity-85" />
+                <span className="h-[3px] w-12 sm:w-24 md:w-36 lg:w-48 bg-[#64161B] opacity-85" />
 
                 {/* Double-Pointed Gold Ribbon Banner */}
-                <div className="relative px-3 sm:px-7 py-0.5 sm:py-1 bg-gradient-to-r from-[#c68e22] via-[#e5aa2d] to-[#c68e22] text-[#fffdf5] font-serif text-[9px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.18em] shadow-md [clip-path:polygon(9px_0,calc(100%-9px)_0,100%_50%,calc(100%-9px)_100%,9px_100%,0_50%)] flex items-center justify-center shrink-0">
+                <div className="relative px-3 sm:px-7 py-0.5 sm:py-1 bg-[#64161B] text-[#fffdf5] font-serif text-[9px] sm:text-xs md:text-sm font-bold uppercase tracking-[0.18em] shadow-md [clip-path:polygon(9px_0,calc(100%-9px)_0,100%_50%,calc(100%-9px)_100%,9px_100%,0_50%)] flex items-center justify-center shrink-0">
                   {durationText}
                 </div>
 
                 {/* Right Attached Gold Accent Line */}
-                <span className="h-[1.5px] w-6 sm:w-14 md:w-20 lg:w-24 bg-[#d4a853] opacity-85" />
+                <span className="h-[3px] w-12 sm:w-24 md:w-36 lg:w-48 bg-[#64161B] opacity-85" />
               </div>
             )}
           </div>
@@ -194,7 +170,7 @@ export default function ItineraryHeroSection({ itinerary }) {
 
         {/* 5-Pillars Horizontal Strip EXACTLY ANCHORED AT BOTTOM EDGE (50% INSIDE / 50% OUTSIDE) */}
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 lg:left-4 xl:left-8 lg:translate-x-0 transform translate-y-1/2 max-w-xl lg:max-w-2xl w-[94%] sm:w-auto text-primary-green py-2 sm:py-3.5 px-4 sm:px-8 z-30">
-          {/* Inline Ultra-Luxurious 24K Gold Royal Crest SVG Frame */}
+          {/* Inline Premium Royal Gold Frame */}
           <svg
             className="absolute inset-0 w-full h-full -z-10 pointer-events-none filter drop-shadow-xl"
             viewBox="0 0 1000 140"
@@ -203,115 +179,84 @@ export default function ItineraryHeroSection({ itinerary }) {
             xmlns="http://www.w3.org/2000/svg"
           >
             <defs>
-              {/* 24K Glossy Gold Foil Gradient */}
-              <linearGradient id="royal24KGold" x1="0%" y1="0%" x2="100%" y2="100%">
-                <stop offset="0%" stopColor="#4A3106"/>
-                <stop offset="12%" stopColor="#A87B1D"/>
-                <stop offset="28%" stopColor="#FCEE98"/>
-                <stop offset="42%" stopColor="#D9A632"/>
-                <stop offset="58%" stopColor="#FFFADB"/>
-                <stop offset="72%" stopColor="#C28F20"/>
-                <stop offset="88%" stopColor="#E0B141"/>
-                <stop offset="100%" stopColor="#573807"/>
+              {/* Premium Polished Gold Gradient */}
+              <linearGradient id="premiumGold" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#8B6914"/>
+                <stop offset="18%" stopColor="#C9A13E"/>
+                <stop offset="35%" stopColor="#E8D07A"/>
+                <stop offset="50%" stopColor="#F5E6A3"/>
+                <stop offset="65%" stopColor="#E8D07A"/>
+                <stop offset="82%" stopColor="#C9A13E"/>
+                <stop offset="100%" stopColor="#8B6914"/>
               </linearGradient>
 
-              {/* Silk Champagne Gold Gradient */}
-              <linearGradient id="silkChampagne" x1="0%" y1="0%" x2="100%" y2="0%">
-                <stop offset="0%" stopColor="#8C661D"/>
-                <stop offset="25%" stopColor="#E2C26E"/>
-                <stop offset="50%" stopColor="#FFFFFF"/>
-                <stop offset="75%" stopColor="#D9B24D"/>
-                <stop offset="100%" stopColor="#7A5612"/>
+              {/* Subtle Inner Gold Gradient */}
+              <linearGradient id="innerGold" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stopColor="#A0842A" stopOpacity="0.5"/>
+                <stop offset="50%" stopColor="#D4B65C" stopOpacity="0.6"/>
+                <stop offset="100%" stopColor="#A0842A" stopOpacity="0.5"/>
               </linearGradient>
 
-              {/* Luxury Shadow */}
-              <filter id="royalShadow" x="-10%" y="-10%" width="120%" height="120%">
-                <feDropShadow dx="0" dy="5" stdDeviation="8" floodColor="#382405" floodOpacity="0.18"/>
+              {/* Elegant Soft Shadow */}
+              <filter id="frameShadow" x="-3%" y="-8%" width="106%" height="116%">
+                <feDropShadow dx="0" dy="3" stdDeviation="5" floodColor="#2C1A00" floodOpacity="0.12"/>
               </filter>
             </defs>
 
-            {/* Base Solid White Card Fill with Luxury Curved Cutout Path */}
+            {/* White Card Base — Royal Curved Silhouette */}
             <path
-              d="M 50,8 
-                 L 460,8 A 20,20 0 0 0 480,4 L 500,0 L 520,4 A 20,20 0 0 0 540,8 
-                 L 950,8 
-                 A 16,16 0 0 1 966,14 L 980,28 A 16,16 0 0 1 992,44 
-                 L 992,96 
-                 A 16,16 0 0 1 980,112 L 966,126 A 16,16 0 0 1 950,132 
-                 L 540,132 A 20,20 0 0 0 520,136 L 500,140 L 480,136 A 20,20 0 0 0 460,132 
-                 L 50,132 
-                 A 16,16 0 0 1 34,126 L 20,112 A 16,16 0 0 1 8,96 
-                 L 8,44 
-                 A 16,16 0 0 1 20,28 L 34,14 A 16,16 0 0 1 50,8 Z"
-              fill="#ffffff"
-              filter="url(#royalShadow)"
-            />
+              d="M 30,10
+                 L 435,10 Q 465,10 482,4 L 500,0 L 518,4 Q 535,10 565,10
+                 L 970,10 Q 992,10 992,32
+                 L 992,108 Q 992,130 970,130
+                 L 565,130 Q 535,130 518,136 L 500,140 L 482,136 Q 465,130 435,130
+                 L 30,130 Q 8,130 8,108
+                 L 8,32 Q 8,10 30,10 Z"
+              fill="#ffffff" filter="url(#frameShadow)"/>
 
-            {/* Main Outer 24K Gold Border Contour */}
+            {/* Outer Gold Border */}
             <path
-              d="M 50,8 
-                 L 460,8 A 20,20 0 0 0 480,4 L 500,0 L 520,4 A 20,20 0 0 0 540,8 
-                 L 950,8 
-                 A 16,16 0 0 1 966,14 L 980,28 A 16,16 0 0 1 992,44 
-                 L 992,96 
-                 A 16,16 0 0 1 980,112 L 966,126 A 16,16 0 0 1 950,132 
-                 L 540,132 A 20,20 0 0 0 520,136 L 500,140 L 480,136 A 20,20 0 0 0 460,132 
-                 L 50,132 
-                 A 16,16 0 0 1 34,126 L 20,112 A 16,16 0 0 1 8,96 
-                 L 8,44 
-                 A 16,16 0 0 1 20,28 L 34,14 A 16,16 0 0 1 50,8 Z"
-              fill="none"
-              stroke="url(#royal24KGold)"
-              strokeWidth="4"
-              vectorEffect="non-scaling-stroke"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+              d="M 30,10
+                 L 435,10 Q 465,10 482,4 L 500,0 L 518,4 Q 535,10 565,10
+                 L 970,10 Q 992,10 992,32
+                 L 992,108 Q 992,130 970,130
+                 L 565,130 Q 535,130 518,136 L 500,140 L 482,136 Q 465,130 435,130
+                 L 30,130 Q 8,130 8,108
+                 L 8,32 Q 8,10 30,10 Z"
+              fill="none" stroke="url(#premiumGold)" strokeWidth="2.5"/>
 
-            {/* Inner Parallel Fine Champagne Gold Line (Crisp & Refined) */}
+            {/* Inner Inset Gold Border (follows royal curve) */}
             <path
-              d="M 54,14 
-                 L 458,14 A 16,16 0 0 0 478,10 L 500,6 L 522,10 A 16,16 0 0 0 542,14 
-                 L 946,14 
-                 A 12,12 0 0 1 958,19 L 971,32 A 12,12 0 0 1 982,44 
-                 L 982,96 
-                 A 12,12 0 0 1 971,108 L 958,121 A 12,12 0 0 1 946,126 
-                 L 542,126 A 16,16 0 0 0 522,130 L 500,134 L 478,130 A 16,16 0 0 0 458,126 
-                 L 54,126 
-                 A 12,12 0 0 1 42,121 L 29,108 A 12,12 0 0 1 18,96 
-                 L 18,44 
-                 A 12,12 0 0 1 29,32 L 42,19 A 12,12 0 0 1 54,14 Z"
-              fill="none"
-              stroke="url(#silkChampagne)"
-              strokeWidth="1.2"
-              vectorEffect="non-scaling-stroke"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+              d="M 36,18
+                 L 433,18 Q 460,18 476,12 L 500,7 L 524,12 Q 540,18 567,18
+                 L 964,18 Q 984,18 984,36
+                 L 984,104 Q 984,122 964,122
+                 L 567,122 Q 540,122 524,128 L 500,133 L 476,128 Q 460,122 433,122
+                 L 36,122 Q 16,122 16,104
+                 L 16,36 Q 16,18 36,18 Z"
+              fill="none" stroke="url(#innerGold)" strokeWidth="0.8"/>
 
-            {/* Corner Gold Pin-Dot Flourishes */}
-            <g fill="url(#royal24KGold)">
-              <circle cx="38" cy="28" r="1.5" />
-              <circle cx="962" cy="28" r="1.5" />
-              <circle cx="962" cy="112" r="1.5" />
-              <circle cx="38" cy="112" r="1.5" />
+            {/* Corner Flourishes — Elegant Curved Scrolls */}
+            <g fill="none" stroke="url(#premiumGold)" strokeWidth="1.4" strokeLinecap="round">
+              <path d="M 22,38 Q 22,20 40,20"/>
+              <path d="M 978,38 Q 978,20 960,20"/>
+              <path d="M 978,102 Q 978,120 960,120"/>
+              <path d="M 22,102 Q 22,120 40,120"/>
             </g>
 
-            {/* Top Center Royal Crown / Diamond Crest */}
-            <g fill="url(#royal24KGold)">
-              {/* Center Main Diamond */}
-              <polygon points="500,-2 506,4 500,10 494,4" />
-              {/* Flanking Side Beads */}
-              <circle cx="482" cy="5" r="2" />
-              <circle cx="518" cy="5" r="2" />
+            {/* Corner Accent Dots */}
+            <g fill="url(#premiumGold)">
+              <circle cx="28" cy="26" r="1.2"/>
+              <circle cx="972" cy="26" r="1.2"/>
+              <circle cx="972" cy="114" r="1.2"/>
+              <circle cx="28" cy="114" r="1.2"/>
             </g>
 
-            {/* Bottom Center Matching Crest */}
-            <g fill="url(#royal24KGold)">
-              <polygon points="500,130 506,136 500,142 494,136" />
-              <circle cx="482" cy="135" r="2" />
-              <circle cx="518" cy="135" r="2" />
-            </g>
+            {/* Top Center Diamond Crest */}
+            <polygon points="500,0 506,6 500,12 494,6" fill="url(#premiumGold)"/>
+
+            {/* Bottom Center Diamond Crest */}
+            <polygon points="500,128 506,134 500,140 494,134" fill="url(#premiumGold)"/>
           </svg>
           <div className="grid grid-cols-5 gap-0.5 sm:gap-1 divide-x divide-[#d5b45a]/30">
 

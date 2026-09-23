@@ -4,6 +4,7 @@ import Navbar from "@/components/itinerary/Navbar";
 import Footer from "@/components/common/Footer";
 import AuthProvider from "@/context/AuthProvider";
 import { CarbonTraceProvider } from "@/context/CarbonTraceContext";
+import ProfileCompletionModal from "@/components/common/ProfileCompletionModal";
 import { getAllPremiumItineraries } from "@/lib/api";
 import "./globals.css";
 
@@ -85,6 +86,7 @@ export default async function RootLayout({ children }) {
         <AuthProvider>
           <CarbonTraceProvider>
             {!isAuthPage && <Navbar />}
+            <ProfileCompletionModal />
             <main className="flex-1 min-h-screen">{children}</main>
             {!isAuthPage && <Footer itineraries={allItineraries} />}
           </CarbonTraceProvider>

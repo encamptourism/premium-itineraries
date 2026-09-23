@@ -1,124 +1,81 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 140" width="1000" height="140">
   <defs>
-    <!-- 24K Glossy Gold Foil Gradient -->
-    <linearGradient id="royal24KGold" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" stop-color="#4A3106"/>
-      <stop offset="12%" stop-color="#A87B1D"/>
-      <stop offset="28%" stop-color="#FCEE98"/>
-      <stop offset="42%" stop-color="#D9A632"/>
-      <stop offset="58%" stop-color="#FFFADB"/>
-      <stop offset="72%" stop-color="#C28F20"/>
-      <stop offset="88%" stop-color="#E0B141"/>
-      <stop offset="100%" stop-color="#573807"/>
+    <!-- Premium Polished Gold Gradient -->
+    <linearGradient id="premiumGold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#8B6914"/>
+      <stop offset="18%" stop-color="#C9A13E"/>
+      <stop offset="35%" stop-color="#E8D07A"/>
+      <stop offset="50%" stop-color="#F5E6A3"/>
+      <stop offset="65%" stop-color="#E8D07A"/>
+      <stop offset="82%" stop-color="#C9A13E"/>
+      <stop offset="100%" stop-color="#8B6914"/>
     </linearGradient>
 
-    <!-- Silk Champagne Gold Gradient -->
-    <linearGradient id="silkChampagne" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" stop-color="#8C661D"/>
-      <stop offset="25%" stop-color="#E2C26E"/>
-      <stop offset="50%" stop-color="#FFFFFF"/>
-      <stop offset="75%" stop-color="#D9B24D"/>
-      <stop offset="100%" stop-color="#7A5612"/>
+    <!-- Subtle Inner Gold Gradient -->
+    <linearGradient id="innerGold" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#A0842A" stop-opacity="0.45"/>
+      <stop offset="50%" stop-color="#D4B65C" stop-opacity="0.55"/>
+      <stop offset="100%" stop-color="#A0842A" stop-opacity="0.45"/>
     </linearGradient>
 
-    <!-- Luxury Shadow -->
-    <filter id="royalShadow" x="-10%" y="-10%" width="120%" height="120%">
-      <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#382405" flood-opacity="0.18"/>
+    <!-- Elegant Soft Shadow -->
+    <filter id="frameShadow" x="-3%" y="-8%" width="106%" height="116%">
+      <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#2C1A00" flood-opacity="0.12"/>
     </filter>
   </defs>
 
-  <!-- Base Solid White Card Fill with Luxury Curved Cutout Path -->
+  <!-- White Card Base — Royal Curved Silhouette -->
   <path
-    d="M 50,8 
-       L 460,8 A 20,20 0 0 0 480,4 L 500,0 L 520,4 A 20,20 0 0 0 540,8 
-       L 950,8 
-       A 16,16 0 0 1 966,14 L 980,28 A 16,16 0 0 1 992,44 
-       L 992,96 
-       A 16,16 0 0 1 980,112 L 966,126 A 16,16 0 0 1 950,132 
-       L 540,132 A 20,20 0 0 0 520,136 L 500,140 L 480,136 A 20,20 0 0 0 460,132 
-       L 50,132 
-       A 16,16 0 0 1 34,126 L 20,112 A 16,16 0 0 1 8,96 
-       L 8,44 
-       A 16,16 0 0 1 20,28 L 34,14 A 16,16 0 0 1 50,8 Z"
-    fill="#ffffff"
-    filter="url(#royalShadow)"
-  />
+    d="M 30,10
+       L 435,10 Q 465,10 482,4 L 500,0 L 518,4 Q 535,10 565,10
+       L 970,10 Q 992,10 992,32
+       L 992,108 Q 992,130 970,130
+       L 565,130 Q 535,130 518,136 L 500,140 L 482,136 Q 465,130 435,130
+       L 30,130 Q 8,130 8,108
+       L 8,32 Q 8,10 30,10 Z"
+    fill="#ffffff" filter="url(#frameShadow)"/>
 
-  <!-- Main Outer 24K Gold Border Contour -->
+  <!-- Outer Gold Border -->
   <path
-    d="M 50,8 
-       L 460,8 A 20,20 0 0 0 480,4 L 500,0 L 520,4 A 20,20 0 0 0 540,8 
-       L 950,8 
-       A 16,16 0 0 1 966,14 L 980,28 A 16,16 0 0 1 992,44 
-       L 992,96 
-       A 16,16 0 0 1 980,112 L 966,126 A 16,16 0 0 1 950,132 
-       L 540,132 A 20,20 0 0 0 520,136 L 500,140 L 480,136 A 20,20 0 0 0 460,132 
-       L 50,132 
-       A 16,16 0 0 1 34,126 L 20,112 A 16,16 0 0 1 8,96 
-       L 8,44 
-       A 16,16 0 0 1 20,28 L 34,14 A 16,16 0 0 1 50,8 Z"
-    fill="none"
-    stroke="url(#royal24KGold)"
-    stroke-width="4"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  />
+    d="M 30,10
+       L 435,10 Q 465,10 482,4 L 500,0 L 518,4 Q 535,10 565,10
+       L 970,10 Q 992,10 992,32
+       L 992,108 Q 992,130 970,130
+       L 565,130 Q 535,130 518,136 L 500,140 L 482,136 Q 465,130 435,130
+       L 30,130 Q 8,130 8,108
+       L 8,32 Q 8,10 30,10 Z"
+    fill="none" stroke="url(#premiumGold)" stroke-width="2.5"/>
 
-  <!-- Middle Silk Champagne Inner Border -->
+  <!-- Inner Inset Gold Border (follows same royal curve) -->
   <path
-    d="M 54,14 
-       L 458,14 A 16,16 0 0 0 478,10 L 500,6 L 522,10 A 16,16 0 0 0 542,14 
-       L 946,14 
-       A 12,12 0 0 1 958,19 L 971,32 A 12,12 0 0 1 982,44 
-       L 982,96 
-       A 12,12 0 0 1 971,108 L 958,121 A 12,12 0 0 1 946,126 
-       L 542,126 A 16,16 0 0 0 522,130 L 500,134 L 478,130 A 16,16 0 0 0 458,126 
-       L 54,126 
-       A 12,12 0 0 1 42,121 L 29,108 A 12,12 0 0 1 18,96 
-       L 18,44 
-       A 12,12 0 0 1 29,32 L 42,19 A 12,12 0 0 1 54,14 Z"
-    fill="none"
-    stroke="url(#silkChampagne)"
-    stroke-width="1.5"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  />
+    d="M 36,18
+       L 433,18 Q 460,18 476,12 L 500,7 L 524,12 Q 540,18 567,18
+       L 964,18 Q 984,18 984,36
+       L 984,104 Q 984,122 964,122
+       L 567,122 Q 540,122 524,128 L 500,133 L 476,128 Q 460,122 433,122
+       L 36,122 Q 16,122 16,104
+       L 16,36 Q 16,18 36,18 Z"
+    fill="none" stroke="url(#innerGold)" stroke-width="0.8"/>
 
-  <!-- Fine Inner Accent Filament Line -->
-  <rect x="24" y="20" width="952" height="100" rx="8" fill="none" stroke="url(#royal24KGold)" stroke-width="0.8" opacity="0.65" />
-
-  <!-- Royal Corner Filigree Brackets -->
-  <g fill="none" stroke="url(#royal24KGold)" stroke-width="1.2">
-    <!-- Top-Left Corner Filigree -->
-    <path d="M 28,32 L 42,32 A 6,6 0 0 0 48,26 L 48,18" />
-    <circle cx="35" cy="25" r="1.5" fill="url(#royal24KGold)" />
-    
-    <!-- Top-Right Corner Filigree -->
-    <path d="M 972,32 L 958,32 A 6,6 0 0 1 952,26 L 952,18" />
-    <circle cx="965" cy="25" r="1.5" fill="url(#royal24KGold)" />
-
-    <!-- Bottom-Right Corner Filigree -->
-    <path d="M 972,108 L 958,108 A 6,6 0 0 0 952,114 L 952,122" />
-    <circle cx="965" cy="115" r="1.5" fill="url(#royal24KGold)" />
-
-    <!-- Bottom-Left Corner Filigree -->
-    <path d="M 28,108 L 42,108 A 6,6 0 0 1 48,114 L 48,122" />
-    <circle cx="35" cy="115" r="1.5" fill="url(#royal24KGold)" />
+  <!-- Corner Flourishes — Elegant Curved Scrolls -->
+  <g fill="none" stroke="url(#premiumGold)" stroke-width="1.4" stroke-linecap="round">
+    <path d="M 22,38 Q 22,20 40,20"/>
+    <path d="M 978,38 Q 978,20 960,20"/>
+    <path d="M 978,102 Q 978,120 960,120"/>
+    <path d="M 22,102 Q 22,120 40,120"/>
   </g>
 
-  <!-- Top Center Royal Crown / Diamond Crest -->
-  <g fill="url(#royal24KGold)">
-    <!-- Center Main Diamond -->
-    <polygon points="500,-2 506,4 500,10 494,4" />
-    <!-- Flanking Side Beads -->
-    <circle cx="482" cy="5" r="2" />
-    <circle cx="518" cy="5" r="2" />
+  <!-- Corner Accent Dots -->
+  <g fill="url(#premiumGold)">
+    <circle cx="28" cy="26" r="1.2"/>
+    <circle cx="972" cy="26" r="1.2"/>
+    <circle cx="972" cy="114" r="1.2"/>
+    <circle cx="28" cy="114" r="1.2"/>
   </g>
 
-  <!-- Bottom Center Matching Crest -->
-  <g fill="url(#royal24KGold)">
-    <polygon points="500,130 506,136 500,142 494,136" />
-    <circle cx="482" cy="135" r="2" />
-    <circle cx="518" cy="135" r="2" />
-  </g>
+  <!-- Top Center Diamond Crest -->
+  <polygon points="500,0 506,6 500,12 494,6" fill="url(#premiumGold)"/>
+
+  <!-- Bottom Center Diamond Crest -->
+  <polygon points="500,128 506,134 500,140 494,134" fill="url(#premiumGold)"/>
 </svg>

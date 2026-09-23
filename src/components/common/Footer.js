@@ -32,6 +32,15 @@ function GlobeIcon() {
   );
 }
 
+function MapPinIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="w-4 h-4 text-[#f0c85a]" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+      <circle cx="12" cy="10" r="3" />
+    </svg>
+  );
+}
+
 function PassportIcon() {
   return (
     <svg viewBox="0 0 32 40" className="w-8 h-10 text-[#f0c85a] shrink-0" fill="none" stroke="currentColor">
@@ -205,6 +214,24 @@ export default function Footer({ itineraries = [] }) {
                   </a>
                 </li>
 
+                <li className="flex items-start gap-3.5 group">
+                  <div className="w-8 h-8 rounded-full border border-[#f0c85a]/50 flex items-center justify-center shrink-0 group-hover:border-[#f0c85a] group-hover:bg-[#f0c85a]/10 transition-all mt-0.5">
+                    <MapPinIcon />
+                  </div>
+                  <a
+                    href="https://maps.google.com/?q=Encamp+Adventures,+Guwahati,+Assam+-+781001"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-[#C8D2C6] leading-relaxed tracking-wide hover:text-[#f0c85a] transition-colors"
+                  >
+                    <span className="font-semibold text-[#EAE6DF] group-hover:text-[#f0c85a] transition-colors block">
+                      Encamp Adventures
+                    </span>
+                    <span>Guwahati, Assam</span>
+                    <span className="block text-[#A8B6A4]">India - 781001</span>
+                  </a>
+                </li>
+
                 <li className="flex items-center gap-3.5 group">
                   <div className="w-8 h-8 rounded-full border border-[#f0c85a]/50 flex items-center justify-center shrink-0 group-hover:border-[#f0c85a] group-hover:bg-[#f0c85a]/10 transition-all">
                     <GlobeIcon />
@@ -217,7 +244,7 @@ export default function Footer({ itineraries = [] }) {
             </div>
 
             {/* At Your Service Box */}
-            <div className="border border-[#f0c85a]/40 rounded-xl p-3.5 sm:p-4 bg-transparent flex items-start gap-4 mt-6">
+            <div className="border border-[#f0c85a]/40 rounded-xl p-3.5 sm:p-4 bg-transparent flex items-start gap-4 mt-4">
               <div className="relative w-14 sm:w-16 h-14 sm:h-16 shrink-0 mt-0.5">
                 <Image
                   src="/images/footerpassport.png"
@@ -365,9 +392,14 @@ export default function Footer({ itineraries = [] }) {
                 Your privacy is important to us.
                 <br />
                 Read our{" "}
-                <Link href="/privacy-policy" className="text-[#f0c85a] font-semibold underline hover:text-[#F5D77F] transition-colors">
+                <a
+                  href="https://encampadventures.com/privacy-policy"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-[#f0c85a] font-semibold underline hover:text-[#F5D77F] transition-colors"
+                >
                   Privacy Policy
-                </Link>{" "}
+                </a>{" "}
                 to learn how we protect your data.
               </p>
             </div>

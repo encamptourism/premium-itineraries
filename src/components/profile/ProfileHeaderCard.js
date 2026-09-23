@@ -14,7 +14,10 @@ const TIER_ICONS = {
  * ProfileHeaderCard — Compact, light & elegant Landscape Header Card with Avatar & Bio.
  */
 export default function ProfileHeaderCard({ user, ctCoins }) {
-  const avatarUrl = user?.avatar || user?.photo || user?.photoUrl;
+  const avatarUrl =
+    (typeof user?.avatar === 'string' ? user?.avatar : user?.avatar?.secure_url) ||
+    (typeof user?.photo === 'string' ? user?.photo : user?.photo?.secure_url) ||
+    (typeof user?.photoUrl === 'string' ? user?.photoUrl : null);
   const initials = user?.name
     ? user.name.split(' ').map((n) => n[0]).join('').toUpperCase().slice(0, 2)
     : 'EP';

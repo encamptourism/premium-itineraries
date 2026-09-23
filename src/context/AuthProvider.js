@@ -2,7 +2,8 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import { AuthContext } from './AuthContext';
-import { logoutAction } from '@/app/actions/auth';
+import { logoutAction, getMeAction } from '@/app/actions/auth';
+import SplashScreen from '@/components/common/SplashScreen';
 
 const INITIAL_STATE = {
   user: null,
@@ -15,28 +16,19 @@ const INITIAL_STATE = {
   isAuthenticated: false,
 };
 
-/**
- * AuthProvider — wraps the entire app (mounted in root layout.js).
- *
- * On mount → calls GET /api/auth/me (server reads cookie, returns user + CT Coins).
- * If authenticated → hydrates context with user data, CT Coins, and bookings.
- * Provides refreshUser() to re-hydrate after a booking.
- * Provides logout() to clear cookie + state.
- */
 export default function AuthProvider({ children }) {
   const [state, setState] = useState(INITIAL_STATE);
 
   const fetchUserData = useCallback(async () => {
     try {
-      const res = await fetch('/api/auth/me', { credentials: 'same-origin', cache: 'no-store' });
-      if (!res.ok) {
+      const data = await getMeAction();
+      if (!data || !data.success) {
         setState({ ...INITIAL_STATE, isLoading: false });
         return;
       }
-      const data = await res.json();
       setState({
         user: data.user,
-        ctCoins: data.ctCoins,
+        ctCoins: data.ctCoins || null,
         carbonTraceToken: data.carbontraceToken,
         bookings: data.bookings || [],
         preferences: data.preferences,
@@ -44,7 +36,8 @@ export default function AuthProvider({ children }) {
         isLoading: false,
         isAuthenticated: true,
       });
-    } catch {
+    } catch (err) {
+      console.error('[AuthProvider] Failed to fetch user session:', err.message);
       setState({ ...INITIAL_STATE, isLoading: false });
     }
   }, []);
@@ -61,12 +54,12 @@ export default function AuthProvider({ children }) {
   const logout = useCallback(async () => {
     await logoutAction();
     setState({ ...INITIAL_STATE, isLoading: false });
-    // Force full reload so middleware cleans up and redirects to /login
     window.location.href = '/login';
   }, []);
 
   return (
     <AuthContext.Provider value={{ ...state, refreshUser, logout }}>
+      <SplashScreen />
       {children}
     </AuthContext.Provider>
   );

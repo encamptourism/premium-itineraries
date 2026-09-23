@@ -291,7 +291,17 @@ function SettingsTab({ user, logout, refreshUser }) {
   const [mobile, setMobile] = useState(() => format10DigitMobile(user?.mobile || user?.phone || ''));
   const [profileBio, setProfileBio] = useState(user?.profileBio || '');
   const [avatarFile, setAvatarFile] = useState(null);
-  const [avatarPreview, setAvatarPreview] = useState(user?.avatar || user?.photo || user?.photoUrl || null);
+  const getInitialAvatar = (u) => {
+    if (!u) return null;
+    if (typeof u.avatar === 'string' && u.avatar) return u.avatar;
+    if (typeof u.photoUrl === 'string' && u.photoUrl) return u.photoUrl;
+    if (typeof u.photo === 'string' && u.photo) return u.photo;
+    if (u.photo?.secure_url) return u.photo.secure_url;
+    if (u.avatar?.secure_url) return u.avatar.secure_url;
+    return null;
+  };
+
+  const [avatarPreview, setAvatarPreview] = useState(() => getInitialAvatar(user));
 
   const [profileSaved, setProfileSaved] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
@@ -372,8 +382,9 @@ function SettingsTab({ user, logout, refreshUser }) {
       }
 
       setProfileSaved(true);
-      if (res.user?.avatar || res.user?.photo || res.user?.photoUrl) {
-        setAvatarPreview(res.user.avatar || res.user.photo || res.user.photoUrl);
+      const updatedAvatarUrl = getInitialAvatar(res.user);
+      if (updatedAvatarUrl) {
+        setAvatarPreview(updatedAvatarUrl);
       }
       setAvatarFile(null);
       if (refreshUser) await refreshUser();

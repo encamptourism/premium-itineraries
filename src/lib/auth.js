@@ -13,11 +13,28 @@ const AUTH_API_BASE_URL = (
   `${BASE_URL}/customer/auth`
 ).replace(/\/+$/, '');
 
+export function getAvatarUrl(user) {
+  if (!user) return null;
+  if (typeof user.avatar === 'string' && user.avatar) return user.avatar;
+  if (typeof user.photoUrl === 'string' && user.photoUrl) return user.photoUrl;
+  if (typeof user.photo === 'string' && user.photo) return user.photo;
+  if (user.photo && typeof user.photo === 'object' && user.photo.secure_url) {
+    return user.photo.secure_url;
+  }
+  if (user.avatar && typeof user.avatar === 'object' && user.avatar.secure_url) {
+    return user.avatar.secure_url;
+  }
+  return null;
+}
+
 export function formatMobileWith91(val) {
   if (!val) return '';
   const str = String(val).trim();
   if (str.includes('@')) return str;
-  const digits = str.replace(/\D/g, '');
+  let digits = str.replace(/\D/g, '');
+  if (digits.length === 11 && digits.startsWith('0')) {
+    digits = digits.substring(1);
+  }
   if (digits.length === 10) {
     return `91${digits}`;
   }
@@ -32,27 +49,27 @@ export async function setAuthCookies({ accessToken, refreshToken, user }) {
   const options = {
     httpOnly: true,
     secure: process.env.NODE_ENV === 'production',
-    sameSite: 'strict',
+    sameSite: 'lax',
     maxAge: COOKIE_MAX_AGE,
     path: '/',
   };
 
-  if (accessToken && typeof accessToken === 'string' && accessToken.trim() !== '' && accessToken !== 'session_active') {
-    cookieStore.set(ACCESS_TOKEN_COOKIE, accessToken.trim(), options);
-  } else {
+  if (accessToken === null) {
     cookieStore.delete(ACCESS_TOKEN_COOKIE);
+  } else if (typeof accessToken === 'string' && accessToken.trim() !== '') {
+    cookieStore.set(ACCESS_TOKEN_COOKIE, accessToken.trim(), options);
   }
 
-  if (refreshToken && typeof refreshToken === 'string' && refreshToken.trim() !== '') {
-    cookieStore.set(REFRESH_TOKEN_COOKIE, refreshToken.trim(), options);
-  } else if (refreshToken === null) {
+  if (refreshToken === null) {
     cookieStore.delete(REFRESH_TOKEN_COOKIE);
+  } else if (typeof refreshToken === 'string' && refreshToken.trim() !== '') {
+    cookieStore.set(REFRESH_TOKEN_COOKIE, refreshToken.trim(), options);
   }
 
-  if (user && typeof user === 'object') {
-    cookieStore.set(USER_COOKIE, JSON.stringify(user), options);
-  } else if (user === null) {
+  if (user === null) {
     cookieStore.delete(USER_COOKIE);
+  } else if (user && typeof user === 'object') {
+    cookieStore.set(USER_COOKIE, JSON.stringify(user), options);
   }
 }
 
@@ -68,6 +85,7 @@ export async function getAuthCookies() {
       user = JSON.parse(rawUser);
     } catch (err) {
       console.error('[Auth Cookie Error] Corrupted user cookie payload:', err.message);
+      cookieStore.delete(USER_COOKIE);
       user = null;
     }
   }
@@ -82,34 +100,13 @@ export async function clearAuthCookies() {
   cookieStore.delete(USER_COOKIE);
 }
 
-function sanitizeErrorMessage(rawErrorMsg, defaultUserMsg = 'An error occurred. Please try again.') {
-  if (!rawErrorMsg) return defaultUserMsg;
-  const msg = String(rawErrorMsg).trim();
-
-  const safePatterns = [
-    /invalid.*otp/i,
-    /otp.*expired/i,
-    /incorrect.*password/i,
-    /user.*not.*found/i,
-    /user.*already.*exist/i,
-    /email.*already.*exist/i,
-    /mobile.*already.*exist/i,
-    /already registered/i,
-    /invalid email/i,
-    /invalid mobile/i,
-    /invalid phone/i,
-    /session expired/i,
-    /please log in/i,
-    /passwords do not match/i,
-  ];
-
-  for (const pattern of safePatterns) {
-    if (pattern.test(msg)) {
-      return msg;
-    }
-  }
-
-  return defaultUserMsg;
+function extractErrorMessage(data, fallback = 'API request failed.') {
+  if (!data) return fallback;
+  if (typeof data === 'string') return data;
+  if (Array.isArray(data.message)) return data.message.join(', ');
+  if (data.message) return String(data.message);
+  if (data.error) return String(data.error);
+  return fallback;
 }
 
 async function fetchAuthApi(endpoint, options = {}) {
@@ -127,38 +124,75 @@ async function fetchAuthApi(endpoint, options = {}) {
       try {
         data = JSON.parse(text);
       } catch (parseErr) {
-        console.error(`[Auth API Error] Failed to parse JSON response from ${url}:`, parseErr.message, 'Raw text:', text.substring(0, 200));
+        console.error(`[Auth API Error] Failed to parse JSON response from ${url}:`, parseErr.message);
         return {
           success: false,
-          error: 'Authentication service unavailable. Please try again later.',
+          error: `Server error (${res.status}): Invalid response from authentication server.`,
         };
       }
     }
 
     if (!res.ok) {
-      const rawMsg = Array.isArray(data?.message)
-        ? data.message.join(', ')
-        : (data?.message || data?.error || (typeof data === 'string' ? data : `Request failed with status ${res.status}`));
-      
-      console.error(`[Auth API Error] HTTP ${res.status} from ${url}:`, rawMsg);
-      return { success: false, error: sanitizeErrorMessage(rawMsg, 'Authentication request failed. Please try again.') };
+      const errorMsg = extractErrorMessage(data, `Request failed with status ${res.status}`);
+      console.error(`[Auth API Error] HTTP ${res.status} from ${url}:`, errorMsg);
+      return { success: false, error: errorMsg };
     }
 
     const isPayloadSuccess = data?.success !== false && data?.status !== false && data?.status !== 'error' && !data?.error;
 
     if (!isPayloadSuccess) {
-      const rawMsg = Array.isArray(data?.message)
-        ? data.message.join(', ')
-        : (data?.message || data?.error || 'Auth API indicated request failure.');
-      
-      console.error(`[Auth API Payload Failure] ${url}:`, rawMsg);
-      return { success: false, error: sanitizeErrorMessage(rawMsg, 'Authentication request failed. Please try again.') };
+      const errorMsg = extractErrorMessage(data, 'Authentication request failed.');
+      console.error(`[Auth API Failure] ${url}:`, errorMsg);
+      return { success: false, error: errorMsg };
     }
 
     return { success: true, ...data };
   } catch (err) {
     console.error(`[Auth API Fetch Error] Call to ${url} failed:`, err);
-    return { success: false, error: 'Unable to connect to authentication server. Please try again later.' };
+    return { success: false, error: err.message || 'Unable to connect to authentication server.' };
+  }
+}
+
+export async function fetchUserProfile(accessToken) {
+  if (!accessToken) {
+    return { success: false, error: 'No access token provided.' };
+  }
+
+  const url = `${BASE_URL}/customer/profile`;
+  const token = accessToken.trim();
+  const headers = {
+    accept: '*/*',
+    Authorization: token.startsWith('Bearer ') ? token : `Bearer ${token}`,
+  };
+
+  try {
+    const res = await fetch(url, {
+      method: 'GET',
+      headers,
+      signal: AbortSignal.timeout(15000),
+      cache: 'no-store',
+    });
+
+    const text = await res.text();
+    let data = null;
+    if (text) {
+      try {
+        data = JSON.parse(text);
+      } catch (parseErr) {
+        console.error('[API FETCH Error] Failed to parse profile JSON:', parseErr.message);
+      }
+    }
+
+    if (!res.ok) {
+      const errorMsg = extractErrorMessage(data, `Profile fetch failed with status ${res.status}`);
+      return { success: false, error: errorMsg };
+    }
+
+    const returnedUser = data?.user || data?.data?.user || data?.data || data;
+    return { success: true, user: returnedUser };
+  } catch (err) {
+    console.error('[API FETCH Error] fetchUserProfile exception:', err);
+    return { success: false, error: err.message || 'Unable to fetch profile from server.' };
   }
 }
 
@@ -202,7 +236,7 @@ export async function verifyOtp(identifier, otp) {
 }
 
 export async function logoutUser(accessToken) {
-  if (!accessToken || accessToken === 'session_active') {
+  if (!accessToken) {
     return { success: false, error: 'Missing access token for logout.' };
   }
   const headers = { Authorization: accessToken.startsWith('Bearer ') ? accessToken : `Bearer ${accessToken}` };
@@ -210,7 +244,7 @@ export async function logoutUser(accessToken) {
 }
 
 export async function updateProfileUser(formData, accessToken) {
-  if (!accessToken || accessToken === 'session_active') {
+  if (!accessToken) {
     return {
       success: false,
       error: 'Session expired. Please log in again to update your profile.',
@@ -225,24 +259,9 @@ export async function updateProfileUser(formData, accessToken) {
     Authorization: token.startsWith('Bearer ') ? token : `Bearer ${token}`,
   };
 
-  const payloadEntries = Array.from(formData.entries()).map(([k, v]) => [
-    k,
-    typeof v === 'object' && v !== null
-      ? `{ File: name="${v.name || ''}", type="${v.type || ''}", size=${v.size || 0} }`
-      : v,
-  ]);
-
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-  console.log('[API FETCH] Outgoing Profile Update Request:');
-  console.log('URL:', url);
-  console.log('Method: POST');
-  console.log('Headers:', headers);
-  console.log('Payload Form Fields:', Object.fromEntries(payloadEntries));
-  console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-
   try {
     const res = await fetch(url, {
-      method: 'POST',
+      method: 'PUT',
       headers,
       body: formData,
       signal: AbortSignal.timeout(20000),
@@ -254,54 +273,34 @@ export async function updateProfileUser(formData, accessToken) {
       try {
         data = JSON.parse(text);
       } catch (parseErr) {
-        console.error('[API FETCH Error] Failed to parse JSON profile update response:', parseErr.message, 'Raw response:', text.substring(0, 200));
-        return { success: false, error: 'Profile update service unavailable. Please try again later.' };
+        console.error('[API FETCH Error] Failed to parse JSON profile update response:', parseErr.message);
+        return { success: false, error: `Invalid response format from server (${res.status}).` };
       }
     }
 
-    console.log('[API FETCH] Profile Update Backend Response:');
-    console.log('Status Code:', res.status);
-    console.log('Response Body:', data);
-    console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
-
     if (!res.ok) {
-      const rawMsg = Array.isArray(data?.message)
-        ? data.message.join(', ')
-        : (data?.message || data?.error || (typeof data === 'string' ? data : `Status code ${res.status}`));
-      
-      console.error(`[Profile Update Error] HTTP ${res.status}:`, rawMsg);
-      return { success: false, error: sanitizeErrorMessage(rawMsg, 'Profile update failed. Please check your details and try again.') };
+      const errorMsg = extractErrorMessage(data, `Profile update failed with status ${res.status}`);
+      console.error(`[Profile Update Error] HTTP ${res.status}:`, errorMsg);
+      return { success: false, error: errorMsg };
     }
 
     const isPayloadSuccess = data?.success !== false && data?.status !== false && data?.status !== 'error' && !data?.error;
 
     if (!isPayloadSuccess) {
-      const rawMsg = Array.isArray(data?.message)
-        ? data.message.join(', ')
-        : (data?.message || data?.error || 'Profile update rejected');
-      
-      console.error('[Profile Update Payload Error]:', rawMsg);
-      return { success: false, error: sanitizeErrorMessage(rawMsg, 'Profile update failed. Please check your details and try again.') };
+      const errorMsg = extractErrorMessage(data, 'Profile update rejected');
+      console.error('[Profile Update Payload Error]:', errorMsg);
+      return { success: false, error: errorMsg };
     }
 
-    const returnedUser = data?.user || data?.data?.user || data?.data || null;
-
-    if (!returnedUser || typeof returnedUser !== 'object') {
-      console.error('[Profile Update Error] Server succeeded but returned empty user object:', data);
-      return {
-        success: false,
-        error: 'Profile update could not be completed. Please try logging in again.',
-      };
-    }
+    const returnedUser = data?.user || data?.data?.user || (typeof data?.data === 'object' ? data.data : null) || data || {};
 
     return {
       success: true,
-      message: 'Profile updated successfully',
+      message: data?.message || 'Profile updated successfully',
       user: returnedUser,
     };
   } catch (err) {
     console.error('[API FETCH Error] Profile update exception:', err);
-    return { success: false, error: 'Unable to update profile. Please try again later.' };
+    return { success: false, error: err.message || 'Unable to update profile.' };
   }
 }
-
