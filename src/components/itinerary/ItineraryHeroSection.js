@@ -10,7 +10,9 @@ import {
   Headset,
   Leaf,
 } from "lucide-react";
+import DownloadPdfButton from "./DownloadPdfButton";
 import { useCarbonTrace } from "@/context/CarbonTraceContext";
+import { useBreadcrumbs } from "@/context/BreadcrumbsContext";
 
 export default function ItineraryHeroSection({ itinerary }) {
   const ctContext = useCarbonTrace();
@@ -82,6 +84,20 @@ export default function ItineraryHeroSection({ itinerary }) {
     }
   }, [itinerary, startingPrice, setCheckoutData]);
 
+  const breadcrumbsCtx = useBreadcrumbs();
+  const setRightAction = breadcrumbsCtx?.setRightAction;
+
+  useEffect(() => {
+    if (itinerary && typeof setRightAction === 'function') {
+      setRightAction(<DownloadPdfButton itinerary={itinerary} variant="hero" />);
+    }
+    return () => {
+      if (typeof setRightAction === 'function') {
+        setRightAction(null);
+      }
+    };
+  }, [itinerary, setRightAction]);
+
   return (
     <div className="w-full bg-[#fbf9f4] font-poppins pb-2 sm:pb-8 lg:pb-10">
 
@@ -110,17 +126,18 @@ export default function ItineraryHeroSection({ itinerary }) {
         )}
 
 
-        {/* Top Right: English Logo */}
+        {/* Top Left: English Logo */}
         {englishLogoUrl && (
-          <div className="absolute right-3 sm:right-6 lg:right-8 top-3 sm:top-5 z-30 w-36 sm:w-44 lg:w-52 h-12 sm:h-15 lg:h-18 shrink-0 bg-transparent pointer-events-none overflow-hidden">
+          <div className="absolute left-3 sm:left-6 lg:left-8 top-3 sm:top-5 z-30 w-36 sm:w-44 lg:w-52 h-12 sm:h-15 lg:h-18 shrink-0 bg-transparent pointer-events-none overflow-hidden">
             <TransparentImageCanvas
               src={englishLogoUrl}
               alt="Encamp Privé Logo"
               fill
-              className="object-contain object-right drop-shadow-md"
+              className="object-contain object-left drop-shadow-md"
             />
           </div>
         )}
+
 
         {/* Content Container - Vertically & Horizontally Centered */}
         <div className="relative z-10 w-[96%] sm:w-[94%] max-w-5xl mx-auto px-2 sm:px-4 flex-1 flex flex-col justify-center items-center my-auto h-full text-center">

@@ -1,6 +1,8 @@
 import { Alex_Brush, Cormorant_Garamond, Plus_Jakarta_Sans, Poppins, Luxurious_Roman } from "next/font/google";
 import { headers } from "next/headers";
 import Navbar from "@/components/itinerary/Navbar";
+import Breadcrumbs from "@/components/common/Breadcrumbs";
+import { BreadcrumbsProvider } from "@/context/BreadcrumbsContext";
 import Footer from "@/components/common/Footer";
 import AuthProvider from "@/context/AuthProvider";
 import { CarbonTraceProvider } from "@/context/CarbonTraceContext";
@@ -85,10 +87,13 @@ export default async function RootLayout({ children }) {
       >
         <AuthProvider>
           <CarbonTraceProvider>
-            {!isAuthPage && <Navbar />}
-            <ProfileCompletionModal />
-            <main className="flex-1 min-h-screen">{children}</main>
-            {!isAuthPage && <Footer itineraries={allItineraries} />}
+            <BreadcrumbsProvider>
+              {!isAuthPage && <Navbar />}
+              {!isAuthPage && <Breadcrumbs />}
+              <ProfileCompletionModal />
+              <main className="flex-1 min-h-screen">{children}</main>
+              {!isAuthPage && <Footer itineraries={allItineraries} />}
+            </BreadcrumbsProvider>
           </CarbonTraceProvider>
         </AuthProvider>
       </body>

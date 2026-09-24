@@ -1,0 +1,1460 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Alex+Brush&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Luxurious+Roman&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap');
+
+  #encamp-pdf-template {
+    font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif !important;
+  }
+
+  .pdf-font-serif {
+    font-family: 'Cormorant Garamond', Georgia, serif !important;
+  }
+
+  .pdf-font-script {
+    font-family: 'Cormorant Garamond', Georgia, serif !important;
+    font-style: italic !important;
+  }
+
+  .pdf-font-roman {
+    font-family: 'Luxurious Roman', 'Cormorant Garamond', serif !important;
+  }
+
+  .pdf-font-sans {
+    font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif !important;
+  }
+
+  @media print {
+    @page {
+      size: A4 portrait;
+      margin: 10mm 0mm 31.36mm 0mm;
+    }
+    body {
+      margin: 0 !important;
+      padding: 0 !important;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+    #encamp-pdf-template {
+      width: 100% !important;
+      max-width: 100% !important;
+      padding: 0 14mm !important;
+      box-sizing: border-box !important;
+      margin: 0 auto !important;
+    }
+    .html-only-footer {
+      display: none !important;
+    }
+  }
+</style>
+
+<div id="encamp-pdf-template"
+  style="width: 730px; max-width: 730px; background-color: #FFFFFF; color: #232323; font-family: 'Poppins', 'Plus Jakarta Sans', sans-serif; padding: 16px; border: none; box-sizing: border-box; margin: 0 auto;">
+
+  <!-- ========================================================================= -->
+  <!-- 1. FIRST PAGE TOP DOCUMENT HEADER -->
+  <!-- ========================================================================= -->
+  <header
+    style="display: flex; align-items: flex-start; justify-content: space-between; padding: 12px 16px; border-bottom: 2px solid #123B2A; background-color: #123B2A; color: #FFFFFF; border-radius: 14px; margin-bottom: 14px; box-sizing: border-box; page-break-inside: avoid; break-inside: avoid;">
+    <!-- Left Side: Logo & Brand (Starts from Top) -->
+    <div style="display: flex; align-items: flex-start; gap: 12px;">
+      <% if (encampLogoSrc) { %>
+        <img src="<%= encampLogoSrc %>" alt="Encamp Privé" style="height: 38px; width: auto; object-fit: contain; display: block; margin: 0;" />
+      <% } else { %>
+        <div style="width: 32px; height: 32px; border-radius: 8px; background-color: rgba(255, 255, 255, 0.15); border: 1px solid rgba(255, 255, 255, 0.3); display: flex; align-items: center; justify-content: center; color: #FFFFFF; flex-shrink: 0;">
+          <svg style="width: 18px; height: 18px;" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+          </svg>
+        </div>
+      <% } %>
+      <div style="display: flex; flex-direction: column; justify-content: flex-start; align-items: flex-start; padding-top: 0; margin-top: 0;">
+        <h1 style="font-size: 16px; font-weight: 700; letter-spacing: 2px; color: #FFFFFF; text-transform: uppercase; margin: 0 0 2px 0; padding: 0; line-height: 1;" class="pdf-font-serif">
+          ENCAMP PRIVÉ
+        </h1>
+        <p style="font-size: 8px; color: #E5E7EB; font-weight: 400; letter-spacing: 0.8px; text-transform: uppercase; margin: 0; padding: 0; line-height: 1.1;" class="pdf-font-sans">
+          Bespoke Luxury Expeditions & Private Journeys
+        </p>
+      </div>
+    </div>
+
+    <!-- Right Side: Company Details (ENCAMP PRIVÉ Header) -->
+    <div style="text-align: right; flex-shrink: 0; font-size: 8.5px; color: #E5E7EB; line-height: 1.35; padding-top: 0;" class="pdf-font-sans">
+      <div style="font-weight: 700; color: #F5DC9A; font-size: 9.5px; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; line-height: 1;">ENCAMP PRIVÉ</div>
+      <div>Guwahati, Assam – 781028 &nbsp;•&nbsp; support@encampadventures.com</div>
+      <div>+91 96431 82259 &nbsp;•&nbsp; www.encampadventures.com</div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- 2. HERO COVER SECTION -->
+  <!-- ========================================================================= -->
+  <section
+    style="position: relative; width: 100%; height: 350px; border-radius: 20px; overflow: hidden; border: none; background-color: #111827; display: flex; flex-direction: column; justify-content: space-between; padding: 14px 16px; box-sizing: border-box; margin-bottom: 16px; page-break-inside: avoid; break-inside: avoid;">
+    <% if (heroImageSrc) { %>
+      <img src="<%= heroImageSrc %>" alt="<%= itinerary.title %>"
+        style="position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.68);" />
+      <% } %>
+        <div
+          style="position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.2) 40%, rgba(0,0,0,0.85) 100%);">
+        </div>
+
+        <!-- Top Right Logo Header -->
+        <div
+          style="position: relative; z-index: 10; display: flex; justify-content: flex-end; align-items: center; width: 100%;">
+          <% if (encampLogoSrc) { %>
+            <img src="<%= encampLogoSrc %>" alt="Encamp Adventures"
+              style="height: 38px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.6));" />
+            <% } else { %>
+              <span
+                style="font-size: 10px; font-weight: 700; color: #FFFFFF; text-transform: uppercase; letter-spacing: 1.5px; background-color: rgba(0,0,0,0.6); padding: 4px 12px; border-radius: 9999px; border: 1px solid rgba(255,255,255,0.4);"
+                class="pdf-font-serif">
+                ENCAMP PRIVÉ
+              </span>
+              <% } %>
+        </div>
+
+        <!-- Center Title / Logo, Subtitle (Cormorant Garamond Italic), Duration Ribbon -->
+        <div style="position: relative; z-index: 10; text-align: center; margin: auto 0; padding: 4px 0;">
+          <% if (hindiLogoSrc) { %>
+            <div style="display: flex; justify-content: center; margin-bottom: 2px;">
+              <img src="<%= hindiLogoSrc %>" alt="<%= itinerary.title %>"
+                style="max-height: 100px; max-width: 480px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.7));" />
+            </div>
+            <% } else { %>
+              <h2
+                style="font-size: 28px; font-weight: 700; text-transform: uppercase; color: #FFFFFF; letter-spacing: 2px; text-shadow: 0 3px 6px rgba(0,0,0,0.9); margin: 0 0 4px 0;"
+                class="pdf-font-serif">
+                <%= itinerary.title %>
+              </h2>
+              <% } %>
+
+                <% if (itinerary.subtitle) { %>
+                  <p style="font-size: 16px; font-weight: 400; color: #F5E6A3; text-shadow: 0 2px 4px rgba(0,0,0,0.8); margin: 0 0 6px 0; line-height: 1.2;"
+                    class="pdf-font-script">
+                    <%= itinerary.subtitle %>
+                  </p>
+                  <% } %>
+
+                    <% if (durationText) { %>
+                      <!-- Duration Ribbon Badge with Fixed Height, Pill Border Radius & Perfect Vertical Centering -->
+                      <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 16px; margin-bottom: 8px; width: 100%;">
+                        <span style="height: 2px; width: 60px; background-color: #64161B; opacity: 0.85; display: inline-block;"></span>
+                        <div
+                          style="background-color: #64161B; color: #FFFDF5; border: 1.5px solid rgba(255, 255, 255, 0.7); border-radius: 9999px; height: 28px; padding: 0 22px; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; white-space: nowrap; display: inline-flex; align-items: center; justify-content: center; text-align: center; box-sizing: border-box; box-shadow: 0 2px 6px rgba(0,0,0,0.4);"
+                          class="pdf-font-roman">
+                          <span style="display: inline-block; line-height: 1; margin-right: -2px;"><%= durationText %></span>
+                        </div>
+                        <span style="height: 2px; width: 60px; background-color: #64161B; opacity: 0.85; display: inline-block;"></span>
+                      </div>
+                      <% } %>
+        </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 5-PILLARS HORIZONTAL STRIP (ENCLOSED IN ROYAL GOLD PILLARS FRAME) -->
+  <!-- ========================================================================= -->
+  <div
+    style="position: relative; width: 100%; box-sizing: border-box; margin-bottom: 14px; padding: 10px 18px; min-height: 54px; display: flex; align-items: center; justify-content: center; page-break-inside: avoid; break-inside: avoid; filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.08));">
+
+    <!-- Inline Premium Royal Gold Frame (Exact match to encamp-prive/public/images/pillars_frame.svg) -->
+    <svg
+      viewBox="0 0 1000 140"
+      preserveAspectRatio="none"
+      style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;"
+      xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Premium Polished Gold Gradient -->
+        <linearGradient id="premiumGoldPillars" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#8B6914"/>
+          <stop offset="18%" stop-color="#C9A13E"/>
+          <stop offset="35%" stop-color="#E8D07A"/>
+          <stop offset="50%" stop-color="#F5E6A3"/>
+          <stop offset="65%" stop-color="#E8D07A"/>
+          <stop offset="82%" stop-color="#C9A13E"/>
+          <stop offset="100%" stop-color="#8B6914"/>
+        </linearGradient>
+
+        <!-- Subtle Inner Gold Gradient -->
+        <linearGradient id="innerGoldPillars" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stop-color="#A0842A" stop-opacity="0.45"/>
+          <stop offset="50%" stop-color="#D4B65C" stop-opacity="0.55"/>
+          <stop offset="100%" stop-color="#A0842A" stop-opacity="0.45"/>
+        </linearGradient>
+
+        <!-- Elegant Soft Shadow -->
+        <filter id="frameShadowPillars" x="-3%" y="-8%" width="106%" height="116%">
+          <feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#2C1A00" flood-opacity="0.12"/>
+        </filter>
+      </defs>
+
+      <!-- White Card Base — Royal Curved Silhouette -->
+      <path
+        d="M 30,10
+           L 435,10 Q 465,10 482,4 L 500,0 L 518,4 Q 535,10 565,10
+           L 970,10 Q 992,10 992,32
+           L 992,108 Q 992,130 970,130
+           L 565,130 Q 535,130 518,136 L 500,140 L 482,136 Q 465,130 435,130
+           L 30,130 Q 8,130 8,108
+           L 8,32 Q 8,10 30,10 Z"
+        fill="#ffffff" filter="url(#frameShadowPillars)"/>
+
+      <!-- Outer Gold Border -->
+      <path
+        d="M 30,10
+           L 435,10 Q 465,10 482,4 L 500,0 L 518,4 Q 535,10 565,10
+           L 970,10 Q 992,10 992,32
+           L 992,108 Q 992,130 970,130
+           L 565,130 Q 535,130 518,136 L 500,140 L 482,136 Q 465,130 435,130
+           L 30,130 Q 8,130 8,108
+           L 8,32 Q 8,10 30,10 Z"
+        fill="none" stroke="url(#premiumGoldPillars)" stroke-width="2.5"/>
+
+      <!-- Inner Inset Gold Border (follows same royal curve) -->
+      <path
+        d="M 36,18
+           L 433,18 Q 460,18 476,12 L 500,7 L 524,12 Q 540,18 567,18
+           L 964,18 Q 984,18 984,36
+           L 984,104 Q 984,122 964,122
+           L 567,122 Q 540,122 524,128 L 500,133 L 476,128 Q 460,122 433,122
+           L 36,122 Q 16,122 16,104
+           L 16,36 Q 16,18 36,18 Z"
+        fill="none" stroke="url(#innerGoldPillars)" stroke-width="0.8"/>
+
+      <!-- Corner Flourishes — Elegant Curved Scrolls -->
+      <g fill="none" stroke="url(#premiumGoldPillars)" stroke-width="1.4" stroke-linecap="round">
+        <path d="M 22,38 Q 22,20 40,20"/>
+        <path d="M 978,38 Q 978,20 960,20"/>
+        <path d="M 978,102 Q 978,120 960,120"/>
+        <path d="M 22,102 Q 22,120 40,120"/>
+      </g>
+
+      <!-- Corner Accent Dots -->
+      <g fill="url(#premiumGoldPillars)">
+        <circle cx="28" cy="26" r="1.2"/>
+        <circle cx="972" cy="26" r="1.2"/>
+        <circle cx="972" cy="114" r="1.2"/>
+        <circle cx="28" cy="114" r="1.2"/>
+      </g>
+
+      <!-- Top Center Diamond Crest -->
+      <polygon points="500,0 506,6 500,12 494,6" fill="url(#premiumGoldPillars)"/>
+
+      <!-- Bottom Center Diamond Crest -->
+      <polygon points="500,128 506,134 500,140 494,134" fill="url(#premiumGoldPillars)"/>
+    </svg>
+
+    <!-- 5-Pillars Content Grid (Placed Above SVG with z-index: 2) -->
+    <div
+      style="position: relative; z-index: 2; width: 100%; display: grid; grid-template-columns: repeat(5, 1fr); text-align: center; color: #123B2A; box-sizing: border-box; padding: 4px 6px;">
+
+      <!-- 1. Handpicked -->
+      <div
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid rgba(201, 161, 62, 0.35); padding: 2px 4px;">
+        <svg viewBox="0 0 24 24"
+          style="width: 17px; height: 17px; fill: none; stroke: #123B2A; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px;">
+          <circle cx="12" cy="12" r="10"></circle>
+          <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"></polygon>
+        </svg>
+        <span
+          style="font-size: 7.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #123B2A; white-space: nowrap;"
+          class="pdf-font-sans">HANDPICKED</span>
+      </div>
+
+      <!-- 2. Exclusive Stays -->
+      <div
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid rgba(201, 161, 62, 0.35); padding: 2px 4px;">
+        <svg viewBox="0 0 24 24"
+          style="width: 17px; height: 17px; fill: none; stroke: #123B2A; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px;">
+          <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+          <polyline points="9 22 9 12 15 12 15 22"></polyline>
+        </svg>
+        <span
+          style="font-size: 7.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #123B2A; white-space: nowrap;"
+          class="pdf-font-sans">EXCLUSIVE STAYS</span>
+      </div>
+
+      <!-- 3. Local Experts -->
+      <div
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid rgba(201, 161, 62, 0.35); padding: 2px 4px;">
+        <svg viewBox="0 0 24 24"
+          style="width: 17px; height: 17px; fill: none; stroke: #123B2A; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px;">
+          <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+          <circle cx="8.5" cy="7" r="4"></circle>
+          <polyline points="17 11 19 13 23 9"></polyline>
+        </svg>
+        <span
+          style="font-size: 7.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #123B2A; white-space: nowrap;"
+          class="pdf-font-sans">LOCAL EXPERTS</span>
+      </div>
+
+      <!-- 4. 24x7 Support -->
+      <div
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid rgba(201, 161, 62, 0.35); padding: 2px 4px;">
+        <svg viewBox="0 0 24 24"
+          style="width: 17px; height: 17px; fill: none; stroke: #123B2A; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px;">
+          <path d="M3 18v-6a9 9 0 0 1 18 0v6"></path>
+          <path
+            d="M21 19a2 2 0 0 1-2 2h-1a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h3zM3 19a2 2 0 0 0 2 2h1a2 2 0 0 0 2-2v-3a2 2 0 0 0-2-2H3z">
+          </path>
+        </svg>
+        <span
+          style="font-size: 7.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #123B2A; white-space: nowrap;"
+          class="pdf-font-sans">24X7 SUPPORT</span>
+      </div>
+
+      <!-- 5. Sustainable -->
+      <div
+        style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2px 4px;">
+        <svg viewBox="0 0 24 24"
+          style="width: 17px; height: 17px; fill: none; stroke: #123B2A; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 2px;">
+          <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"></path>
+          <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12"></path>
+        </svg>
+        <span
+          style="font-size: 7.5px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: #123B2A; white-space: nowrap;"
+          class="pdf-font-sans">SUSTAINABLE</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ========================================================================= -->
+  <!-- 3. JOURNEY OVERVIEW -->
+  <!-- ========================================================================= -->
+  <section
+    style="background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; padding: 16px; margin-bottom: 16px; box-sizing: border-box; page-break-inside: avoid; break-inside: avoid;">
+    <div style="margin-bottom: 10px;">
+      <h3
+        style="font-size: 20px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin: 0; display: flex; align-items: center; gap: 6px;"
+        class="pdf-font-serif">
+        <span style="color: #123B2A;">JOURNEY</span>
+        <span style="color: #123B2A;">OVERVIEW</span>
+      </h3>
+    </div>
+
+    <% if (itinerary.overviewText) { %>
+      <div style="font-size: 11px; color: #374151; line-height: 1.65; margin-bottom: 14px;" class="pdf-font-sans">
+        <%- itinerary.overviewText %>
+      </div>
+      <% } else if (itinerary.subtitle) { %>
+        <p style="font-size: 11px; color: #374151; line-height: 1.65; margin: 0 0 14px 0;" class="pdf-font-sans">
+          <%= itinerary.subtitle %>
+        </p>
+        <% } %>
+
+          <!-- 4 Stat Metrics Grid -->
+          <div
+            style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; border: 1px solid #E5E7EB; border-radius: 16px; padding: 10px 8px; background-color: #FFFFFF; text-align: center; box-sizing: border-box;">
+
+            <!-- 1. Days -->
+            <div
+              style="display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid #E5E7EB; padding: 2px;">
+              <% if (calendarIconSrc) { %>
+                <img src="<%= calendarIconSrc %>" alt="Days"
+                  style="width: 42px; height: 42px; object-fit: contain; margin-bottom: 4px; display: block;" />
+                <% } else { %>
+                  <svg style="width: 36px; height: 36px; margin-bottom: 4px;" viewBox="0 0 24 24" fill="none"
+                    stroke="#123B2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+                    <line x1="16" y1="2" x2="16" y2="6"></line>
+                    <line x1="8" y1="2" x2="8" y2="6"></line>
+                    <line x1="3" y1="10" x2="21" y2="10"></line>
+                  </svg>
+                  <% } %>
+                    <div style="font-size: 19px; font-weight: 700; color: #123B2A; line-height: 1; margin: 0;"
+                      class="pdf-font-serif">
+                      <%= days %>
+                    </div>
+                    <div
+                      style="font-size: 8px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 3px;"
+                      class="pdf-font-sans">DAYS</div>
+            </div>
+
+            <!-- 2. Nights -->
+            <div
+              style="display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid #E5E7EB; padding: 2px;">
+              <% if (nightIconSrc) { %>
+                <img src="<%= nightIconSrc %>" alt="Nights"
+                  style="width: 42px; height: 42px; object-fit: contain; margin-bottom: 4px; display: block;" />
+                <% } else { %>
+                  <svg style="width: 36px; height: 36px; margin-bottom: 4px;" viewBox="0 0 24 24" fill="none"
+                    stroke="#123B2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                  </svg>
+                  <% } %>
+                    <div style="font-size: 19px; font-weight: 700; color: #123B2A; line-height: 1; margin: 0;"
+                      class="pdf-font-serif">
+                      <%= nights %>
+                    </div>
+                    <div
+                      style="font-size: 8px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 3px;"
+                      class="pdf-font-sans">NIGHTS</div>
+            </div>
+
+            <!-- 3. Experiences -->
+            <div
+              style="display: flex; flex-direction: column; align-items: center; justify-content: center; border-right: 1px solid #E5E7EB; padding: 2px;">
+              <% if (hillIconSrc) { %>
+                <img src="<%= hillIconSrc %>" alt="Experiences"
+                  style="width: 42px; height: 42px; object-fit: contain; margin-bottom: 4px; display: block;" />
+                <% } else { %>
+                  <svg style="width: 36px; height: 36px; margin-bottom: 4px;" viewBox="0 0 24 24" fill="none"
+                    stroke="#123B2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M8 3l4 8 5-5 5 15H2L8 3z"></path>
+                  </svg>
+                  <% } %>
+                    <div style="font-size: 19px; font-weight: 700; color: #123B2A; line-height: 1; margin: 0;"
+                      class="pdf-font-serif">
+                      <%= totalActivities ? totalActivities + '+' : '30+' %>
+                    </div>
+                    <div
+                      style="font-size: 8px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.8px; margin-top: 3px;"
+                      class="pdf-font-sans">EXPERIENCES</div>
+            </div>
+
+            <!-- 4. Unforgettable Journey -->
+            <div
+              style="display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 2px;">
+              <% if (diamondIconSrc) { %>
+                <img src="<%= diamondIconSrc %>" alt="Journey"
+                  style="width: 42px; height: 42px; object-fit: contain; margin-bottom: 4px; display: block;" />
+                <% } else { %>
+                  <svg style="width: 36px; height: 36px; margin-bottom: 4px;" viewBox="0 0 24 24" fill="none"
+                    stroke="#123B2A" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 3h12l4 6-10 12L2 9z"></path>
+                    <path d="M11 3v18"></path>
+                  </svg>
+                  <% } %>
+                    <div style="font-size: 19px; font-weight: 700; color: #123B2A; line-height: 1; margin: 0;"
+                      class="pdf-font-serif">1</div>
+                    <div
+                      style="font-size: 7.5px; font-weight: 700; color: #6B7280; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 3px;"
+                      class="pdf-font-sans">UNFORGETTABLE JOURNEY</div>
+            </div>
+
+          </div>
+
+
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- 4. DAY-BY-DAY ITINERARY TIMELINE (EACH DAY ISOLATED ON ITS OWN DEDICATED PAGE) -->
+  <!-- ========================================================================= -->
+  <section style="page-break-before: always; break-before: page; margin-bottom: 16px;">
+    <!-- Curated Day Wise Itinerary Section Header (Exact Match to User Reference Image) -->
+    <div style="text-align: center; margin-bottom: 16px; page-break-inside: avoid; break-inside: avoid;">
+      <div style="display: flex; align-items: center; justify-content: center; gap: 16px;">
+        <span style="display: inline-block; width: 75px; height: 1px; background-color: #C99D40; opacity: 0.8;"></span>
+        <h3
+          style="font-size: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 5px; color: #123B2A; margin: 0; white-space: nowrap; transform: translateY(-3px);"
+          class="pdf-font-serif">
+          DAY WISE ITINERARY
+        </h3>
+        <span style="display: inline-block; width: 75px; height: 1px; background-color: #C99D40; opacity: 0.8;"></span>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <% (dayWise || []).forEach(function(day, idx) { 
+          var dayNum = day.dayNumber || (idx + 1); 
+          var dayTitle = day.title || ('Day ' + dayNum);
+          var photoSrc = dayImagesMap[dayNum] || null;
+          var activities = Array.isArray(day.activities) ? day.activities : [];
+          var stayObj = Array.isArray(day.stay) && day.stay.length > 0 ? day.stay[0] : null;
+          var pageBreakCss = idx > 0 ? "page-break-before: always; break-before: page; margin-top: 0;" : "";
+      %>
+        <div style="background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 16px; padding: 20px; box-sizing: border-box; page-break-inside: avoid; break-inside: avoid; box-shadow: 0 2px 8px rgba(0,0,0,0.04); <%= pageBreakCss %>">
+
+        <!-- Day Header Row (Exact Match to User Reference Badge) -->
+        <div style="display: flex; align-items: flex-start; gap: 14px; margin-bottom: 10px;">
+          <!-- Day Circle & Below DAY Text Badge (SVG Centered) -->
+          <div
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 44px; flex-shrink: 0;">
+            <!-- Dark Green Circle with Mathematically Centered White Day Number -->
+            <svg width="44" height="44" viewBox="0 0 44 44"
+              style="width: 44px; height: 44px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); display: block;">
+              <circle cx="22" cy="22" r="22" fill="#0B4F35" />
+              <text x="22" y="23.5" text-anchor="middle" dominant-baseline="central" fill="#FFFFFF"
+                font-family="' Cormorant Garamond', serif" font-size="22" font-weight="600">
+        <%= dayNum %>
+          </text>
+          </svg>
+          <!-- DAY Text Below Circle in Gold Serif -->
+          <span
+            style="font-size: 10px; font-weight: 700; text-transform: uppercase; color: #123B2A; letter-spacing: 2px; margin-top: 4px; line-height: 1;"
+            class="pdf-font-serif">DAY</span>
+    </div>
+
+    <!-- Title & Sub-Description Inline (Starts from Top Alignment with Circle) -->
+    <div style="flex: 1; padding-top: 2px;">
+      <h4
+        style="font-size: 17px; font-weight: 700; text-transform: uppercase; color: #123B2A; margin: 0; letter-spacing: 1px; line-height: 1.25;"
+        class="pdf-font-serif">
+        <%= dayTitle %>
+      </h4>
+      <% if (day.description) { %>
+        <p style="font-size: 11px; color: #4B5563; margin: 3px 0 0 0; line-height: 1.4; font-weight: 400;"
+          class="pdf-font-sans">
+          <%= day.description %>
+        </p>
+        <% } %>
+    </div>
+</div>
+
+<!-- Header Divider Line -->
+<div style="border-bottom: 1px solid #E5E7EB; margin-bottom: 14px; width: 100%;"></div>
+
+<!-- Activity Timeline (Full 100% Width) -->
+<% if (activities.length> 0) { %>
+  <div style="display: flex; flex-direction: column; gap: 10px; margin-bottom: 14px;">
+    <% activities.forEach(function(act) { %>
+      <div style="border-left: 2.5px solid #123B2A; padding-left: 12px; margin-bottom: 6px;">
+        <% if (act.greenText) { %>
+          <div style="font-size: 12px; font-weight: 600; color: #123B2A; line-height: 1.4;" class="pdf-font-sans">
+            <%= act.greenText %>
+          </div>
+          <% } %>
+            <% if (act.blackText) { %>
+              <div style="font-size: 10.5px; color: #4B5563; line-height: 1.5; margin-top: 3px;" class="pdf-font-sans">
+                <%= act.blackText %>
+              </div>
+              <% } %>
+                <% if (!act.greenText && !act.blackText && act.title) { %>
+                  <div style="font-size: 10.5px; color: #374151;" class="pdf-font-sans">• <%= act.title %>
+                  </div>
+                  <% } %>
+      </div>
+      <% }); %>
+  </div>
+  <% } %>
+
+    <!-- Day Photo Banner Below Activities (100% Full Width) -->
+    <% if (photoSrc) { %>
+      <div
+        style="width: 100%; height: 260px; border-radius: 14px; overflow: hidden; border: 1px solid #E5E7EB; box-shadow: 0 4px 10px rgba(0,0,0,0.1); margin-top: 14px; margin-bottom: 14px;">
+        <img src="<%= photoSrc %>" alt="Day <%= dayNum %>" style="width: 100%; height: 100%; object-fit: cover;" />
+      </div>
+      <% } %>
+
+        <!-- Accommodation Bar if Available -->
+        <% if (stayObj) { %>
+          <div
+            style="margin-top: 12px; padding-top: 10px; border-top: 1px dashed #E5E7EB; display: flex; align-items: center; justify-content: space-between; font-size: 10.5px;"
+            class="pdf-font-sans">
+            <div style="display: flex; align-items: center; gap: 8px; color: #123B2A; font-weight: 600;">
+              <span style="color: #123B2A; font-size: 14px;">🏨</span>
+              <span>Curated Accommodation: <strong style="font-size: 12.5px;" class="pdf-font-serif">
+                  <%= stayObj.name || stayObj.hotelName || 'Curated Heritage Stay' %>
+                </strong></span>
+            </div>
+            <% if (stayObj.rating) { %>
+              <span
+                style="color: #123B2A; font-weight: 700; background-color: #FFFFFF; border: 1px solid #E5E7EB; padding: 2px 10px; border-radius: 9999px;">★
+                <%= stayObj.rating %>
+              </span>
+              <% } %>
+          </div>
+          <% } %>
+    </div>
+
+    <% }); %>
+              </div>
+              </section>
+
+              <!-- ========================================================================= -->
+              <!-- 5. LUXURY EXPERIENCES SECTION (ISOLATED ON ITS OWN DEDICATED PAGE) -->
+              <!-- ========================================================================= -->
+              <section
+                style="page-break-before: always; break-before: page; background-color: transparent; border: none; padding: 24px 0 16px 0; margin-bottom: 16px; box-sizing: border-box; page-break-inside: avoid; break-inside: avoid;">
+                <!-- Section Header with Lotus Header SVG & Generous Spacing -->
+                <div style="text-align: center; margin-bottom: 24px;">
+                  <div style="display: flex; justify-content: center; margin-bottom: 8px;">
+                    <svg viewBox="0 0 60 40" style="width: 34px; height: 24px;" fill="none"
+                      xmlns="http://www.w3.org/2000/svg">
+                      <defs>
+                        <linearGradient id="lotusGoldHeaderEjs" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <stop offset="0%" stop-color="#F5DC9A" />
+                          <stop offset="50%" stop-color="#C99D40" />
+                          <stop offset="100%" stop-color="#A87720" />
+                        </linearGradient>
+                      </defs>
+                      <path d="M 30,5 C 27,14 26,24 30,34 C 34,24 33,14 30,5 Z" fill="url(#lotusGoldHeaderEjs)"
+                        opacity="0.95" />
+                      <path d="M 30,12 C 22,18 20,27 25,34 C 28,29 29,22 30,12 Z" fill="url(#lotusGoldHeaderEjs)"
+                        opacity="0.8" />
+                      <path d="M 30,12 C 38,18 40,27 35,34 C 32,29 31,22 30,12 Z" fill="url(#lotusGoldHeaderEjs)"
+                        opacity="0.8" />
+                      <path d="M 28,18 C 16,22 13,31 20,35 C 24,31 26,26 28,18 Z" fill="url(#lotusGoldHeaderEjs)"
+                        opacity="0.65" />
+                      <path d="M 32,18 C 44,22 47,31 40,35 C 36,31 34,26 32,18 Z" fill="url(#lotusGoldHeaderEjs)"
+                        opacity="0.65" />
+                      <path d="M 17,35 Q 30,38 43,35 Q 30,36 17,35 Z" fill="url(#lotusGoldHeaderEjs)" />
+                      <circle cx="30" cy="37" r="1.5" fill="url(#lotusGoldHeaderEjs)" />
+                    </svg>
+                  </div>
+                  <h3
+                    style="font-size: 22px; font-weight: 600; text-transform: uppercase; letter-spacing: 3px; color: #123B2A; margin: 0;"
+                    class="pdf-font-serif">
+                    LUXURY EXPERIENCES
+                  </h3>
+                  <p style="font-size: 9px; font-weight: 600; color: #B38320; text-transform: uppercase; letter-spacing: 2px; margin: 6px 0 0 0;"
+                    class="pdf-font-sans">
+                    ✦ TIMELESS MOMENTS IN <%= (itinerary.state || itinerary.destination || 'UTTAR PRADESH').toUpperCase() %> ✦
+                  </p>
+                </div>
+
+                <!-- Dynamic Experience Cards Grid (3 Columns x Rows) -->
+                <% 
+                  var expList = Array.isArray(itinerary.luxuryExperiences) ? itinerary.luxuryExperiences : [];
+                  var numCols = expList.length === 1 ? 1 : expList.length === 2 ? 2 : (expList.length === 4 ? 2 : 3);
+                %>
+                <% if (expList.length > 0) { %>
+                  <div style="display: grid; grid-template-columns: repeat(<%= numCols %>, 1fr); gap: 12px;">
+                    <% expList.forEach(function(exp, expIdx) { %>
+                      <div
+                        style="position: relative; background-color: transparent; border: none; min-height: 250px; padding: 22px 14px 18px 14px; display: flex; flex-direction: column; justify-content: space-between; align-items: center; text-align: center; box-sizing: border-box; filter: drop-shadow(0 4px 8px rgba(0,0,0,0.12));">
+                        <!-- Exact Inline SVG vector of luxury_card_frame_burgundy.svg (Ensures 100% html2canvas & jsPDF rendering) -->
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 400" preserveAspectRatio="none"
+                          style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1;">
+                          <defs>
+                            <linearGradient id="burGoldGrad_<%= expIdx %>" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stop-color="#FFEAA8" />
+                              <stop offset="20%" stop-color="#E5B942" />
+                              <stop offset="45%" stop-color="#FDF1BF" />
+                              <stop offset="70%" stop-color="#C59328" />
+                              <stop offset="90%" stop-color="#E7BA4B" />
+                              <stop offset="100%" stop-color="#A57319" />
+                            </linearGradient>
+
+                            <linearGradient id="burGoldInner_<%= expIdx %>" x1="0%" y1="0%" x2="100%" y2="100%">
+                              <stop offset="0%" stop-color="#F9E2A0" stop-opacity="0.9" />
+                              <stop offset="35%" stop-color="#E0B13D" stop-opacity="0.75" />
+                              <stop offset="100%" stop-color="#C4922A" stop-opacity="0.85" />
+                            </linearGradient>
+
+                            <radialGradient id="burBurgundyBg_<%= expIdx %>" cx="50%" cy="30%" r="80%">
+                              <stop offset="0%" stop-color="#8B1E2D" />
+                              <stop offset="35%" stop-color="#8B1E2D" />
+                              <stop offset="75%" stop-color="#8B1E2D" />
+                              <stop offset="100%" stop-color="#8B1E2D" />
+                            </radialGradient>
+                          </defs>
+
+                          <!-- Deep Royal Burgundy Velvet Base Fill with Royal Top Arch Crest & Increased Border Radius (R=30) -->
+                          <path
+                            d="M 36,14 L 105,14 Q 122,14 130,8 Q 135,4 140,2 Q 145,4 150,8 Q 158,14 175,14 L 244,14 Q 274,14 274,44 L 274,360 Q 274,390 244,390 L 36,390 Q 6,390 6,360 L 6,44 Q 6,14 36,14 Z"
+                            fill="url(#burBurgundyBg_<%= expIdx %>)" />
+
+                          <!-- Outer Metallic Gold Border with Increased Border Radius (R=30) -->
+                          <path
+                            d="M 36,14 L 105,14 Q 122,14 130,8 Q 135,4 140,2 Q 145,4 150,8 Q 158,14 175,14 L 244,14 Q 274,14 274,44 L 274,360 Q 274,390 244,390 L 36,390 Q 6,390 6,360 L 6,44 Q 6,14 36,14 Z"
+                            fill="none" stroke="url(#burGoldGrad_<%= expIdx %>)" stroke-width="1.8" />
+
+                          <!-- Top Center Golden Finial Crest -->
+                          <polygon points="140,0 144,4 140,8 136,4" fill="url(#burGoldGrad_<%= expIdx %>)" />
+
+                          <!-- Inner Inset Parallel Gold Border with Concentric Matching Radius -->
+                          <path
+                            d="M 36,20 L 107,20 Q 123,20 131,14 Q 136,10 140,8 Q 144,10 149,14 Q 157,20 173,20 L 244,20 Q 268,20 268,44 L 268,360 Q 268,384 244,384 L 36,384 Q 12,384 12,360 L 12,44 Q 12,20 36,20 Z"
+                            fill="none" stroke="url(#burGoldInner_<%= expIdx %>)" stroke-width="0.85" />
+
+                          <!-- Corner Flourish Accents in Gold -->
+                          <g fill="none" stroke="url(#burGoldGrad_<%= expIdx %>)" stroke-width="0.9"
+                            stroke-linecap="round">
+                            <path d="M 22,36 Q 28,36 28,30" />
+                            <path d="M 258,36 Q 252,36 252,30" />
+                            <path d="M 22,368 Q 28,368 28,374" />
+                            <path d="M 258,368 Q 252,368 252,374" />
+                          </g>
+
+                          <!-- Corner Accent Dots -->
+                          <g fill="url(#burGoldGrad_<%= expIdx %>)">
+                            <circle cx="28" cy="36" r="1.3" />
+                            <circle cx="252" cy="36" r="1.3" />
+                            <circle cx="28" cy="368" r="1.3" />
+                            <circle cx="252" cy="368" r="1.3" />
+                          </g>
+                        </svg>
+
+                        <!-- Content Layer (z-index 10) -->
+                        <div
+                          style="position: relative; z-index: 10; width: 100%; height: 100%; display: flex; flex-direction: column; justify-content: space-between; align-items: center; flex: 1;">
+
+                          <!-- Top Section: Ornate Gold Compass Medallion SVG -->
+                          <div style="display: flex; justify-content: center; margin-top: 4px; margin-bottom: 6px;">
+                            <svg viewBox="0 0 140 70" style="width: 142px; height: 66px;" fill="none"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <defs>
+                                <linearGradient id="ringGrad_<%= expIdx %>" x1="0%" y1="0%" x2="100%" y2="100%">
+                                  <stop offset="0%" stop-color="#FFEAA8" />
+                                  <stop offset="50%" stop-color="#C99D40" />
+                                  <stop offset="100%" stop-color="#A87720" />
+                                </linearGradient>
+                              </defs>
+
+                              <!-- Left Filigree Scrolls - Clean Transparent Fill -->
+                              <g stroke="url(#ringGrad_<%= expIdx %>)" fill="none" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M 38,35 C 33,35 24,31 16,35 C 24,39 31,37 38,35" stroke-width="1.3" />
+                                <path d="M 33,32 C 26,27 20,28 17,32" stroke-width="1.1" />
+                                <path d="M 33,38 C 26,43 20,42 17,38" stroke-width="1.1" />
+                                <path d="M 16,35 Q 11,35 8,32" stroke-width="1.1" />
+                                <circle cx="7.5" cy="31.5" r="1" fill="url(#ringGrad_<%= expIdx %>)" />
+                                <circle cx="21" cy="28" r="0.9" fill="url(#ringGrad_<%= expIdx %>)" />
+                                <circle cx="21" cy="42" r="0.9" fill="url(#ringGrad_<%= expIdx %>)" />
+                              </g>
+
+                              <!-- Right Filigree Scrolls - Clean Transparent Fill -->
+                              <g stroke="url(#ringGrad_<%= expIdx %>)" fill="none" stroke-linecap="round"
+                                stroke-linejoin="round">
+                                <path d="M 102,35 C 107,35 116,31 124,35 C 116,39 109,37 102,35" stroke-width="1.3" />
+                                <path d="M 107,32 C 114,27 120,28 123,32" stroke-width="1.1" />
+                                <path d="M 107,38 C 114,43 120,42 123,38" stroke-width="1.1" />
+                                <path d="M 124,35 Q 129,35 132,32" stroke-width="1.1" />
+                                <circle cx="132.5" cy="31.5" r="1" fill="url(#ringGrad_<%= expIdx %>)" />
+                                <circle cx="119" cy="28" r="0.9" fill="url(#ringGrad_<%= expIdx %>)" />
+                                <circle cx="119" cy="42" r="0.9" fill="url(#ringGrad_<%= expIdx %>)" />
+                              </g>
+
+                              <!-- Base Circle & Gold Rings - Transparent background (no dark burgundy fill) -->
+                              <circle cx="70" cy="35" r="26" stroke="url(#ringGrad_<%= expIdx %>)" stroke-width="1.0"
+                                stroke-dasharray="1.5,2.5" fill="none" opacity="0.8" />
+                              <circle cx="70" cy="35" r="28" stroke="url(#ringGrad_<%= expIdx %>)" stroke-width="2.0"
+                                fill="none" />
+
+                              <!-- Dynamic Bespoke Experience Icon Vector - Reduced size (42x42), Centered at (70, 35) -->
+                              <% var currentIconKey = exp.iconKey || 'default-luxury'; %>
+                              <svg x="49" y="14" width="42" height="42" viewBox="0 0 32 32" stroke="url(#ringGrad_<%= expIdx %>)" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                                <% if (currentIconKey === 'tea-estate') { %>
+                                  <path d="M 16,5 C 14.8,9 14.8,13 16,16 C 17.2,13 17.2,9 16,5 Z" fill="#FFEAA8" stroke-width="1.1" />
+                                  <path d="M 16,13 C 10.5,11.5 7.5,7 7.5,3.5 C 11.5,3.5 14.5,8.5 16,13 Z" fill="#FFEAA8" fill-opacity="0.35" stroke-width="1.1" />
+                                  <path d="M 16,13 C 21.5,11.5 24.5,7 24.5,3.5 C 20.5,3.5 17.5,8.5 16,13 Z" fill="#FFEAA8" fill-opacity="0.35" stroke-width="1.1" />
+                                  <path d="M 10.5,19 C 10.5,23.5 12.8,25.5 16,25.5 C 19.2,25.5 21.5,23.5 21.5,19 L 10.5,19 Z" fill="#FFEAA8" fill-opacity="0.25" stroke-width="1.2" />
+                                  <line x1="9" y1="19" x2="23" y2="19" stroke-width="1.3" />
+                                  <path d="M 21.5,19.5 C 24.5,19.5 25,23 21.5,23.5" stroke-width="1.1" />
+                                  <path d="M 8,27.5 Q 16,29.5 24,27.5" stroke-width="1.3" />
+                                  <circle cx="16" cy="1.8" r="0.9" fill="#FFEAA8" stroke="none" />
+                                <% } else if (currentIconKey === 'luxury-suv') { %>
+                                  <polygon points="16,2 17.2,4.3 19.5,5 17.2,5.7 16,8 14.8,5.7 12.5,5 14.8,4.3" fill="#FFEAA8" stroke="none" />
+                                  <line x1="11" y1="9.5" x2="21" y2="9.5" stroke-width="1.3" />
+                                  <polygon points="11,9.5 7.5,15.5 24.5,15.5 21,9.5" fill="#FFEAA8" fill-opacity="0.3" stroke-width="1.2" />
+                                  <path d="M 6.5,15.5 L 25.5,15.5" stroke-width="1.3" />
+                                  <path d="M 6.5,15.5 L 6.5,22.5 L 9.5,22.5 L 9.5,25.5 L 22.5,25.5 L 22.5,22.5 L 25.5,22.5 L 25.5,15.5" stroke-width="1.3" />
+                                  <rect x="11.5" y="17.5" width="9" height="4.5" rx="0.8" fill="#FFEAA8" fill-opacity="0.2" stroke-width="1.0" />
+                                  <polygon points="7.5,17 10,17 9.5,19 7.5,18.5" fill="#FFEAA8" stroke="none" />
+                                  <polygon points="24.5,17 22,17 22.5,19 24.5,18.5" fill="#FFEAA8" stroke="none" />
+                                  <rect x="4.8" y="20.5" width="2.2" height="5.5" rx="0.6" fill="#FFEAA8" stroke="none" />
+                                  <rect x="25" y="20.5" width="2.2" height="5.5" rx="0.6" fill="#FFEAA8" stroke="none" />
+                                <% } else if (currentIconKey === 'umiam-lake') { %>
+                                  <circle cx="16" cy="8.5" r="3.2" fill="#FFEAA8" fill-opacity="0.35" stroke-width="1.1" />
+                                  <path d="M 3,15 Q 9,10.5 16,13.5 Q 23,9.5 29,14" stroke-width="1.2" />
+                                  <polygon points="6.5,17.5 8,13.5 9.5,17.5" fill="#FFEAA8" fill-opacity="0.6" stroke-width="0.8" />
+                                  <path d="M 19,19.2 L 24.5,19.2 L 23.5,20.5 L 19.8,20.5 Z" fill="#FFEAA8" stroke="none" />
+                                  <path d="M 22,14.8 L 22,18.8 L 24.5,18.8 Z" fill="#FFEAA8" fill-opacity="0.6" stroke-width="0.9" />
+                                  <path d="M 4,21 Q 10,19.5 16,21 Q 22,22.5 28,21" stroke-width="1.2" />
+                                  <path d="M 7,24.5 Q 16,23 25,24.5" stroke-width="1.1" />
+                                <% } else if (currentIconKey === 'curated-dining' || currentIconKey === 'dining') { %>
+                                  <!-- Spoon (tilted +45deg to top-right) -->
+                                  <g transform="rotate(45 16 16)">
+                                    <path
+                                      fill="url(#ringGrad_<%= expIdx %>)"
+                                      fill-rule="evenodd"
+                                      stroke="none"
+                                      d="
+                                        M 15.1,26.5 
+                                        A 0.9,0.9 0 0 0 16.9,26.5 
+                                        L 16.9,13.5 
+                                        C 16.9,12.5 19.4,11.8 19.4,8.5 
+                                        C 19.4,5.8 17.8,4.2 16,4.2 
+                                        C 14.2,4.2 12.6,5.8 12.6,8.5 
+                                        C 12.6,11.8 15.1,12.5 15.1,13.5 
+                                        Z 
+
+                                        M 16,5.7 
+                                        C 17.4,5.7 17.8,7.0 17.8,8.6 
+                                        C 17.8,10.2 17.4,11.5 16,11.5 
+                                        C 14.6,11.5 14.2,10.2 14.2,8.6 
+                                        C 14.2,7.0 14.6,5.7 16,5.7 
+                                        Z
+                                      "
+                                    />
+                                  </g>
+
+                                  <!-- Fork (tilted -45deg to top-left) -->
+                                  <g transform="rotate(-45 16 16)">
+                                    <path
+                                      fill="url(#ringGrad_<%= expIdx %>)"
+                                      stroke="none"
+                                      d="
+                                        M 15.1,26.5 
+                                        A 0.9,0.9 0 0 0 16.9,26.5 
+                                        L 16.9,13.5 
+                                        C 16.9,12 19.2,11.5 19.2,10.5 
+                                        L 19.2,4.8 
+                                        Q 19.2,4.2 18.5,4.2 
+                                        Q 17.8,4.2 17.8,4.8 
+                                        L 17.8,9.8 
+                                        Q 17.2,10.5 16.6,9.8 
+                                        L 16.6,4.8 
+                                        Q 16.6,4.2 16,4.2 
+                                        Q 15.4,4.2 15.4,4.8 
+                                        L 15.4,9.8 
+                                        Q 14.8,10.5 14.2,9.8 
+                                        L 14.2,4.8 
+                                        Q 14.2,4.2 13.5,4.2 
+                                        Q 12.8,4.2 12.8,4.8 
+                                        L 12.8,10.5 
+                                        C 12.8,11.5 15.1,12 15.1,13.5 
+                                        Z
+                                      "
+                                    />
+                                  </g>
+                                <% } else if (currentIconKey === 'living-root') { %>
+                                  <path d="M 3,11 C 4,15 4,20 3,25" stroke-width="1.5" />
+                                  <path d="M 29,9 C 28,14 28,20 29,25" stroke-width="1.5" />
+                                  <path d="M 3,15.5 C 8,13.5 14,13.5 19,12.5 C 24,11.5 28,14.5 29,14.5" stroke-width="1.5" />
+                                  <path d="M 3,18.5 C 9,17 16,17 22,16.5 C 26,16 29,17.5 29,17.5" stroke-width="1.7" />
+                                  <path d="M 8,15 Q 9,16.5 10,18" stroke-width="1.0" />
+                                  <path d="M 16,14 Q 17,16 18,17.5" stroke-width="1.0" />
+                                  <path d="M 9.5,18 C 9.5,21.5 10.5,23.5 9,25.5" stroke-width="1.0" />
+                                  <path d="M 15.5,17.5 C 16,20.5 15,22.5 15.5,25" stroke-width="1.0" />
+                                <% } else if (currentIconKey === 'wellness-leisure') { %>
+                                  <ellipse cx="16" cy="24.5" rx="8" ry="2.5" fill="#FFEAA8" fill-opacity="0.3" stroke-width="1.2" />
+                                  <ellipse cx="16" cy="20.5" rx="5.5" ry="2" fill="#FFEAA8" fill-opacity="0.4" stroke-width="1.2" />
+                                  <path d="M 16,7 C 14.5,11 14.5,15 16,18.5 C 17.5,15 17.5,11 16,7 Z" fill="#FFEAA8" stroke-width="1.1" />
+                                  <path d="M 16,11.5 C 12,13.5 11,16.5 13.5,18.5 C 15,17 15.5,14.5 16,11.5 Z" fill="#FFEAA8" fill-opacity="0.35" stroke-width="1.0" />
+                                  <path d="M 16,11.5 C 20,13.5 21,16.5 18.5,18.5 C 17,17 16.5,14.5 16,11.5 Z" fill="#FFEAA8" fill-opacity="0.35" stroke-width="1.0" />
+                                  <path d="M 6,28 Q 16,30 26,28" stroke-width="1.0" />
+                                <% } else if (currentIconKey === 'scenic-stops') { %>
+                                  <polygon points="16,2.5 17,4.5 19,5.5 17,6.5 16,8.5 15,6.5 13,5.5 15,4.5" fill="#FFEAA8" stroke="none" />
+                                  <polygon points="7,19 16,8 25,19" fill="#FFEAA8" fill-opacity="0.35" stroke-width="1.3" />
+                                  <path d="M 3,21 L 9.5,15.5 L 16.5,21" stroke-width="1.1" />
+                                  <polygon points="18.5,13.5 25.5,9.5 26.5,11.5 19.5,15.5" fill="#FFEAA8" stroke-width="1.0" />
+                                  <circle cx="21" cy="15.5" r="1" fill="#FFEAA8" stroke="none" />
+                                  <line x1="21" y1="16.5" x2="18" y2="25" stroke-width="1.1" />
+                                  <line x1="21" y1="16.5" x2="25" y2="25" stroke-width="1.1" />
+                                <% } else if (currentIconKey === 'sunrise-ganges') { %>
+                                  <path d="M 10,18 A 6,6 0 0 1 22,18 Z" fill="#FFEAA8" fill-opacity="0.5" stroke-width="1.2" />
+                                  <line x1="16" y1="8.5" x2="16" y2="4.5" stroke-width="1.3" />
+                                  <line x1="11" y1="10.5" x2="8" y2="7.5" stroke-width="1.2" />
+                                  <line x1="21" y1="10.5" x2="24" y2="7.5" stroke-width="1.2" />
+                                  <polygon points="4,18 6,13 8,18" fill="#FFEAA8" stroke-width="0.9" />
+                                  <path d="M 24,18 L 26,14.5 L 28,18" stroke-width="1.1" />
+                                  <path d="M 3,20.5 Q 9,19 16,20.5 Q 23,22 29,20.5" stroke-width="1.2" />
+                                  <path d="M 5,23.5 Q 12,22 19,23.5 Q 26,25 29,23.5" stroke-width="1.1" />
+                                  <path d="M 13.5,23.5 Q 16,25.2 18.5,23.5 Z" fill="#FFEAA8" stroke="none" />
+                                  <path d="M 16,19.2 C 15,21 15,22.2 16,23.2 C 17,22.2 17,21 16,19.2 Z" fill="#FFEAA8" stroke="none" />
+                                <% } else if (currentIconKey === 'kashi-dining') { %>
+                                  <circle cx="15.5" cy="18" r="10.5" fill="#FFEAA8" fill-opacity="0.25" stroke-width="1.3" />
+                                  <circle cx="15.5" cy="12.5" r="2.2" fill="#FFEAA8" fill-opacity="0.4" stroke-width="0.9" />
+                                  <circle cx="10.5" cy="17" r="2.2" fill="#FFEAA8" fill-opacity="0.4" stroke-width="0.9" />
+                                  <circle cx="15.5" cy="21.5" r="2.2" fill="#FFEAA8" fill-opacity="0.4" stroke-width="0.9" />
+                                  <circle cx="20.5" cy="17" r="2.2" fill="#FFEAA8" fill-opacity="0.4" stroke-width="0.9" />
+                                  <polygon points="15.5,15.5 17,17 15.5,18.5 14,17" fill="#FFEAA8" stroke="none" />
+                                  <polygon points="23.5,6.5 27.5,6.5 26.5,12.5 24.5,12.5" fill="#FFEAA8" fill-opacity="0.4" stroke-width="1.0" />
+                                <% } else if (currentIconKey === 'private-transfers') { %>
+                                  <!-- Two Front Tires beneath bumper -->
+                                  <rect x="7.2" y="21.5" width="3.2" height="4" rx="1.2" fill="url(#ringGrad_<%= expIdx %>)" stroke="none" />
+                                  <rect x="21.6" y="21.5" width="3.2" height="4" rx="1.2" fill="url(#ringGrad_<%= expIdx %>)" stroke="none" />
+
+                                  <!-- Left & Right Side Mirrors -->
+                                  <ellipse cx="5.3" cy="14.2" rx="1.6" ry="1.1" fill="url(#ringGrad_<%= expIdx %>)" stroke="none" />
+                                  <path d="M 6.6,14.4 L 8.2,14.8" stroke="url(#ringGrad_<%= expIdx %>)" stroke-width="0.9" stroke-linecap="round" />
+                                  <ellipse cx="26.7" cy="14.2" rx="1.6" ry="1.1" fill="url(#ringGrad_<%= expIdx %>)" stroke="none" />
+                                  <path d="M 25.4,14.4 L 23.8,14.8" stroke="url(#ringGrad_<%= expIdx %>)" stroke-width="0.9" stroke-linecap="round" />
+
+                                  <!-- Solid Luxury Car Silhouette with EvenOdd Cutouts for Windshield, Headlights & Grille -->
+                                  <path
+                                    fill="url(#ringGrad_<%= expIdx %>)"
+                                    fill-rule="evenodd"
+                                    stroke="none"
+                                    d="
+                                      M 12.6,7.5 
+                                      L 19.4,7.5 
+                                      Q 20.3,7.5 20.8,8.8 
+                                      L 23.6,14.2 
+                                      Q 24.2,14.8 25.2,15.4 
+                                      Q 26.5,16.5 26.5,18.5 
+                                      L 26.5,21.5 
+                                      Q 26.5,23 25,23 
+                                      L 7,23 
+                                      Q 5.5,23 5.5,21.5 
+                                      L 5.5,18.5 
+                                      Q 5.5,16.5 6.8,15.4 
+                                      Q 7.8,14.8 8.4,14.2 
+                                      L 11.2,8.8 
+                                      Q 11.7,7.5 12.6,7.5 Z 
+
+                                      M 13,9 
+                                      L 19,9 
+                                      L 22.8,14 
+                                      L 9.2,14 Z 
+
+                                      M 8,17.2 
+                                      H 11.8 
+                                      Q 12.5,17.2 12.5,18.2 
+                                      Q 12.5,19.2 11.8,19.2 
+                                      H 8 
+                                      Q 7.3,19.2 7.3,18.2 
+                                      Q 7.3,17.2 8,17.2 Z 
+
+                                      M 20.2,17.2 
+                                      H 24 
+                                      Q 24.7,17.2 24.7,18.2 
+                                      Q 24.7,19.2 24,19.2 
+                                      H 20.2 
+                                      Q 19.5,19.2 19.5,18.2 
+                                      Q 19.5,17.2 20.2,17.2 Z 
+
+                                      M 14,18 
+                                      H 18 
+                                      Q 18.5,18 18.5,18.5 
+                                      Q 18.5,19 18,19 
+                                      H 14 
+                                      Q 13.5,19 13.5,18.5 
+                                      Q 13.5,18 14,18 Z 
+
+                                      M 14,20.2 
+                                      H 18 
+                                      Q 18.5,20.2 18.5,20.7 
+                                      Q 18.5,21.2 18,21.2 
+                                      H 14 
+                                      Q 13.5,21.2 13.5,20.7 
+                                      Q 13.5,20.2 14,20.2 Z
+                                    "
+                                  />
+
+                                  <!-- Headlight Inner Jeweled Bulbs -->
+                                  <circle cx="9.9" cy="18.2" r="0.75" fill="url(#ringGrad_<%= expIdx %>)" stroke="none" />
+                                  <circle cx="22.1" cy="18.2" r="0.75" fill="url(#ringGrad_<%= expIdx %>)" stroke="none" />
+                                <% } else if (currentIconKey === 'luxury-spa') { %>
+                                  <!-- Central Upright Petal -->
+                                  <path d="M 16,6.8 C 13.2,11 13.2,16.3 16,20.3 C 18.8,16.3 18.8,11 16,6.8 Z" stroke="url(#ringGrad_<%= expIdx %>)" stroke-width="1.2" fill="none" />
+
+                                  <!-- Inner Left & Right Flanking Petals -->
+                                  <path d="M 16,20.3 C 10.8,17.8 9.2,13.3 10.8,9.6 C 12.5,11.6 14.5,14.8 16,20.3 Z" stroke="url(#ringGrad_<%= expIdx %>)" stroke-width="1.2" fill="none" />
+                                  <path d="M 16,20.3 C 21.2,17.8 22.8,13.3 21.2,9.6 C 19.5,11.6 17.5,14.8 16,20.3 Z" stroke="url(#ringGrad_<%= expIdx %>)" stroke-width="1.2" fill="none" />
+
+                                  <!-- Outer Left & Right Ascending Petals -->
+                                  <path d="M 14.5,20.3 C 10.2,18.8 7.5,17 6.8,14 C 8.2,13.3 11,15.3 14.5,20.3 Z" stroke="url(#ringGrad_<%= expIdx %>)" stroke-width="1.2" fill="none" />
+                                  <path d="M 17.5,20.3 C 21.8,18.8 24.5,17 25.2,14 C 23.8,13.3 21,15.3 17.5,20.3 Z" stroke="url(#ringGrad_<%= expIdx %>)" stroke-width="1.2" fill="none" />
+
+                                  <!-- Bottom Left & Right Horizontal Base Petals -->
+                                  <path d="M 16,21.2 C 12.8,19.2 9.5,19.5 7.2,21.2 C 9.5,22.9 12.8,23.2 16,21.2 Z" stroke="url(#ringGrad_<%= expIdx %>)" stroke-width="1.2" fill="none" />
+                                  <path d="M 16,21.2 C 19.2,19.2 22.5,19.5 24.8,21.2 C 22.5,22.9 19.2,23.2 16,21.2 Z" stroke="url(#ringGrad_<%= expIdx %>)" stroke-width="1.2" fill="none" />
+                                <% } else if (currentIconKey === 'ganges-water') { %>
+                                  <path d="M 4,20 C 8,23 19,23.5 28,19 L 27,21.5 C 19,25 8,24.5 3,21 Z" fill="#FFEAA8" fill-opacity="0.35" stroke-width="1.3" />
+                                  <path d="M 10.5,15.5 Q 16,13 21.5,15.5 L 21,17 L 11,17 Z" fill="#FFEAA8" fill-opacity="0.4" stroke-width="1.1" />
+                                  <line x1="12" y1="17" x2="12" y2="20.5" stroke-width="1.0" />
+                                  <line x1="16" y1="17" x2="16" y2="21" stroke-width="1.0" />
+                                  <line x1="20" y1="17" x2="20" y2="20.5" stroke-width="1.0" />
+                                  <circle cx="26" cy="19.5" r="1.1" fill="#FFEAA8" stroke="none" />
+                                  <path d="M 3.5,24 Q 9,22.5 15,24 Q 21,25.5 26.5,24" stroke-width="1.2" />
+                                <% } else { %>
+                                  <!-- Fallback 4-Pointed Luxury Star -->
+                                  <path d="M 16,4.5 C 16,11 11.5,15.5 5,16 C 11.5,16.5 16,21 16,27.5 C 16,21 20.5,16.5 27,16 C 20.5,15.5 16,11 16,4.5 Z" fill="#FFEAA8" fill-opacity="0.35" stroke-width="1.3" />
+                                  <line x1="16" y1="4.5" x2="16" y2="27.5" stroke-width="1.0" />
+                                  <line x1="5" y1="16" x2="27" y2="16" stroke-width="1.0" />
+                                  <polygon points="16,12.5 19,16 16,19.5 13,16" fill="#FFEAA8" stroke-width="0.9" />
+                                <% } %>
+                              </svg>
+                            </svg>
+                          </div>
+
+                          <!-- Middle Section: Title & Description (Evenly Spaced - No Overlap) -->
+                          <div
+                            style="margin: auto 0; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 4px 6px;">
+                            <h4
+                              style="font-size: 13px; font-weight: 700; text-transform: uppercase; color: #FFFFFF; margin: 0 0 8px 0; letter-spacing: 1px; line-height: 1.35; display: block;"
+                              class="pdf-font-serif">
+                              <%= exp.title %>
+                            </h4>
+                            <!-- Delicate Horizontal Accent Line Below Title with Clear Margin -->
+                            <div
+                              style="width: 48px; height: 1px; background: linear-gradient(to right, transparent, #FFEAA8, transparent); margin: 0 auto 12px auto;">
+                            </div>
+                            <p style="font-size: 9.5px; color: #F3EDE3; line-height: 1.45; margin: 0; font-weight: 400; padding: 0 2px;"
+                              class="pdf-font-sans">
+                              <%= exp.description %>
+                            </p>
+                          </div>
+
+                          <!-- Bottom Section: Delicate Gold Filigree Divider -->
+                          <div style="display: flex; justify-content: center; margin-top: 8px; margin-bottom: 4px;">
+                            <svg viewBox="0 0 120 12" style="width: 80px; height: 10px;" fill="none"
+                              xmlns="http://www.w3.org/2000/svg">
+                              <line x1="12" y1="6" x2="48" y2="6" stroke="#FFEAA8" stroke-width="1"
+                                stroke-linecap="round" opacity="0.75" />
+                              <line x1="72" y1="6" x2="108" y2="6" stroke="#FFEAA8" stroke-width="1"
+                                stroke-linecap="round" opacity="0.75" />
+                              <circle cx="52" cy="6" r="1" fill="#FFEAA8" />
+                              <polygon points="60,1 63.5,6 60,11 56.5,6" fill="#C99D40" />
+                              <circle cx="68" cy="6" r="1" fill="#FFEAA8" />
+                            </svg>
+                          </div>
+
+                        </div>
+                      </div>
+                      <% }); %>
+                  </div>
+                <% } %>
+
+
+              </section>
+
+              <!-- ========================================================================= -->
+              <!-- 6. PACKAGE OPTIONS & INCLUSIONS / EXCLUSIONS (STARTS ON NEXT PAGE) -->
+              <!-- ========================================================================= -->
+              <section
+                style="page-break-before: always; break-before: page; margin-bottom: 16px; page-break-inside: avoid; break-inside: avoid;">
+                <!-- Section Header (Exact Match to Day Wise Itinerary Header) -->
+                <div style="text-align: center; margin-bottom: 16px; page-break-inside: avoid; break-inside: avoid;">
+                  <div style="display: flex; align-items: center; justify-content: center; gap: 16px;">
+                    <span
+                      style="display: inline-block; width: 75px; height: 1px; background-color: #C99D40; opacity: 0.8;"></span>
+                    <h3
+                      style="font-size: 20px; font-weight: 600; text-transform: uppercase; letter-spacing: 5px; color: #123B2A; margin: 0; white-space: nowrap; transform: translateY(-3px);"
+                      class="pdf-font-serif">
+                      PACKAGE INCLUSIONS & DETAILS
+                    </h3>
+                    <span
+                      style="display: inline-block; width: 75px; height: 1px; background-color: #C99D40; opacity: 0.8;"></span>
+                  </div>
+                </div>
+
+
+
+
+                <!-- 2 Package Pricing Cards (Royal & Premium Edition) -->
+                <div
+                  style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 16px; font-family: inherit;">
+
+                  <!-- Card 1: Premium Package -->
+                  <div
+                    style="background: radial-gradient(circle at top right, #1B4D36 0%, #0F2D20 100%); border: 1.5px solid #D4AF37; border-radius: 20px; padding: 16px 14px 14px 14px; text-align: center; box-sizing: border-box; box-shadow: 0 10px 25px rgba(15, 45, 32, 0.35); display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;">
+
+                    <!-- Subtle Inner Gold Glow Line -->
+                    <div
+                      style="position: absolute; top: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, transparent, #F3E5AB, transparent);">
+                    </div>
+
+                    <div>
+                      <!-- Package Title -->
+                      <div
+                        style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #F5DC9A; margin-bottom: 12px;"
+                        class="pdf-font-serif">
+                        PREMIUM PACKAGE
+                      </div>
+
+                      <!-- 4 Feature Icons & Labels Strip -->
+                      <div
+                        style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; border-bottom: 1px solid rgba(212, 175, 55, 0.25); padding-bottom: 10px; margin-bottom: 10px; text-align: center;">
+                        <!-- 1. 4★ Hotels -->
+                        <div
+                          style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+                          <svg viewBox="0 0 24 24"
+                            style="width: 16px; height: 16px; fill: none; stroke: #F5DC9A; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 3px;">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                          </svg>
+                          <span style="font-size: 8.5px; font-weight: 600; color: #E2ECE4; line-height: 1.2;"
+                            class="pdf-font-sans">4★ Hotels</span>
+                        </div>
+
+                        <!-- 2. Breakfast -->
+                        <div
+                          style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+                          <svg viewBox="0 0 24 24"
+                            style="width: 16px; height: 16px; fill: none; stroke: #F5DC9A; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 3px;">
+                            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                            <line x1="6" y1="1" x2="6" y2="4"></line>
+                            <line x1="10" y1="1" x2="10" y2="4"></line>
+                            <line x1="14" y1="1" x2="14" y2="4"></line>
+                          </svg>
+                          <span style="font-size: 8.5px; font-weight: 600; color: #E2ECE4; line-height: 1.2;"
+                            class="pdf-font-sans">Breakfast</span>
+                        </div>
+
+                        <!-- 3. Private Cab -->
+                        <div
+                          style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+                          <svg viewBox="0 0 24 24"
+                            style="width: 16px; height: 16px; fill: none; stroke: #F5DC9A; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 3px;">
+                            <path
+                              d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H7.5a1 1 0 0 0-.8.4L4 11l-5.16.86a1 1 0 0 0-.84.99V16h3">
+                            </path>
+                            <circle cx="6.5" cy="16.5" r="2.5"></circle>
+                            <circle cx="16.5" cy="16.5" r="2.5"></circle>
+                          </svg>
+                          <span style="font-size: 8.5px; font-weight: 600; color: #E2ECE4; line-height: 1.2;"
+                            class="pdf-font-sans">Private Cab</span>
+                        </div>
+
+                        <!-- 4. All Sightseeing -->
+                        <div
+                          style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+                          <svg viewBox="0 0 24 24"
+                            style="width: 16px; height: 16px; fill: none; stroke: #F5DC9A; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 3px;">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+                            </path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                          </svg>
+                          <span style="font-size: 8.5px; font-weight: 600; color: #E2ECE4; line-height: 1.2;"
+                            class="pdf-font-sans">All Sightseeing</span>
+                        </div>
+                      </div>
+
+                      <!-- Price Section -->
+                      <div
+                        style="font-size: 24px; font-weight: 700; color: #FFFFFF; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.3);"
+                        class="pdf-font-roman">
+                        INR <%= startingPrice ? startingPrice.toLocaleString('en-IN') : '29,999' %>/-
+                      </div>
+                      <div style="font-size: 9.5px; color: #C5D1C7; font-weight: 400; margin-top: 2px;"
+                        class="pdf-font-sans">For 1 to 2 Persons</div>
+                    </div>
+                  </div>
+
+                  <!-- Card 2: Luxury Package -->
+                  <div
+                    style="background: radial-gradient(circle at top right, #4A0E13 0%, #220508 100%); color: #FFFFFF; border: 2px solid #E6CA65; border-radius: 20px; padding: 16px 14px 14px 14px; text-align: center; box-sizing: border-box; box-shadow: 0 12px 30px rgba(74, 14, 19, 0.45); display: flex; flex-direction: column; justify-content: space-between; position: relative; overflow: hidden;">
+
+                    <div>
+                      <!-- Package Title -->
+                      <div
+                        style="font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #F5E6A3; margin-bottom: 12px;"
+                        class="pdf-font-serif">
+                        LUXURY PACKAGE
+                      </div>
+
+                      <!-- 4 Feature Icons & Labels Strip -->
+                      <div
+                        style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; border-bottom: 1px solid rgba(245, 230, 163, 0.25); padding-bottom: 10px; margin-bottom: 10px; text-align: center;">
+                        <!-- 1. 5★ Hotels -->
+                        <div
+                          style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+                          <svg viewBox="0 0 24 24"
+                            style="width: 16px; height: 16px; fill: none; stroke: #F5E6A3; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 3px;">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                          </svg>
+                          <span style="font-size: 8.5px; font-weight: 600; color: #F7F1E5; line-height: 1.2;"
+                            class="pdf-font-sans">5★ Hotels</span>
+                        </div>
+
+                        <!-- 2. All Meals -->
+                        <div
+                          style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+                          <svg viewBox="0 0 24 24"
+                            style="width: 16px; height: 16px; fill: none; stroke: #F5E6A3; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 3px;">
+                            <path d="M18 8h1a4 4 0 0 1 0 8h-1"></path>
+                            <path d="M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z"></path>
+                            <line x1="6" y1="1" x2="6" y2="4"></line>
+                            <line x1="10" y1="1" x2="10" y2="4"></line>
+                            <line x1="14" y1="1" x2="14" y2="4"></line>
+                          </svg>
+                          <span style="font-size: 8.5px; font-weight: 600; color: #F7F1E5; line-height: 1.2;"
+                            class="pdf-font-sans">All Meals</span>
+                        </div>
+
+                        <!-- 3. Private Cab -->
+                        <div
+                          style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+                          <svg viewBox="0 0 24 24"
+                            style="width: 16px; height: 16px; fill: none; stroke: #F5E6A3; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 3px;">
+                            <path
+                              d="M14 16H9m10 0h3v-3.15a1 1 0 0 0-.84-.99L16 11l-2.7-3.6a1 1 0 0 0-.8-.4H7.5a1 1 0 0 0-.8.4L4 11l-5.16.86a1 1 0 0 0-.84.99V16h3">
+                            </path>
+                            <circle cx="6.5" cy="16.5" r="2.5"></circle>
+                            <circle cx="16.5" cy="16.5" r="2.5"></circle>
+                          </svg>
+                          <span style="font-size: 8.5px; font-weight: 600; color: #F7F1E5; line-height: 1.2;"
+                            class="pdf-font-sans">Private Cab</span>
+                        </div>
+
+                        <!-- 4. All Sightseeing -->
+                        <div
+                          style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start;">
+                          <svg viewBox="0 0 24 24"
+                            style="width: 16px; height: 16px; fill: none; stroke: #F5E6A3; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; margin-bottom: 3px;">
+                            <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z">
+                            </path>
+                            <circle cx="12" cy="13" r="4"></circle>
+                          </svg>
+                          <span style="font-size: 8.5px; font-weight: 600; color: #F7F1E5; line-height: 1.2;"
+                            class="pdf-font-sans">All Sightseeing</span>
+                        </div>
+                      </div>
+
+                      <!-- Price Section -->
+                      <div
+                        style="font-size: 24px; font-weight: 700; color: #FFFFFF; letter-spacing: 0.5px; text-shadow: 0 2px 4px rgba(0,0,0,0.4);"
+                        class="pdf-font-roman">
+                        INR <%= luxuryPrice ? luxuryPrice.toLocaleString('en-IN') : '41,000' %>/-
+                      </div>
+                      <div style="font-size: 9.5px; color: #E3D5C0; font-weight: 400; margin-top: 2px;"
+                        class="pdf-font-sans">For 1 to 2 Persons</div>
+                    </div>
+                  </div>
+
+                </div>
+
+                <!-- Inclusions / Exclusions 2 Column Grid -->
+                <div
+                  style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 14px; box-sizing: border-box;">
+                  <div>
+                    <h4
+                      style="font-size: 12px; font-weight: 700; color: #15803D; text-transform: uppercase; margin: 0 0 8px 0; border-bottom: 1px solid #F0FDF4; padding-bottom: 4px; display: flex; align-items: center; gap: 4px;"
+                      class="pdf-font-sans">
+                      ✓ WHAT IS INCLUDED
+                    </h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                      <% (inclusions || []).forEach(function(inc) { 
+                          var text = (typeof inc === "object" && inc !== null) ? (inc.name || inc.title || inc.text || inc.description || "") : String(inc || "");
+                      %>
+                        <li
+                          style="display: flex; align-items: flex-start; gap: 6px; font-size: 10.5px; color: #374151; margin-bottom: 4px; line-height: 1.35;"
+                          class="pdf-font-sans">
+                          <span style="color: #16A34A; font-weight: bold; flex-shrink: 0;">✓</span>
+                          <span>
+                            <%= text %>
+                          </span>
+                        </li>
+                        <% }); %>
+                    </ul>
+                  </div>
+
+                  <div>
+                    <h4
+                      style="font-size: 12px; font-weight: 700; color: #B91C1C; text-transform: uppercase; margin: 0 0 8px 0; border-bottom: 1px solid #FEF2F2; padding-bottom: 4px; display: flex; align-items: center; gap: 4px;"
+                      class="pdf-font-sans">
+                      ✕ WHAT IS EXCLUDED
+                    </h4>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                      <% (exclusions || []).forEach(function(exc) { 
+                          var text = (typeof exc === "object" && exc !== null) ? (exc.name || exc.title || exc.text || exc.description || "") : String(exc || "");
+                      %>
+                        <li
+                          style="display: flex; align-items: flex-start; gap: 6px; font-size: 10.5px; color: #374151; margin-bottom: 4px; line-height: 1.35;"
+                          class="pdf-font-sans">
+                          <span style="color: #DC2626; font-weight: bold; flex-shrink: 0;">✕</span>
+                          <span>
+                            <%= text %>
+                          </span>
+                        </li>
+                        <% }); %>
+                    </ul>
+                  </div>
+                </div>
+
+
+              </section>
+
+              <!-- ========================================================================= -->
+              <!-- 7 & 8. CANCELLATION POLICY, COMPANY & BANK DETAILS (ISOLATED ON A SINGLE DEDICATED PAGE) -->
+              <!-- ========================================================================= -->
+              <div style="page-break-before: always; break-before: page; page-break-inside: avoid; break-inside: avoid; margin-bottom: 16px;">
+
+                <!-- 7. CANCELLATION & REFUND POLICY -->
+                <section
+                  style="background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 16px; margin-bottom: 14px; box-sizing: border-box; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04); page-break-inside: avoid; break-inside: avoid;">
+
+                  <!-- Section Header with Green Shield Icon -->
+                  <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 12px;">
+                    <svg viewBox="0 0 24 24" style="width: 17px; height: 17px; fill: #0D5C3A; flex-shrink: 0;">
+                      <path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/>
+                    </svg>
+                    <h3 style="font-size: 14.5px; font-weight: 700; color: #111827; margin: 0;" class="pdf-font-sans">
+                      Cancellation Policy
+                    </h3>
+                  </div>
+
+                  <!-- Table Header -->
+                  <div
+                    style="display: flex; justify-content: space-between; align-items: center; background-color: #F8FAFC; border-radius: 6px; padding: 8px 12px; margin-bottom: 2px; font-size: 11px; font-weight: 700; color: #1E293B;"
+                    class="pdf-font-sans">
+                    <span>Cancellation Window</span>
+                    <span>Refund Percentage</span>
+                  </div>
+
+                  <!-- Table Rows -->
+                  <div style="font-size: 11px; color: #475569;" class="pdf-font-sans">
+                    <!-- Row 1 -->
+                    <div
+                      style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #F1F5F9;">
+                      <span>16 – 20 days prior to arrival</span>
+                      <strong style="color: #1E293B;">75% refund</strong>
+                    </div>
+
+                    <!-- Row 2 -->
+                    <div
+                      style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #F1F5F9;">
+                      <span>11 – 15 days prior to arrival</span>
+                      <strong style="color: #1E293B;">50% refund</strong>
+                    </div>
+
+                    <!-- Row 3 -->
+                    <div
+                      style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px; border-bottom: 1px solid #F1F5F9;">
+                      <span>6 – 10 days prior to arrival</span>
+                      <strong style="color: #1E293B;">10% refund</strong>
+                    </div>
+
+                    <!-- Row 4 -->
+                    <div
+                      style="display: flex; justify-content: space-between; align-items: center; padding: 8px 12px;">
+                      <span>Less than 5 days prior to arrival</span>
+                      <strong style="color: #1E293B;">0% refund</strong>
+                    </div>
+                  </div>
+
+                  <!-- Dark Help Banner -->
+                  <div
+                    style="background-color: #0F172A; border-radius: 10px; padding: 12px 16px; margin-top: 10px; display: flex; justify-content: space-between; align-items: center; box-sizing: border-box;"
+                    class="pdf-font-sans">
+                    <div>
+                      <div style="font-size: 12.5px; font-weight: 700; color: #FFFFFF; margin-bottom: 2px;">
+                        Need help customizing this itinerary?
+                      </div>
+                      <div style="font-size: 9.5px; color: #94A3B8;">
+                        Talk directly with our global destination tour leaders.
+                      </div>
+                    </div>
+                    <div style="text-align: right; flex-shrink: 0;">
+                      <div style="font-size: 13.5px; font-weight: 800; color: #00D26A; letter-spacing: 0.5px; margin-bottom: 2px;">
+                        +91 9643182259
+                      </div>
+                      <div style="font-size: 9px; color: #CBD5E1;">
+                        support@encampadventures.com • encampadventures.com
+                      </div>
+                    </div>
+                  </div>
+
+                </section>
+
+                <!-- 8. COMPANY DETAILS & BANK ACCOUNT DETAILS -->
+                <section
+                  style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-bottom: 0; page-break-inside: avoid; break-inside: avoid;">
+
+                  <!-- Company Details Card -->
+                  <div
+                    style="background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 14px 16px; box-sizing: border-box; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);">
+                    <!-- Header -->
+                    <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 10px;">
+                      <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: none; stroke: #0D5C3A; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;">
+                        <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                        <line x1="9" y1="22" x2="9" y2="22.01"></line>
+                        <line x1="15" y1="22" x2="15" y2="22.01"></line>
+                        <line x1="8" y1="6" x2="8" y2="6.01"></line>
+                        <line x1="12" y1="6" x2="12" y2="6.01"></line>
+                        <line x1="16" y1="6" x2="16" y2="6.01"></line>
+                        <line x1="8" y1="10" x2="8" y2="10.01"></line>
+                        <line x1="12" y1="10" x2="12" y2="10.01"></line>
+                        <line x1="16" y1="10" x2="16" y2="10.01"></line>
+                        <line x1="8" y1="14" x2="8" y2="14.01"></line>
+                        <line x1="12" y1="14" x2="12" y2="14.01"></line>
+                        <line x1="16" y1="14" x2="16" y2="14.01"></line>
+                      </svg>
+                      <h4 style="font-size: 13.5px; font-weight: 700; color: #0F172A; margin: 0;" class="pdf-font-sans">
+                        Company Details
+                      </h4>
+                    </div>
+
+                    <!-- Details Rows -->
+                    <div style="font-size: 10px; color: #64748B;" class="pdf-font-sans">
+                      <div style="display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #F1F5F9;">
+                        <span>Company Name</span>
+                        <strong style="color: #0F172A; text-align: right;">Encamp Tourism Pvt. Ltd.</strong>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #F1F5F9;">
+                        <span>GSTIN No</span>
+                        <strong style="color: #0F172A; text-align: right;">18AAFCE4906P1Z6</strong>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; align-items: flex-start; padding: 7px 0; border-bottom: 1px solid #F1F5F9; gap: 8px;">
+                        <span style="flex-shrink: 0;">Address</span>
+                        <strong style="color: #0F172A; text-align: right; line-height: 1.35; max-width: 190px;">07, Jhilmil Path, Survey (Beltola), Beltola Tiniali, Guwahati, Assam 781028</strong>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; padding: 7px 0;">
+                        <span>Phone</span>
+                        <strong style="color: #0F172A; text-align: right;">096431 82259</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                  <!-- Bank Account Details Card -->
+                  <div
+                    style="background-color: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 14px; padding: 14px 16px; box-sizing: border-box; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);">
+                    <!-- Header -->
+                    <div style="display: flex; align-items: center; gap: 7px; margin-bottom: 10px;">
+                      <svg viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: none; stroke: #0D5C3A; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;">
+                        <line x1="3" y1="21" x2="21" y2="21"></line>
+                        <line x1="3" y1="10" x2="21" y2="10"></line>
+                        <polyline points="3 10 12 3 21 10"></polyline>
+                        <line x1="6" y1="10" x2="6" y2="21"></line>
+                        <line x1="10" y1="10" x2="10" y2="21"></line>
+                        <line x1="14" y1="10" x2="14" y2="21"></line>
+                        <line x1="18" y1="10" x2="18" y2="21"></line>
+                      </svg>
+                      <h4 style="font-size: 13.5px; font-weight: 700; color: #0F172A; margin: 0;" class="pdf-font-sans">
+                        Bank Account Details
+                      </h4>
+                    </div>
+
+                    <!-- Details Rows -->
+                    <div style="font-size: 10px; color: #64748B;" class="pdf-font-sans">
+                      <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #F1F5F9;">
+                        <span>Bank</span>
+                        <strong style="color: #0F172A; text-align: right;">Kotak Mahindra</strong>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #F1F5F9;">
+                        <span>Account Type</span>
+                        <strong style="color: #0F172A; text-align: right;">CURRENT ACCOUNT</strong>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #F1F5F9;">
+                        <span>Account Name</span>
+                        <strong style="color: #0F172A; text-align: right;">Encamp Tourism Pvt. Ltd.</strong>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #F1F5F9;">
+                        <span>Account Number</span>
+                        <strong style="color: #0F172A; text-align: right;">5912834521</strong>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #F1F5F9;">
+                        <span>IFSC Code</span>
+                        <strong style="color: #0F172A; text-align: right;">KKBK0000331</strong>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px solid #F1F5F9;">
+                        <span>Branch</span>
+                        <strong style="color: #0F172A; text-align: right;">Guwahati 331</strong>
+                      </div>
+                      <div style="display: flex; justify-content: space-between; align-items: center; padding: 5px 0;">
+                        <span>GSTIN</span>
+                        <strong style="color: #0F172A; text-align: right;">18AAFCE4906P1Z6</strong>
+                      </div>
+                    </div>
+                  </div>
+
+                </section>
+
+              </div>
+
+              <!-- ========================================================================= -->
+              <!-- 9. FOOTER -->
+              <!-- ========================================================================= -->
+              <!-- HTML Preview Mode Fallback Footer (Hidden during PDF print as Puppeteer renders footerTemplate at the extreme bottom of every page) -->
+              <div class="html-only-footer" style="margin-top: 24px;">
+                <% if (footerImageSrc) { %>
+                  <div style="width: 100%; text-align: center; margin-bottom: 8px;">
+                    <img src="<%= footerImageSrc %>" alt="Encamp Privé Footer" style="width: 100%; height: auto; display: block; margin: 0; border: none;" />
+                  </div>
+                <% } %>
+                <footer
+                  style="padding-top: 10px; border-top: 1px solid #E5E7EB; display: flex; justify-content: space-between; align-items: center; font-size: 8.5px; color: #6B7280;"
+                  class="pdf-font-sans">
+                  <div>
+                    Encamp Privé • Carbon Neutral Expeditions • 66 kg CO₂ Offset per traveller
+                  </div>
+                  <div>
+                    Concierge: concierge@encampprive.com
+                  </div>
+                </footer>
+              </div>
+              </div>

@@ -354,13 +354,16 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
               />
             </div>
 
-            {/* Header with horizontal lines */}
-            <div className="flex items-center justify-center gap-3 pb-3 border-b border-[#e2d8c3]">
-              <span className="h-[1px] w-12 sm:w-16 bg-[#c8b79b]" />
-              <h2 className="font-serif-display text-base sm:text-lg md:text-xl font-black uppercase tracking-[0.2em] text-forest">
-                Day Wise Itinerary
-              </h2>
-              <span className="h-[1px] w-12 sm:w-16 bg-[#c8b79b]" />
+            {/* Header with horizontal lines (Exact match to reference image) */}
+            <div className="flex flex-col items-center justify-center mb-5">
+              <div className="flex items-center justify-center gap-3 sm:gap-4 mb-1">
+                <span className="h-[1px] w-12 sm:w-16 md:w-20 bg-[#C99D40]/80 inline-block" />
+                <h2 className="font-serif-display text-base sm:text-lg md:text-xl font-semibold uppercase tracking-[0.25em] text-[#123B2A] whitespace-nowrap -translate-y-[3px]">
+                  DAY WISE ITINERARY
+                </h2>
+                <span className="h-[1px] w-12 sm:w-16 md:w-20 bg-[#C99D40]/80 inline-block" />
+              </div>
+              <div className="w-full h-[1px] bg-[#E2D8C3] mt-1" />
             </div>
 
             {/* List of Days */}
@@ -398,8 +401,8 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
                     {/* 3. Day Title & Activities Timeline (Below on phone, right-side on sm+) */}
                     <div className="w-full sm:flex-1 min-w-0 relative font-poppins">
-                      {/* Title with Location Pin Marker */}
-                      <div className="flex items-start gap-1.5 sm:gap-2">
+                      {/* Title with Location Pin Marker (Starts from Top Alignment with Circle) */}
+                      <div className="flex items-start pt-1 gap-1.5 sm:gap-2">
                         <svg
                           viewBox="0 0 24 24"
                           className="w-4 h-4 sm:w-5 sm:h-5 text-primary-green shrink-0 mt-0.5"
@@ -488,13 +491,13 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
                   {/* Column 1: DAYS */}
                   <div className="px-0.5 flex flex-col items-center justify-start text-center py-0.5 h-full">
-                    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full overflow-hidden mb-1.5 shadow-xs shrink-0 flex items-center justify-center">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 mb-1 shrink-0 flex items-center justify-center">
                       <Image
                         src="/images/calendar.png"
                         alt="Days"
-                        width={44}
-                        height={44}
-                        className="w-full h-full object-cover"
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-contain"
                       />
                     </div>
                     <div className="font-poppins text-sm sm:text-base font-semibold text-primary-green leading-none">
@@ -507,13 +510,13 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
                   {/* Column 2: NIGHTS */}
                   <div className="px-0.5 flex flex-col items-center justify-start text-center py-0.5 h-full">
-                    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full overflow-hidden mb-1.5 shadow-xs shrink-0 flex items-center justify-center">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 mb-1 shrink-0 flex items-center justify-center">
                       <Image
                         src="/images/night.png"
                         alt="Nights"
-                        width={44}
-                        height={44}
-                        className="w-full h-full object-cover"
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-contain"
                       />
                     </div>
                     <div className="font-poppins text-sm sm:text-base font-semibold text-primary-green leading-none">
@@ -526,13 +529,13 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
                   {/* Column 3: EXPERIENCES */}
                   <div className="px-0.5 flex flex-col items-center justify-start text-center py-0.5 h-full">
-                    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full overflow-hidden mb-1.5 shadow-xs shrink-0 flex items-center justify-center">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 mb-1 shrink-0 flex items-center justify-center">
                       <Image
                         src="/images/hill.png"
                         alt="Experiences"
-                        width={44}
-                        height={44}
-                        className="w-full h-full object-cover"
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-contain"
                       />
                     </div>
                     <div className="font-poppins text-sm sm:text-base font-semibold text-primary-green leading-none">
@@ -545,13 +548,13 @@ export default function ReferencePosterBody({ itinerary, onOpenEnquiry }) {
 
                   {/* Column 4: UNFORGETTABLE JOURNEY */}
                   <div className="px-0.5 flex flex-col items-center justify-start text-center py-0.5 h-full">
-                    <div className="w-9 h-9 sm:w-11 sm:h-11 rounded-full overflow-hidden mb-1.5 shadow-xs shrink-0 flex items-center justify-center">
+                    <div className="w-10 h-10 sm:w-12 sm:h-12 mb-1 shrink-0 flex items-center justify-center">
                       <Image
                         src="/images/diamond.png"
                         alt="Journey"
-                        width={44}
-                        height={44}
-                        className="w-full h-full object-cover"
+                        width={48}
+                        height={48}
+                        className="w-full h-full object-contain"
                       />
                     </div>
                     <div className="font-poppins text-sm sm:text-base font-semibold text-primary-green leading-none">

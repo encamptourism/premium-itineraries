@@ -39,14 +39,14 @@ export default function HeroSection({ itinerary }) {
           />
         )}
 
-        {/* Top Right: English Logo */}
+        {/* Top Left: English Logo */}
         {englishLogoUrl && (
-          <div className="absolute right-4 sm:right-8 top-3 sm:top-5 z-30 w-36 sm:w-44 lg:w-52 h-12 sm:h-15 lg:h-18 shrink-0 bg-transparent pointer-events-none overflow-hidden">
+          <div className="absolute left-4 sm:left-8 top-3 sm:top-5 z-30 w-36 sm:w-44 lg:w-52 h-12 sm:h-15 lg:h-18 shrink-0 bg-transparent pointer-events-none overflow-hidden">
             <TransparentImageCanvas
               src={englishLogoUrl}
               alt="Encamp Privé Logo"
               fill
-              className="object-contain object-right drop-shadow-md"
+              className="object-contain object-left drop-shadow-md"
             />
           </div>
         )}

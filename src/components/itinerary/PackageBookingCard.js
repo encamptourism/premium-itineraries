@@ -15,6 +15,7 @@ import {
 import { useCarbonTrace } from "@/context/CarbonTraceContext";
 import { getCarbonTracePayload, getItineraryItemId } from "@/lib/api";
 import { initCheckoutAction } from "@/app/actions/checkout";
+import DownloadPdfButton from "./DownloadPdfButton";
 
 function LuxuryPackageFrame({ children, className = "" }) {
   return (
@@ -616,6 +617,11 @@ export default function PackageBookingCard({ itinerary, itineraryId, onOpenEnqui
           >
             Enquire Now
           </button>
+        </div>
+
+        {/* 4. Download Itinerary PDF Action */}
+        <div className="pt-2 border-t border-white/20">
+          <DownloadPdfButton itinerary={itineraryData} variant="card" />
         </div>
       </div>
     </LuxuryPackageFrame>
