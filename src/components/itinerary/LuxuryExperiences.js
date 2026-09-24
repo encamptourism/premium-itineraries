@@ -123,7 +123,7 @@ export default function LuxuryExperiences({ experiences = [], itinerary = null }
                   title={exp.title}
                   iconKey={exp.iconKey}
                   isActive={true}
-                  className="w-44 sm:w-52 xl:w-60 h-22 sm:h-26 xl:h-30"
+                  className="w-28 sm:w-32 xl:w-36 h-14 sm:h-16 xl:h-18"
                 />
               </div>
 

@@ -649,7 +649,7 @@ export function MedallionFrame({
   isActive = true,
   title = "",
   iconKey = null,
-  className = "w-36 sm:w-40 h-18 sm:h-20",
+  className = "w-28 sm:w-32 xl:w-36 h-14 sm:h-16 xl:h-18",
 }) {
   const resolvedKey = iconKey || getExperienceIconKey(title);
   const ringGrad = isActive ? "actRing" : "lightRing";
@@ -697,8 +697,8 @@ export function MedallionFrame({
         <circle cx="70" cy="35" r="26" stroke={`url(#${ringGrad})`} strokeWidth="1.0" strokeDasharray="1.5,2.5" fill="none" opacity="0.8" />
         <circle cx="70" cy="35" r="28" stroke={`url(#${ringGrad})`} strokeWidth="2.0" fill="none" />
 
-        {/* Central Experience Icon Vector - Reduced size (42x42), Centered at (70, 35) */}
-        <svg x="49" y="14" width="42" height="42" viewBox="0 0 32 32">
+        {/* Central Experience Icon Vector - Refined size (32x32), Centered at (70, 35) */}
+        <svg x="54" y="19" width="32" height="32" viewBox="0 0 32 32">
           {renderExperienceIconVector(resolvedKey, `url(#${ringGrad})`, isActive)}
         </svg>
       </svg>

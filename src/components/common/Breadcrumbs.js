@@ -65,37 +65,37 @@ export default function Breadcrumbs({ items, rightAction, className = '' }) {
   return (
     <nav
       aria-label="Breadcrumbs"
-      className={`w-full bg-[#081810]/95 border-b border-[#C99D40]/30 backdrop-blur-md shadow-sm transition-all z-40 ${className}`}
+      className={`w-full bg-[#081810]/95 border-b border-[#C99D40]/30 backdrop-blur-md shadow-sm transition-all z-40 overflow-hidden ${className}`}
     >
-      <div className="w-full px-4 sm:px-6 lg:px-8 py-1.5 sm:py-2 flex items-center justify-between gap-3 sm:gap-4">
-        <ol className="flex items-center flex-wrap gap-1 sm:gap-1.5 text-[11px] sm:text-xs min-w-0">
+      <div className="w-full px-4 sm:px-6 lg:px-8 py-0.5 sm:py-1 min-h-[28px] sm:min-h-[32px] flex items-center justify-between gap-3 overflow-hidden">
+        <ol className="flex items-center gap-1 text-[10px] sm:text-[11px] min-w-0">
           {breadcrumbItems.map((item, index) => {
             const isLast = index === breadcrumbItems.length - 1;
 
             return (
-              <li key={index} className="inline-flex items-center">
+              <li key={index} className="inline-flex items-center min-w-0 shrink-0">
                 {/* Gold Chevron Right Divider */}
                 {index > 0 && (
                   <ChevronRight
                     aria-hidden="true"
-                    className="w-3 h-3 sm:w-3.5 sm:h-3.5 text-[#C99D40]/70 mx-1 sm:mx-1.5 shrink-0 stroke-[2]"
+                    className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#C99D40]/70 mx-0.5 sm:mx-1 shrink-0 stroke-[2]"
                   />
                 )}
 
                 {isLast || !item.href ? (
                   <span
                     aria-current="page"
-                    className="font-poppins font-semibold text-[#FFEAA8] tracking-[0.1em] uppercase truncate max-w-[180px] sm:max-w-xs md:max-w-md drop-shadow-sm"
+                    className="font-poppins font-medium text-[#FFEAA8] tracking-[0.08em] uppercase truncate max-w-[160px] sm:max-w-xs md:max-w-md drop-shadow-sm leading-normal"
                   >
                     {item.label}
                   </span>
                 ) : (
                   <Link
                     href={item.href}
-                    className="group inline-flex items-center gap-1.5 font-poppins text-stone-300 hover:text-[#FFEAA8] tracking-[0.08em] uppercase transition-colors"
+                    className="group inline-flex items-center gap-1 font-poppins text-stone-300 hover:text-[#FFEAA8] tracking-[0.06em] uppercase transition-colors leading-normal shrink-0"
                   >
                     {index === 0 && (
-                      <Home className="w-3.5 h-3.5 text-[#C99D40] group-hover:text-[#FFEAA8] transition-colors shrink-0" />
+                      <Home className="w-3 h-3 text-[#C99D40] group-hover:text-[#FFEAA8] transition-colors shrink-0" />
                     )}
                     <span>{item.label}</span>
                   </Link>

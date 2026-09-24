@@ -45,26 +45,26 @@ export default function DownloadPdfButton({ itinerary, variant = 'default', clas
         onClick={handleDownload}
         disabled={isGenerating}
         title="Download Itinerary"
-        className={`group inline-flex items-center gap-2 px-3 sm:px-3.5 py-1 sm:py-1.5 rounded-md bg-gradient-to-r from-[#dfa62f] via-[#c99d40] to-[#b88520] hover:from-[#eab63e] hover:via-[#d6aa47] hover:to-[#c69229] text-black border border-[#ffeaa8]/60 shadow-sm hover:shadow-md transition-all duration-200 active:scale-[0.98] cursor-pointer disabled:opacity-70 ${className}`}
+        className={`group inline-flex items-center gap-1.5 px-2.5 sm:px-3 py-0.5 sm:py-1 rounded bg-gradient-to-r from-[#dfa62f] via-[#c99d40] to-[#b88520] hover:from-[#eab63e] hover:via-[#d6aa47] hover:to-[#c69229] text-black border border-[#ffeaa8]/60 shadow-2xs hover:shadow-xs transition-all duration-200 active:scale-[0.98] cursor-pointer disabled:opacity-70 leading-none ${className}`}
       >
         {isGenerating ? (
           <>
-            <Loader2 className="w-3.5 h-3.5 text-black animate-spin shrink-0" />
-            <span className="font-poppins text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.12em] text-black">
+            <Loader2 className="w-3 h-3 text-black animate-spin shrink-0" />
+            <span className="font-poppins text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.08em] text-black leading-none">
               Please wait, PDF is downloading…
             </span>
           </>
         ) : isDownloaded ? (
           <>
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
-            <span className="font-poppins text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.12em] text-emerald-700">
+            <CheckCircle2 className="w-3 h-3 text-emerald-950 shrink-0" />
+            <span className="font-poppins text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.08em] text-emerald-950 leading-none">
               Downloaded
             </span>
           </>
         ) : (
           <>
-            <Download className="w-3.5 h-3.5 text-black group-hover:translate-y-0.5 transition-transform duration-200 shrink-0" />
-            <span className="font-poppins text-[10px] sm:text-[11px] font-bold uppercase tracking-[0.12em] text-black whitespace-nowrap">
+            <Download className="w-3 h-3 text-black group-hover:translate-y-0.5 transition-transform duration-200 shrink-0" />
+            <span className="font-poppins text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.08em] text-black whitespace-nowrap leading-none">
               Download Itinerary
             </span>
           </>
