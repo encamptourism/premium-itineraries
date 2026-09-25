@@ -1,6 +1,7 @@
 'use client';
 
 import DownloadPdfButton from './DownloadPdfButton';
+import ShareItineraryButton from './ShareItineraryButton';
 import { ArrowUpRight } from 'lucide-react';
 
 export default function MobileStickyCTA({ itinerary }) {
@@ -14,17 +15,18 @@ export default function MobileStickyCTA({ itinerary }) {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-[#123B2A]/95 backdrop-blur-md border-t border-[#dfa62f]/40 px-3 py-2.5 shadow-2xl flex items-center justify-between gap-3 animate-fadeIn">
-      {/* Quick Download PDF Icon Button */}
-      <DownloadPdfButton itinerary={itinerary} variant="sticky" />
+    <div className="fixed bottom-0 left-0 right-0 z-40 lg:hidden bg-[#123B2A]/95 backdrop-blur-md border-t border-[#dfa62f]/40 px-3 py-2.5 shadow-2xl flex items-center justify-between gap-2.5 animate-fadeIn">
+      <div className="flex items-center gap-2 shrink-0">
+        <DownloadPdfButton itinerary={itinerary} variant="sticky" />
+        <ShareItineraryButton itinerary={itinerary} variant="sticky" />
+      </div>
 
-      {/* Main Book Now / Scroll Action Button */}
       <button
         type="button"
         onClick={scrollToBooking}
-        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#dfa62f] to-[#c99a2c] text-[#123B2A] font-poppins text-xs font-black uppercase tracking-wider shadow-md active:scale-98 transition-transform cursor-pointer"
+        className="flex-1 flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-xl bg-gradient-to-r from-[#dfa62f] via-[#eab63e] to-[#c99a2c] hover:from-[#eab63e] hover:to-[#dfa62f] text-[#123B2A] font-poppins text-xs font-black uppercase tracking-wider shadow-md hover:shadow-lg active:scale-98 transition-all cursor-pointer"
       >
-        <span>Select Package & Book</span>
+        <span>Book Now</span>
         <ArrowUpRight className="w-4 h-4 stroke-[2.5]" />
       </button>
     </div>

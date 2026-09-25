@@ -2,15 +2,12 @@ import { notFound } from "next/navigation";
 import { getPremiumItinerary, getItineraryApiUrl } from "@/lib/api";
 import ItineraryHeroSection from "@/components/itinerary/ItineraryHeroSection";
 import ReferencePosterBody from "@/components/itinerary/ReferencePosterBody";
+import StaysAndAccommodations from "@/components/itinerary/StaysAndAccommodations";
+import LuxuryExperiences from "@/components/itinerary/LuxuryExperiences";
 import ReferencePosterFaqFooter from "@/components/itinerary/ReferencePosterFaqFooter";
 import MobileStickyCTA from "@/components/itinerary/MobileStickyCTA";
-import LuxuryExperiences from "@/components/itinerary/LuxuryExperiences";
 import BackgroundMusicPlayer from "@/components/itinerary/BackgroundMusicPlayer";
-// import DebugPreview from "@/components/itinerary/DebugPreview";
 
-/**
- * Generate dynamic SEO metadata directly from the live API response
- */
 export async function generateMetadata({ params }) {
   const { slug } = await params;
   const itinerary = await getPremiumItinerary(slug);
@@ -68,10 +65,6 @@ export async function generateMetadata({ params }) {
   };
 }
 
-/**
- * Dynamic Server Component for the Itinerary
- * Renders the reference poster layout with 100% live API data.
- */
 export default async function ItineraryPage({ params }) {
   const { slug } = await params;
   const itinerary = await getPremiumItinerary(slug);
@@ -81,7 +74,6 @@ export default async function ItineraryPage({ params }) {
     notFound();
   }
 
-  // Structured JSON-LD Schema for Google TouristTrip Rich Snippets
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TouristTrip",
@@ -112,33 +104,19 @@ export default async function ItineraryPage({ params }) {
 
   return (
     <>
-      {/* Search Engine Structured Data */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
 
       <main className="min-h-screen bg-[#fbf9f4] text-black flex flex-col selection:bg-gold/20 selection:text-forest">
-        {/* 1. Header with Logo, Hero Title, API Hero Image, Packages & 5-Pillars Bar */}
         <ItineraryHeroSection itinerary={itinerary} />
-
-        {/* 2. Main 3-Column Poster Layout (Days, Overview/Route/Video, Inclusions/Exclusions) */}
         <ReferencePosterBody itinerary={itinerary} />
-
-        {/* 3. Luxury Experiences Section */}
+        <StaysAndAccommodations itinerary={itinerary} />
         <LuxuryExperiences experiences={itinerary?.luxuryExperiences} itinerary={itinerary} />
-
-        {/* 4. 5-Column FAQ Section & Dark Contact Footer */}
         <ReferencePosterFaqFooter itinerary={itinerary} />
-
-        {/* 4. Mobile Sticky CTA Bottom Bar */}
         <MobileStickyCTA itinerary={itinerary} />
-
-        {/* 5. Floating Background Music Player */}
         <BackgroundMusicPlayer itinerary={itinerary} />
-
-        {/* 6. Isolated Debug Preview Component (Disabled for production) */}
-        {/* <DebugPreview itinerary={itinerary} apiUrl={apiUrl} /> */}
       </main>
     </>
   );

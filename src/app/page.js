@@ -38,10 +38,6 @@ export default async function Home() {
 
 
         <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center space-y-5 py-12 sm:py-16">
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-gold-light text-xs font-semibold uppercase tracking-widest">
-            <Sparkles className="w-3.5 h-3.5" />
-            Bespoke Luxury Travel
-          </div>
 
           <div className="space-y-2">
             <span className="font-script text-4xl sm:text-5xl md:text-6xl text-gold-light block">

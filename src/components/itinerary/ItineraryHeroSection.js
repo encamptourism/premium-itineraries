@@ -11,6 +11,7 @@ import {
   Leaf,
 } from "lucide-react";
 import DownloadPdfButton from "./DownloadPdfButton";
+import ShareItineraryButton from "./ShareItineraryButton";
 import { useCarbonTrace } from "@/context/CarbonTraceContext";
 import { useBreadcrumbs } from "@/context/BreadcrumbsContext";
 
@@ -89,7 +90,12 @@ export default function ItineraryHeroSection({ itinerary }) {
 
   useEffect(() => {
     if (itinerary && typeof setRightAction === 'function') {
-      setRightAction(<DownloadPdfButton itinerary={itinerary} variant="hero" />);
+      setRightAction(
+        <div className="flex items-center gap-1.5 sm:gap-2">
+          <ShareItineraryButton itinerary={itinerary} variant="hero" />
+          <DownloadPdfButton itinerary={itinerary} variant="hero" />
+        </div>
+      );
     }
     return () => {
       if (typeof setRightAction === 'function') {
